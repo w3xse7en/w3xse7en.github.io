@@ -1,13 +1,35 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://w3xse7en.github.io/authors/admin/</loc>
+    <loc>https://w3xse7en.github.io/docs/lang/go/</loc>
+    <lastmod>2019-05-05T00:00:00+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://w3xse7en.github.io/docs/lang/goroutine/</loc>
+    <lastmod>2019-05-05T00:00:00+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://w3xse7en.github.io/docs/lang/</loc>
+    <lastmod>2018-09-09T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://w3xse7en.github.io/docs/lang/qa/</loc>
+    <lastmod>2019-05-05T00:00:00+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://w3xse7en.github.io/docs/</loc>
+    <lastmod>2019-05-05T00:00:00+01:00</lastmod>
   </url>
   
   <url>
     <loc>https://w3xse7en.github.io/</loc>
+    <lastmod>2019-05-05T00:00:00+01:00</lastmod>
   </url>
   
   <url>
@@ -19,19 +41,7 @@
   </url>
   
   <url>
-    <loc>https://w3xse7en.github.io/post/</loc>
-  </url>
-  
-  <url>
     <loc>https://w3xse7en.github.io/publication_types/</loc>
-  </url>
-  
-  <url>
-    <loc>https://w3xse7en.github.io/publication/</loc>
-  </url>
-  
-  <url>
-    <loc>https://w3xse7en.github.io/talk/</loc>
   </url>
   
   <url>
