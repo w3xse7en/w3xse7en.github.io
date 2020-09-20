@@ -5,7 +5,7 @@
     <link>https://w3xse7en.github.io/docs/lang/</link>
       <atom:link href="https://w3xse7en.github.io/docs/lang/index.xml" rel="self" type="application/rss+xml" />
     <description>Overview</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>zh</language><lastBuildDate>Sun, 09 Sep 2018 00:00:00 +0000</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>zh</language><lastBuildDate>Sun, 26 Jul 2020 00:00:00 +0000</lastBuildDate>
     <image>
       <url>https://w3xse7en.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
       <title>Overview</title>
@@ -15,7 +15,7 @@
     <item>
       <title>Go</title>
       <link>https://w3xse7en.github.io/docs/lang/go/</link>
-      <pubDate>Sun, 05 May 2019 00:00:00 +0100</pubDate>
+      <pubDate>Sun, 26 Jul 2020 00:00:00 +0000</pubDate>
       <guid>https://w3xse7en.github.io/docs/lang/go/</guid>
       <description>&lt;h1 id=&#34;defer&#34;&gt;defer&lt;/h1&gt;
 &lt;p&gt;defer 是否会在panic后执行&lt;/p&gt;
@@ -76,7 +76,7 @@ limit限定
     <item>
       <title>Goroutine</title>
       <link>https://w3xse7en.github.io/docs/lang/goroutine/</link>
-      <pubDate>Sun, 05 May 2019 00:00:00 +0100</pubDate>
+      <pubDate>Sun, 26 Jul 2020 00:00:00 +0000</pubDate>
       <guid>https://w3xse7en.github.io/docs/lang/goroutine/</guid>
       <description>&lt;h1 id=&#34;goroutine&#34;&gt;goroutine&lt;/h1&gt;
 &lt;p&gt;leak 协程泄露
@@ -101,7 +101,7 @@ Goroutine为什么没有ID号&lt;/p&gt;
     <item>
       <title>Q&amp;A</title>
       <link>https://w3xse7en.github.io/docs/lang/qa/</link>
-      <pubDate>Sun, 05 May 2019 00:00:00 +0100</pubDate>
+      <pubDate>Sun, 26 Jul 2020 00:00:00 +0000</pubDate>
       <guid>https://w3xse7en.github.io/docs/lang/qa/</guid>
       <description>&lt;h1 id=&#34;qa&#34;&gt;Q&amp;amp;A&lt;/h1&gt;
 </description>

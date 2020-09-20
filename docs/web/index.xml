@@ -5,7 +5,7 @@
     <link>https://w3xse7en.github.io/docs/web/</link>
       <atom:link href="https://w3xse7en.github.io/docs/web/index.xml" rel="self" type="application/rss+xml" />
     <description>Overview</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>zh</language><lastBuildDate>Sun, 09 Sep 2018 00:00:00 +0000</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>zh</language><lastBuildDate>Sun, 26 Jul 2020 00:00:00 +0000</lastBuildDate>
     <image>
       <url>https://w3xse7en.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
       <title>Overview</title>
@@ -13,63 +13,11 @@
     </image>
     
     <item>
-      <title>Authoritarian</title>
-      <link>https://w3xse7en.github.io/docs/web/authoritarian/</link>
-      <pubDate>Sun, 26 Jul 2020 00:00:00 +0100</pubDate>
-      <guid>https://w3xse7en.github.io/docs/web/authoritarian/</guid>
-      <description>&lt;h1 id=&#34;defer&#34;&gt;defer&lt;/h1&gt;
-&lt;p&gt;defer 是否会在panic后执行&lt;/p&gt;
-&lt;h1 id=&#34;interface&#34;&gt;interface&lt;/h1&gt;
-&lt;ol&gt;
-&lt;li&gt;writing generic algorithm&lt;/li&gt;
-&lt;li&gt;hiding implementation detail&lt;/li&gt;
-&lt;li&gt;providing interception points&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;interface拥有两个指针
-一个指向类型 一个指向具体值&lt;/p&gt;
-&lt;h1 id=&#34;slice&#34;&gt;slice&lt;/h1&gt;
-&lt;p&gt;分配在连续的内存地址上&lt;/p&gt;
-&lt;p&gt;元素类型一致，元素存储宽度一致&lt;/p&gt;
-&lt;p&gt;空间大小固定，不能修改&lt;/p&gt;
-&lt;p&gt;可以通过索引计算出元素对应存储的位置（只需要知道数组内存的起始位置和数据元素宽度即可）&lt;/p&gt;
-&lt;p&gt;会出现数据溢出的问题（下标越界）&lt;/p&gt;
-&lt;h2 id=&#34;slice扩容&#34;&gt;slice扩容&lt;/h2&gt;
-&lt;p&gt;如果新的slice大小是当前大小2倍以上，则大小增长为新大小&lt;/p&gt;
-&lt;p&gt;如果当前slice cap 小于1024，按每次2倍增长，否则每次按当前大小1/4增长。直到增长的大小超过或等于新大小&lt;/p&gt;
-&lt;p&gt;append的实现是在内存中将slice的array值赋值到新申请的array上&lt;/p&gt;
-&lt;p&gt;性能&lt;/p&gt;
-&lt;p&gt;通过上面我们知道slice的扩容涉及到内存的拷贝，这样带来的好处是数据存储在连续内存上，比随机访问快很多，最直接的性能提升就是缓存命中率会高很多,这也就是为什么slice不采用动态链表实现的原因吧&lt;/p&gt;
-&lt;p&gt;我们知道拷贝内存数据是有开销的， 而其中最大的开销不在 memmove&lt;/p&gt;
-&lt;p&gt;数据上，而是在开辟一块新内存malloc及之后的GC压力&lt;/p&gt;
-&lt;p&gt;拷贝连续内存是很快的，随着cap变大，拷贝总成本还是 O(N) ,只是常数大了&lt;/p&gt;
-&lt;p&gt;假如不想发生拷贝，那你就没有连续内存。此时随机访问开销会是：链表 O(N)&lt;/p&gt;
-&lt;p&gt;当你能大致知道所需的最大空间（在大部分时候都是的）时，在make的时候预留相应的 cap 就好
-如果需要的空间很大，而且每次都不确定，那就要在浪费内存和耗 CPU 在 malloc + gc 上做权衡
-链表的查找操作是从第一个元素开始，所以相对数组要耗时间的多，因为采用这样的结构对读的性能有很大的提高&lt;/p&gt;
-&lt;h2 id=&#34;mysql&#34;&gt;mysql&lt;/h2&gt;
-&lt;h3 id=&#34;性能调优&#34;&gt;性能调优&lt;/h3&gt;
-&lt;h4 id=&#34;sql优化&#34;&gt;SQL优化&lt;/h4&gt;
-&lt;p&gt;小表驱动大表
-limit限定
-索引添加
-适当添加冗余字段，减少表关联。&lt;/p&gt;
-&lt;h4 id=&#34;系统优化&#34;&gt;系统优化&lt;/h4&gt;
-&lt;p&gt;max_connections 最大连接数&lt;/p&gt;
-&lt;p&gt;innodb_buffer_pool_size 数据缓冲区buffer pool大小&lt;/p&gt;
-&lt;p&gt;sort_buffer_size 排序缓冲区内存大小&lt;/p&gt;
-&lt;p&gt;join_buffer_size 使用连接缓冲区大小&lt;/p&gt;
-&lt;p&gt;read_buffer_size 全表扫描时分配的缓冲区大小&lt;/p&gt;
-&lt;h1 id=&#34;缓存&#34;&gt;缓存&lt;/h1&gt;
-&lt;p&gt;主动式缓存
-用户更新数据 同时更新缓存&lt;/p&gt;
-&lt;p&gt;被动式缓存
-用户更新数据 删除缓存，被读取时载入缓存&lt;/p&gt;
-&lt;h1 id=&#34;maps&#34;&gt;Maps&lt;/h1&gt;
-&lt;p&gt;线程不安全&lt;/p&gt;
-&lt;p&gt;底层使用的hash结构&lt;/p&gt;
-&lt;p&gt;hash算法使用aes hash hash值分为 高位hash和低位hash&lt;/p&gt;
-&lt;p&gt;高位哈希值：是用来确定当前的bucket（桶）有没有所存储的数据的 bmap a bucket for a Go map&lt;/p&gt;
-&lt;p&gt;低位哈希值：是用来确定，当前的数据存在了哪个bucket（桶）hmap a header for a go map&lt;/p&gt;
+      <title>Auth</title>
+      <link>https://w3xse7en.github.io/docs/web/qa/</link>
+      <pubDate>Sun, 26 Jul 2020 00:00:00 +0000</pubDate>
+      <guid>https://w3xse7en.github.io/docs/web/qa/</guid>
+      <description>&lt;h1 id=&#34;qa&#34;&gt;Q&amp;amp;A&lt;/h1&gt;
 </description>
     </item>
     
