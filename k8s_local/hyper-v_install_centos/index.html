@@ -30,10 +30,10 @@
   
     
   
-  <meta name="description" content="">
+  <meta name="description" content="Centos  清华大学centos7.8.2003镜像    清华大学镜像站   虚拟机  宿主机i5-6200u 2c16g 每台机器均为2c4g配置    hyper-v   网络  安装完的centos是不能上网的 此处使用桥接模式进行网络连接 使用桥接模式 使node和host处在同一网段更方便其他设备访问      桥接详情    配置Centos 静态ip地址 网段参考网桥ip  vi /etc/sysconfig/network-scripts/ifcfg-eth0 ONBOOT=yes BOOTPROTO=static IPADDR=192.">
 
   
-  <link rel="alternate" hreflang="zh" href="https://w3xse7en.github.io/publication_types/">
+  <link rel="alternate" hreflang="zh" href="https://w3xse7en.github.io/k8s_local/hyper-v_install_centos/">
 
   
 
@@ -248,14 +248,12 @@
   
 
   
-  <link rel="alternate" href="/publication_types/index.xml" type="application/rss+xml" title="w3xse7en">
-  
 
   <link rel="manifest" href="/index.webmanifest">
   <link rel="icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_32x32_fill_lanczos_center_2.png">
   <link rel="apple-touch-icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png">
 
-  <link rel="canonical" href="https://w3xse7en.github.io/publication_types/">
+  <link rel="canonical" href="https://w3xse7en.github.io/k8s_local/hyper-v_install_centos/">
 
   
   
@@ -271,29 +269,34 @@
   <meta property="twitter:card" content="summary">
   
   <meta property="og:site_name" content="w3xse7en">
-  <meta property="og:url" content="https://w3xse7en.github.io/publication_types/">
-  <meta property="og:title" content="Publication_types | w3xse7en">
-  <meta property="og:description" content=""><meta property="og:image" content="https://w3xse7en.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png">
+  <meta property="og:url" content="https://w3xse7en.github.io/k8s_local/hyper-v_install_centos/">
+  <meta property="og:title" content="hyper-v 安装 centos | w3xse7en">
+  <meta property="og:description" content="Centos  清华大学centos7.8.2003镜像    清华大学镜像站   虚拟机  宿主机i5-6200u 2c16g 每台机器均为2c4g配置    hyper-v   网络  安装完的centos是不能上网的 此处使用桥接模式进行网络连接 使用桥接模式 使node和host处在同一网段更方便其他设备访问      桥接详情    配置Centos 静态ip地址 网段参考网桥ip  vi /etc/sysconfig/network-scripts/ifcfg-eth0 ONBOOT=yes BOOTPROTO=static IPADDR=192."><meta property="og:image" content="https://w3xse7en.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png">
   <meta property="twitter:image" content="https://w3xse7en.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png"><meta property="og:locale" content="zh">
   
     
+      <meta property="article:published_time" content="2020-09-20T00:00:00&#43;00:00">
+    
+    <meta property="article:modified_time" content="2020-09-20T00:00:00&#43;00:00">
   
 
   
 
 
 
-
   
 
 
   
 
 
+  
 
 
 
-  <title>Publication_types | w3xse7en</title>
+
+
+  <title>hyper-v 安装 centos | w3xse7en</title>
 
 </head>
 
@@ -440,7 +443,7 @@
         
 
         <li class="nav-item">
-          <a class="nav-link " href="/k8s_local"><span>探索k8s</span></a>
+          <a class="nav-link  active" href="/k8s_local"><span>探索k8s</span></a>
         </li>
 
         
@@ -491,43 +494,393 @@
 
   
 
-
-
-
-
-
-
-
-
-
-
+<div class="container-fluid docs">
+  <div class="row flex-xl-nowrap">
+    <div class="col-12 col-md-3 col-xl-2 docs-sidebar">
+      <form class="docs-search d-flex align-items-center">
+  <button class="btn docs-toggle d-md-none p-0 mr-3" type="button" data-toggle="collapse" data-target="#docs-nav" aria-controls="docs-nav" aria-expanded="false" aria-label="Toggle section navigation">
+    <span><i class="fas fa-bars"></i></span>
+  </button>
 
   
+  <input name="q" type="search" class="form-control" placeholder="搜索..." autocomplete="off">
+  
+</form>
 
+<nav class="collapse docs-links" id="docs-nav">
+  
+  
+  
+  
   
   
   
     
+    
+
+    
+    
   
-<div class="universal-wrapper pt-3">
-  <h1>Publication_types</h1>
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <ul class="nav docs-sidenav">
+        <li class=""><a href="/k8s_local/">介绍</a></li>
+    
+      
+
+
+  <li class="active"><a href="/k8s_local/hyper-v_install_centos/">hyper-v 安装 centos</a></li>
+
+
+
+  <li class=""><a href="/k8s_local/install_k8s/">kubespray 安装 k8s</a></li>
+
+      
+    
+
+    
+      </ul>
+    
+</nav>
+
+    </div>
+
+    
+    
+    <div class="d-none d-xl-block col-xl-2 docs-toc">
+      <ul class="nav toc-top">
+        <li><a href="#" id="back_to_top" class="docs-toc-title">在本页</a></li>
+      </ul>
+
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#centos">Centos</a></li>
+    <li><a href="#虚拟机">虚拟机</a></li>
+    <li><a href="#网络">网络</a></li>
+  </ul>
+</nav>
+
+      
+    </div>
+    
+
+    <main class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 docs-content" role="main">
+
+      <article class="article">
+
+        <div class="docs-article-container">
+          <h1>hyper-v 安装 centos</h1>
+
+          <div class="article-style">
+            <hr>
+<h2 id="centos">Centos</h2>
+<ul>
+<li><a href="https://mirrors.tuna.tsinghua.edu.cn/centos/7.8.2003/isos/x86_64/" target="_blank" rel="noopener">清华大学centos7.8.2003镜像</a></li>
+</ul>
+
+
+
+
+
+
+
 
   
 
+
+
+
+
+
+
+
+
+
+
+<figure id="figure-清华大学镜像站">
+
+
+  <a data-fancybox="" href="/media/k8s_local/1-tsinghua-mirror.png" data-caption="清华大学镜像站">
+
+
+  <img src="/media/k8s_local/1-tsinghua-mirror.png" alt=""  >
+</a>
+
+
+  
+  
+  <figcaption>
+    清华大学镜像站
+  </figcaption>
+
+
+</figure>
+
+<h2 id="虚拟机">虚拟机</h2>
+<ul>
+<li>宿主机i5-6200u 2c16g</li>
+<li>每台机器均为2c4g配置</li>
+</ul>
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure id="figure-hyper-v">
+
+
+  <a data-fancybox="" href="/media/k8s_local/2-hyper-v.png" data-caption="hyper-v">
+
+
+  <img src="/media/k8s_local/2-hyper-v.png" alt=""  >
+</a>
+
+
+  
+  
+  <figcaption>
+    hyper-v
+  </figcaption>
+
+
+</figure>
+
+<h2 id="网络">网络</h2>
+<ul>
+<li>安装完的centos是不能上网的</li>
+<li>此处使用桥接模式进行网络连接</li>
+<li>使用桥接模式 使node和host处在同一网段更方便其他设备访问</li>
+</ul>
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure >
+
+
+  <a data-fancybox="" href="/media/k8s_local/3-net-bridge.png" >
+
+
+  <img src="/media/k8s_local/3-net-bridge.png" alt=""  >
+</a>
+
+
+
+</figure>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure id="figure-桥接详情">
+
+
+  <a data-fancybox="" href="/media/k8s_local/4-bridge-info.png" data-caption="桥接详情">
+
+
+  <img src="/media/k8s_local/4-bridge-info.png" alt=""  >
+</a>
+
+
+  
+  
+  <figcaption>
+    桥接详情
+  </figcaption>
+
+
+</figure>
+
+<ul>
+<li>配置Centos 静态ip地址</li>
+<li>网段参考网桥ip</li>
+</ul>
+<pre><code>vi /etc/sysconfig/network-scripts/ifcfg-eth0
+
+ONBOOT=yes
+BOOTPROTO=static
+IPADDR=192.168.1.201
+NETMASK=255.255.255.0
+GATEWAY=192.168.1.1
+DNS1=192.168.1.1
+
+service network restart
+</code></pre>
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure id="figure-网络拓扑图">
+
+
+  <a data-fancybox="" href="/media/k8s_local/5-net.png" data-caption="网络拓扑图">
+
+
+  <img src="/media/k8s_local/5-net.png" alt=""  >
+</a>
+
+
+  
+  
+  <figcaption>
+    网络拓扑图
+  </figcaption>
+
+
+</figure>
+
+
+          </div>
+
+          
+
+
+
+          
+          
+          <div class="article-widget">
+            
+<div class="post-nav">
+  
+  
+  
+  <div class="post-nav-item">
+    <div class="meta-nav">下一页</div>
+    <a href="/k8s_local/install_k8s/" rel="prev">kubespray 安装 k8s</a>
+  </div>
   
 </div>
 
+          </div>
+          
+        </div>
+
+        <div class="body-footer">
+          <p>最近更新于 Sep 20, 2020</p>
+
+          
 
 
-<div class="universal-wrapper">
+
+
+
+          
+
+
+          
+
+
+
+
+        </div>
+
+      </article>
+
+      <footer class="site-footer">
   
 
+  <p class="powered-by">
+    
+  </p>
+
   
   
 
-  
 
+
+
+
+
+  <p class="powered-by">
+    
+    Published with
+    <a href="https://wowchemy.com" target="_blank" rel="noopener">Wowchemy</a>  —
+    the free, <a href="https://github.com/wowchemy/wowchemy-hugo-modules" target="_blank" rel="noopener">
+    open source</a> website builder that empowers creators.
+    
+
+    
+  </p>
+</footer>
+
+
+    </main>
+  </div>
 </div>
+
 
       
 
@@ -584,6 +937,11 @@
     
 
     
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.2.2/anchor.min.js" integrity="sha512-I7w3ZdSFzw5j3jU3ZkNikBNeIrl3i+hEuEdwNmqUJvwNcaBUNcijnP2gd9DtGlgVYDplfjGoD8vTNsID+lCjqg==" crossorigin="anonymous"></script>
+    <script>
+      anchors.add();
+    </script>
     
 
     
@@ -643,44 +1001,6 @@
 
 
   
-  
-  <div class="container">
-    <footer class="site-footer">
-  
-
-  <p class="powered-by">
-    
-  </p>
-
-  
-  
-
-
-
-
-
-
-  <p class="powered-by">
-    
-    Published with
-    <a href="https://wowchemy.com" target="_blank" rel="noopener">Wowchemy</a>  —
-    the free, <a href="https://github.com/wowchemy/wowchemy-hugo-modules" target="_blank" rel="noopener">
-    open source</a> website builder that empowers creators.
-    
-
-    
-    <span class="float-right" aria-hidden="true">
-      <a href="#" class="back-to-top">
-        <span class="button_icon">
-          <i class="fas fa-chevron-up fa-2x"></i>
-        </span>
-      </a>
-    </span>
-    
-  </p>
-</footer>
-
-  </div>
   
 
   

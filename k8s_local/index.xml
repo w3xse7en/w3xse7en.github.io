@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>介绍 | w3xse7en</title>
+    <link>https://w3xse7en.github.io/k8s_local/</link>
+      <atom:link href="https://w3xse7en.github.io/k8s_local/index.xml" rel="self" type="application/rss+xml" />
+    <description>介绍</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>zh</language><lastBuildDate>Sun, 20 Sep 2020 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://w3xse7en.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
+      <title>介绍</title>
+      <link>https://w3xse7en.github.io/k8s_local/</link>
+    </image>
+    
+    <item>
+      <title>hyper-v 安装 centos</title>
+      <link>https://w3xse7en.github.io/k8s_local/hyper-v_install_centos/</link>
+      <pubDate>Sun, 20 Sep 2020 00:00:00 +0000</pubDate>
+      <guid>https://w3xse7en.github.io/k8s_local/hyper-v_install_centos/</guid>
+      <description>&lt;hr&gt;
+&lt;h2 id=&#34;centos&#34;&gt;Centos&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://mirrors.tuna.tsinghua.edu.cn/centos/7.8.2003/isos/x86_64/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;清华大学centos7.8.2003镜像&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id=&#34;figure-清华大学镜像站&#34;&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/k8s_local/1-tsinghua-mirror.png&#34; data-caption=&#34;清华大学镜像站&#34;&gt;
+
+
+  &lt;img src=&#34;https://w3xse7en.github.io/media/k8s_local/1-tsinghua-mirror.png&#34; alt=&#34;&#34;  &gt;
+&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    清华大学镜像站
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+&lt;h2 id=&#34;虚拟机&#34;&gt;虚拟机&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;宿主机i5-6200u 2c16g&lt;/li&gt;
+&lt;li&gt;每台机器均为2c4g配置&lt;/li&gt;
+&lt;/ul&gt;
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id=&#34;figure-hyper-v&#34;&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/k8s_local/2-hyper-v.png&#34; data-caption=&#34;hyper-v&#34;&gt;
+
+
+  &lt;img src=&#34;https://w3xse7en.github.io/media/k8s_local/2-hyper-v.png&#34; alt=&#34;&#34;  &gt;
+&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    hyper-v
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+&lt;h2 id=&#34;网络&#34;&gt;网络&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;安装完的centos是不能上网的&lt;/li&gt;
+&lt;li&gt;此处使用桥接模式进行网络连接&lt;/li&gt;
+&lt;li&gt;使用桥接模式 使node和host处在同一网段更方便其他设备访问&lt;/li&gt;
+&lt;/ul&gt;
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/k8s_local/3-net-bridge.png&#34; &gt;
+
+
+  &lt;img src=&#34;https://w3xse7en.github.io/media/k8s_local/3-net-bridge.png&#34; alt=&#34;&#34;  &gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id=&#34;figure-桥接详情&#34;&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/k8s_local/4-bridge-info.png&#34; data-caption=&#34;桥接详情&#34;&gt;
+
+
+  &lt;img src=&#34;https://w3xse7en.github.io/media/k8s_local/4-bridge-info.png&#34; alt=&#34;&#34;  &gt;
+&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    桥接详情
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+&lt;ul&gt;
+&lt;li&gt;配置Centos 静态ip地址&lt;/li&gt;
+&lt;li&gt;网段参考网桥ip&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;vi /etc/sysconfig/network-scripts/ifcfg-eth0
+
+ONBOOT=yes
+BOOTPROTO=static
+IPADDR=192.168.1.201
+NETMASK=255.255.255.0
+GATEWAY=192.168.1.1
+DNS1=192.168.1.1
+
+service network restart
+&lt;/code&gt;&lt;/pre&gt;
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id=&#34;figure-网络拓扑图&#34;&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/k8s_local/5-net.png&#34; data-caption=&#34;网络拓扑图&#34;&gt;
+
+
+  &lt;img src=&#34;https://w3xse7en.github.io/media/k8s_local/5-net.png&#34; alt=&#34;&#34;  &gt;
+&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    网络拓扑图
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+</description>
+    </item>
+    
+    <item>
+      <title>kubespray 安装 k8s</title>
+      <link>https://w3xse7en.github.io/k8s_local/install_k8s/</link>
+      <pubDate>Sun, 20 Sep 2020 00:00:00 +0000</pubDate>
+      <guid>https://w3xse7en.github.io/k8s_local/install_k8s/</guid>
+      <description>&lt;hr&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
