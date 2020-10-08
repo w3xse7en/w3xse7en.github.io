@@ -5,7 +5,7 @@
     <link>https://w3xse7en.github.io/</link>
       <atom:link href="https://w3xse7en.github.io/index.xml" rel="self" type="application/rss+xml" />
     <description>w3xse7en</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>zh</language><lastBuildDate>Sun, 20 Sep 2020 00:00:00 +0000</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>zh</language>
     <image>
       <url>https://w3xse7en.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
       <title>w3xse7en</title>
@@ -15,7 +15,7 @@
     <item>
       <title>hyper-v 安装 centos</title>
       <link>https://w3xse7en.github.io/k8s_local/hyper-v_install_centos/</link>
-      <pubDate>Sun, 20 Sep 2020 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       <guid>https://w3xse7en.github.io/k8s_local/hyper-v_install_centos/</guid>
       <description>&lt;hr&gt;
 &lt;h2 id=&#34;centos&#34;&gt;Centos&lt;/h2&gt;
@@ -243,7 +243,7 @@ service network restart
     <item>
       <title>Go</title>
       <link>https://w3xse7en.github.io/docs/lang/go/</link>
-      <pubDate>Sun, 20 Sep 2020 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       <guid>https://w3xse7en.github.io/docs/lang/go/</guid>
       <description>&lt;h1 id=&#34;defer&#34;&gt;defer&lt;/h1&gt;
 &lt;p&gt;defer 是否会在panic后执行&lt;/p&gt;
@@ -302,15 +302,6 @@ limit限定
     </item>
     
     <item>
-      <title>kubespray 安装 k8s</title>
-      <link>https://w3xse7en.github.io/k8s_local/install_k8s/</link>
-      <pubDate>Sun, 20 Sep 2020 00:00:00 +0000</pubDate>
-      <guid>https://w3xse7en.github.io/k8s_local/install_k8s/</guid>
-      <description>&lt;hr&gt;
-</description>
-    </item>
-    
-    <item>
       <title>Goroutine</title>
       <link>https://w3xse7en.github.io/docs/lang/goroutine/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -332,6 +323,367 @@ Goroutine为什么没有ID号&lt;/p&gt;
 &lt;h2 id=&#34;channel&#34;&gt;channel&lt;/h2&gt;
 &lt;h2 id=&#34;select&#34;&gt;select&lt;/h2&gt;
 &lt;h2 id=&#34;sync&#34;&gt;sync&lt;/h2&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>kubespray 安装 k8s</title>
+      <link>https://w3xse7en.github.io/k8s_local/install_k8s/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://w3xse7en.github.io/k8s_local/install_k8s/</guid>
+      <description>&lt;hr&gt;
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://kubespray.io/#/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;kubespray&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.youtube.com/watch?v=8Jh4yZQOVZU&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;[ Kube 65.1 ] Kubespray - Kubernetes cluster provisioning&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.youtube.com/watch?v=CJ5G4GpqDy0&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Deploying kubernetes using Kubespray&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.d-nix.nl/2019/05/installing-a-multinode-kubernetes-cluster-using-kubespray/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;INSTALLING A MULTINODE KUBERNETES CLUSTER USING KUBESPRAY&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/kubernetes-sigs/kubespray/issues/6207&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;it&amp;rsquo;s really really really hard run kubespray in china! #6207&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.bookstack.cn/read/huweihuang-kubernetes-notes/setup-install-k8s-by-kubespray.md&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;使用kubespray安装kubernetes&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.bboy.app/2020/07/20/%E4%BD%BF%E7%94%A8kubespray%E6%90%AD%E5%BB%BA%E7%94%9F%E4%BA%A7%E7%BA%A7%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;使用kubespray搭建生产级高可用集群&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://segmentfault.com/a/1190000015186299&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;使用Kubespray安装k8s集群&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;docker/kubernetes%e5%9b%bd%e5%86%85%e6%ba%90/%e9%95%9c%e5%83%8f%e6%ba%90%e8%a7%a3%e5%86%b3%e6%96%b9%e5%bc%8f&#34;&gt;docker/kubernetes国内源/镜像源解决方式&lt;/a&gt;&lt;/p&gt;
+&lt;br/&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;配置免密码登录&#34;&gt;配置免密码登录&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;ssh-keygen -t rsa
+ssh-copy-id root@192.168.1.200
+ssh-copy-id root@192.168.1.201
+ssh-copy-id root@192.168.1.202
+&lt;/code&gt;&lt;/pre&gt;
+&lt;br/&gt;
+&lt;h2 id=&#34;下载kubespray&#34;&gt;下载kubespray&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;# master分支还在更新中，此处使用当前最新release的版本v2.14.1
+git clone --single-branch -b v2.14.1 https://github.com/kubernetes-sigs/kubespray.git
+&lt;/code&gt;&lt;/pre&gt;
+&lt;br/&gt;
+&lt;h2 id=&#34;安装python3-pip&#34;&gt;安装python3-pip&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;yum install python3-pip
+&lt;/code&gt;&lt;/pre&gt;
+&lt;br/&gt;
+&lt;h2 id=&#34;安装kubespray依赖&#34;&gt;安装kubespray依赖&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;pip3 install -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple/
+&lt;/code&gt;&lt;/pre&gt;
+&lt;br/&gt;
+&lt;h2 id=&#34;使用ansible对每台机器进行批处理&#34;&gt;使用ansible对每台机器进行批处理&lt;/h2&gt;
+&lt;p&gt;配置ansible访问k8s集群hosts&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;vi /etc/ansible/hosts
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;[k8s]
+
+192.168.1.200 ansible_ssh_user=root
+192.168.1.201 ansible_ssh_user=root
+192.168.1.202 ansible_ssh_user=root
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;测试&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;ansible k8s -m ping
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;更新yum&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;ansible k8s -m shell -a &#39;yum update -y&#39;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;安装ntp服务，统一集群时间&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;ansible k8s -m shell -a &#39;yum install -y ntp &amp;amp;&amp;amp;
+systemctl enable ntpd &amp;amp;&amp;amp;
+systemctl start ntpd &amp;amp;&amp;amp;
+timedatectl set-timezone Asia/Shanghai &amp;amp;&amp;amp;
+timedatectl set-ntp yes &amp;amp;&amp;amp; 
+ntpq -p&#39;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;配置ipv4转发&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;ansible k8s -m shell -a &#39;echo net.ipv4.ip_forward = 1 &amp;gt;&amp;gt; /etc/sysctl.conf &amp;amp;&amp;amp; sysctl -p&#39;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;关闭防火墙&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;ansible k8s -m shell -a &#39;systemctl stop firewalld &amp;amp;&amp;amp; systemctl disable firewalld&#39;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;br/&gt;
+&lt;h2 id=&#34;生成kubespray所需配置&#34;&gt;生成kubespray所需配置&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;创建可自定义的配置&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;cp -rfp inventory/sample inventory/mycluster
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;IPS=(此处填写k8s集群的ip地址，注意&lt;code&gt;空格&lt;/code&gt;分割)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;declare -a IPS=(192.168.1.200 192.168.1.201 192.168.1.202)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;CONFIG_FILE=inventory/mycluster/hosts.yaml python3 contrib/inventory_builder/inventory.py ${IPS[@]}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;查看生成的hosts.yaml&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;cat inventory/mycluster/hosts.yaml
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;此处是 2个master 3个node 3个etcd 的高可用配置，可以根据喜好进行配置&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;all:
+  hosts:
+    node1:
+      ansible_host: 192.168.1.200
+      ip: 192.168.1.200
+      access_ip: 192.168.1.200
+    node2:
+      ansible_host: 192.168.1.201
+      ip: 192.168.1.201
+      access_ip: 192.168.1.201
+    node3:
+      ansible_host: 192.168.1.202
+      ip: 192.168.1.202
+      access_ip: 192.168.1.202
+  children:
+    kube-master:
+      hosts:
+        node1:
+        node2:
+    kube-node:
+      hosts:
+        node1:
+        node2:
+        node3:
+    etcd:
+      hosts:
+        node1:
+        node2:
+        node3:
+    k8s-cluster:
+      children:
+        kube-master:
+        kube-node:
+    calico-rr:
+      hosts: {}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;br/&gt;
+&lt;h2 id=&#34;下载依赖&#34;&gt;下载依赖&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;方案1&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;将所有源换成国内镜像加速&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;方案2&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;离线安装&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;方案3&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;设置代理&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;此处使用方案3&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;vi inventory/mycluster/group_vars/all/all.yml
+## Set these proxy values in order to update package manager and docker daemon to use proxies
+http_proxy: &amp;quot;http://192.168.1.9:1080&amp;quot;
+https_proxy: &amp;quot;http://192.168.1.9:1080&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;br/&gt;
+&lt;h2 id=&#34;配置docker镜像源&#34;&gt;配置docker镜像源&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;方便未来使用docker访问国内源&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;vi inventory/mycluster/group_vars/all/docker.yml
+## Add other registry,example China registry mirror.
+docker_registry_mirrors:
+  - https://mirror.aliyuncs.com
+  - https://registry.docker-cn.com
+&lt;/code&gt;&lt;/pre&gt;
+&lt;br/&gt;
+&lt;h2 id=&#34;可选开启helm&#34;&gt;(可选)开启helm&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;vi inventory/mycluster/group_vars/k8s-cluster/addons.yml
+# Helm deployment
+helm_enabled: true
+&lt;/code&gt;&lt;/pre&gt;
+&lt;br/&gt;
+&lt;h2 id=&#34;安装&#34;&gt;安装&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;ansible-playbook -i inventory/mycluster/hosts.yaml  --become --become-user=root cluster.yml
+&lt;/code&gt;&lt;/pre&gt;
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id=&#34;figure-安装花费21分钟&#34;&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/k8s_local/6-install.png&#34; data-caption=&#34;安装花费21分钟&#34;&gt;
+
+
+  &lt;img src=&#34;https://w3xse7en.github.io/media/k8s_local/6-install.png&#34; alt=&#34;&#34;  &gt;
+&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    安装花费21分钟
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+&lt;br/&gt;
+&lt;h2 id=&#34;验证&#34;&gt;验证&lt;/h2&gt;
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id=&#34;figure-k8s-v1189安装成功&#34;&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/k8s_local/7-check.png&#34; data-caption=&#34;k8s v1.18.9安装成功&#34;&gt;
+
+
+  &lt;img src=&#34;https://w3xse7en.github.io/media/k8s_local/7-check.png&#34; alt=&#34;&#34;  &gt;
+&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    k8s v1.18.9安装成功
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+&lt;br/&gt;
+&lt;h2 id=&#34;重置&#34;&gt;重置&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;若在安装过程中遇到问题可用以下命令重置&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;ansible-playbook -i inventory/mycluster/hosts.yaml reset.yml
+&lt;/code&gt;&lt;/pre&gt;
+&lt;br/&gt;
+&lt;h2 id=&#34;dashboard&#34;&gt;Dashboard&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Kubespray并没有替你创建用户，所以需要创建用户，然后获得Token，使用Token登录。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;br/&gt;
+&lt;ul&gt;
+&lt;li&gt;添加admin-user用户&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;vi dashboard-admin-user.yaml
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: admin-user
+  namespace: kube-system
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: admin-user
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: admin-user
+  namespace: kube-system
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;kubectl apply -f dashboard-admin-user.yaml
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;获取admin-user的token&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk &#39;{print $1}&#39;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;访问dashboard&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-http&#34;&gt;https://192.168.1.200:6443/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/#!/login
+&lt;/code&gt;&lt;/pre&gt;
+&lt;br/&gt;
+&lt;h2 id=&#34;dashboard报错处理&#34;&gt;Dashboard报错处理&lt;/h2&gt;
+&lt;div class=&#34;alert alert-warning&#34;&gt;
+  &lt;div&gt;
+    &lt;p&gt;&lt;code&gt;services &amp;quot;https:kubernetes-dashboard:&amp;quot; is forbidden: User &amp;quot;system:anonymous&amp;quot; cannot get services/proxy in the namespace &amp;quot;kube-system&amp;quot;&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;遇到此报错执行 添加system:anonymous的访问权限 步骤&lt;/p&gt;
+&lt;p&gt;否则请跳过&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;添加system:anonymous的访问权限&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;vi dashboard-access.yaml
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: kubernetes-dashboard-anonymous
+rules:
+- apiGroups: [&amp;quot;&amp;quot;]
+  resources: [&amp;quot;services/proxy&amp;quot;]
+  resourceNames: [&amp;quot;https:kubernetes-dashboard:&amp;quot;]
+  verbs: [&amp;quot;get&amp;quot;, &amp;quot;list&amp;quot;, &amp;quot;watch&amp;quot;, &amp;quot;create&amp;quot;, &amp;quot;update&amp;quot;, &amp;quot;patch&amp;quot;, &amp;quot;delete&amp;quot;]
+- nonResourceURLs: [&amp;quot;/ui&amp;quot;, &amp;quot;/ui/*&amp;quot;, &amp;quot;/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/*&amp;quot;]
+  verbs: [&amp;quot;get&amp;quot;, &amp;quot;list&amp;quot;, &amp;quot;watch&amp;quot;, &amp;quot;create&amp;quot;, &amp;quot;update&amp;quot;, &amp;quot;patch&amp;quot;, &amp;quot;delete&amp;quot;]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: kubernetes-dashboard-anonymous
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: kubernetes-dashboard-anonymous
+subjects:
+- kind: User
+  name: system:anonymous
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;kubectl apply -f dashboard-access.yaml
+&lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
     

@@ -3,13 +3,13 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://w3xse7en.github.io/k8s_local/hyper-v_install_centos/</loc>
-    <lastmod>2020-09-20T00:00:00+00:00</lastmod>
+    <loc>https://w3xse7en.github.io/docs/lang/</loc>
+    <lastmod>2020-09-20T18:50:09+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://w3xse7en.github.io/docs/lang/</loc>
-    <lastmod>2020-09-20T18:50:09+08:00</lastmod>
+    <loc>https://w3xse7en.github.io/k8s_local/hyper-v_install_centos/</loc>
+    <lastmod>2020-10-07T00:30:47+08:00</lastmod>
   </url>
   
   <url>
@@ -23,13 +23,13 @@
   </url>
   
   <url>
-    <loc>https://w3xse7en.github.io/k8s_local/install_k8s/</loc>
-    <lastmod>2020-09-20T00:00:00+00:00</lastmod>
+    <loc>https://w3xse7en.github.io/docs/lang/goroutine/</loc>
+    <lastmod>2020-09-20T18:50:09+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://w3xse7en.github.io/docs/lang/goroutine/</loc>
-    <lastmod>2020-09-20T18:50:09+08:00</lastmod>
+    <loc>https://w3xse7en.github.io/k8s_local/install_k8s/</loc>
+    <lastmod>2020-10-07T00:30:47+08:00</lastmod>
   </url>
   
   <url>
@@ -40,16 +40,6 @@
   <url>
     <loc>https://w3xse7en.github.io/docs/lang/qa/</loc>
     <lastmod>2020-09-20T18:50:09+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://w3xse7en.github.io/</loc>
-    <lastmod>2020-09-20T18:50:09+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://w3xse7en.github.io/k8s_local/</loc>
-    <lastmod>2020-09-20T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -71,6 +61,16 @@
   
   <url>
     <loc>https://w3xse7en.github.io/tags/</loc>
+  </url>
+  
+  <url>
+    <loc>https://w3xse7en.github.io/</loc>
+    <lastmod>2020-10-07T00:30:47+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://w3xse7en.github.io/k8s_local/</loc>
+    <lastmod>2020-10-07T00:30:47+08:00</lastmod>
   </url>
   
 </urlset>
