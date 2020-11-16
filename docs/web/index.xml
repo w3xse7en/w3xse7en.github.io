@@ -7,17 +7,331 @@
     <description>Web</description>
     <generator>Wowchemy (https://wowchemy.com)</generator><language>zh</language>
     <image>
-      <url>https://w3xse7en.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
+      <url>https://w3xse7en.github.io/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_2.png</url>
       <title>Web</title>
       <link>https://w3xse7en.github.io/docs/web/</link>
     </image>
     
     <item>
-      <title>Q&amp;A</title>
-      <link>https://w3xse7en.github.io/docs/web/qa/</link>
+      <title>socket</title>
+      <link>https://w3xse7en.github.io/docs/web/socket/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://w3xse7en.github.io/docs/web/qa/</guid>
-      <description>&lt;h1 id=&#34;qa&#34;&gt;Q&amp;amp;A&lt;/h1&gt;
+      <guid>https://w3xse7en.github.io/docs/web/socket/</guid>
+      <description>&lt;hr&gt;
+&lt;h2&gt;目录&lt;/h2&gt;
+&lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#io模型&#34;&gt;I/O模型&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#blocking-io---阻塞io&#34;&gt;Blocking I/O - 阻塞I/O&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#nonblocking-io---非阻塞io&#34;&gt;Nonblocking I/O - 非阻塞I/O&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#io-multiplexing---io多路复用&#34;&gt;I/O Multiplexing - I/O多路复用&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#signal-driven-io----信号驱动io&#34;&gt;Signal-Driven I/O  - 信号驱动I/O&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#asynchronous-io---异步io&#34;&gt;Asynchronous I/O - 异步I/O&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#五种-io-模型比较&#34;&gt;五种 I/O 模型比较&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#select&#34;&gt;select&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#select遇到的问题&#34;&gt;select遇到的问题&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#epoll&#34;&gt;epoll&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#epoll是如何解决select的三个问题&#34;&gt;epoll是如何解决select的三个问题&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#epoll的伪码描述&#34;&gt;epoll的伪码描述&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#参考&#34;&gt;参考&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;io模型&#34;&gt;I/O模型&lt;/h2&gt;
+&lt;p&gt;[UNIX: registered: Network Programming] 提供了5种IO模型&lt;/p&gt;
+&lt;h3 id=&#34;blocking-io---阻塞io&#34;&gt;Blocking I/O - 阻塞I/O&lt;/h3&gt;
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/os/block-io.png&#34; &gt;
+
+
+  &lt;img src=&#34;https://w3xse7en.github.io/media/os/block-io.png&#34; alt=&#34;&#34;  &gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+&lt;h3 id=&#34;nonblocking-io---非阻塞io&#34;&gt;Nonblocking I/O - 非阻塞I/O&lt;/h3&gt;
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/os/nonblock-io.png&#34; &gt;
+
+
+  &lt;img src=&#34;https://w3xse7en.github.io/media/os/nonblock-io.png&#34; alt=&#34;&#34;  &gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+&lt;h3 id=&#34;io-multiplexing---io多路复用&#34;&gt;I/O Multiplexing - I/O多路复用&lt;/h3&gt;
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/os/io-multiplexing.png&#34; &gt;
+
+
+  &lt;img src=&#34;https://w3xse7en.github.io/media/os/io-multiplexing.png&#34; alt=&#34;&#34;  &gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+&lt;h3 id=&#34;signal-driven-io----信号驱动io&#34;&gt;Signal-Driven I/O  - 信号驱动I/O&lt;/h3&gt;
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/os/signal-driven-io.png&#34; &gt;
+
+
+  &lt;img src=&#34;https://w3xse7en.github.io/media/os/signal-driven-io.png&#34; alt=&#34;&#34;  &gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+&lt;h3 id=&#34;asynchronous-io---异步io&#34;&gt;Asynchronous I/O - 异步I/O&lt;/h3&gt;
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/os/asynchronous-io.png&#34; &gt;
+
+
+  &lt;img src=&#34;https://w3xse7en.github.io/media/os/asynchronous-io.png&#34; alt=&#34;&#34;  &gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+&lt;h3 id=&#34;五种-io-模型比较&#34;&gt;五种 I/O 模型比较&lt;/h3&gt;
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/os/asynchronous-io.png&#34; &gt;
+
+
+  &lt;img src=&#34;https://w3xse7en.github.io/media/os/asynchronous-io.png&#34; alt=&#34;&#34;  &gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+&lt;hr&gt;
+&lt;h2 id=&#34;select&#34;&gt;select&lt;/h2&gt;
+&lt;p&gt;io多路复用是为了解决一个进程同时处理多个socket问题&lt;/p&gt;
+&lt;p&gt;一个简单的思路是&lt;/p&gt;
+&lt;p&gt;假设有N个socket链接，检测有socket接收到数据，遍历所有socket进行处理&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;// fds = file decriptors
+for {
+    select (fds) // wait while fds poll callback POLL_IN
+    for fd range fds{
+        if fd has data{
+            read fd
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;被监控的fds需要从用户空间拷贝到内核空间
+为了减少数据拷贝带来的性能损坏，内核对被监控的fds集合大小做了限制，并且这个是通过宏控制的，大小不可改变(限制为1024)。&lt;/li&gt;
+&lt;li&gt;被监控的fds集合中，只要有一个有数据可读，整个socket集合就会被遍历一次调用sk的poll函数收集可读事件
+由于当初的需求是朴素，仅仅关心是否有数据可读这样一个事件，当事件通知来的时候，由于数据的到来是异步的，我们不知道事件来的时候，有多少个被监控的socket有数据可读了，于是，只能挨个遍历每个socket来收集可读事件。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;select遇到的问题&#34;&gt;select遇到的问题&lt;/h3&gt;
+&lt;p&gt;总共有三个问题需要解决&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;被监控的fds集合大小被限制了1024，不够用&lt;/li&gt;
+&lt;li&gt;fds集合需要从用户空间拷贝到内核空间的问题，耗费性能&lt;/li&gt;
+&lt;li&gt;需要遍历fds集合才能知道有数据接收的fds列表&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;epoll&#34;&gt;epoll&lt;/h2&gt;
+&lt;p&gt;epoll 是对 select 和 poll 的改进，避免了“性能开销大”和“文件描述符数量少”两个缺点。&lt;/p&gt;
+&lt;p&gt;epoll 有以下几个特点：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;使用&lt;strong&gt;红黑树&lt;/strong&gt;存储文件描述符集合&lt;/li&gt;
+&lt;li&gt;使用&lt;strong&gt;队列&lt;/strong&gt;存储就绪的文件描述符&lt;/li&gt;
+&lt;li&gt;每个文件描述符只需在添加时传入一次；通过事件更改文件描述符状态&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;epoll一共有3个接口&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;epoll_create创建epoll实例，其实例内部存储：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;监听列表：所有要监听的文件描述符，使用&lt;strong&gt;红黑树&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;就绪列表：所有就绪的文件描述符，使用&lt;strong&gt;队列&lt;/strong&gt;&lt;/p&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;epoll_ctl用来维护监视列表，可以添加或删除所要监听的 socket&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;epoll_ctl 会将文件描述符 fd 添加到 epoll 实例的监听列表里，同时为 fd 设置一个回调函数，并监听事件event。当fd上发生相应事件时，会调用回调函数，将 fd 添加到 epoll 实例的就绪队列上。&lt;/p&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;当调用epoll_wait时，如果就绪列表中存在socket，则直接返回，如果没有，则阻塞进程&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;epoll是如何解决select的三个问题&#34;&gt;epoll是如何解决select的三个问题&lt;/h3&gt;
+&lt;details&gt;
+  &lt;summary&gt;被监控的fds集合大小被限制了1024，不够用&lt;/summary&gt;
+&lt;p&gt;select 使用整型数组存储文件描述符集合，而 epoll 使用红黑树存储，数量较大。&lt;/p&gt;
+&lt;/details&gt;
+&lt;details&gt;
+  &lt;summary&gt;fds集合需要从用户空间拷贝到内核空间的问题，耗费性能&lt;/summary&gt;
+&lt;p&gt;epoll通过内核与用户空间使用mmap(内存映射)，将用户空间的一块地址和内核空间的一块地址同时映射到相同的一块物理内存地址，减少用户态和内核态之间的数据交换。&lt;/p&gt;
+&lt;p&gt;epoll 对于每个描述符，只需要在 epoll_ctl 传递一次，之后 epoll_wait 不需要再次传递这也大大提高了效率。&lt;/p&gt;
+&lt;/details&gt;
+&lt;details&gt;
+  &lt;summary&gt;需要遍历fds集合才能知道有数据接收的fds列表&lt;/summary&gt;
+&lt;p&gt;epoll_ctl 中为每个文件描述符指定了回调函数，并在就绪时将其加入到就绪列表，因此 epoll 不需要像 select 那样遍历检测每个文件描述符，只需要判断就绪列表是否为空即可。这样，在没有描述符就绪时，epoll 能更早地让出系统资源。&lt;/p&gt;
+&lt;p&gt;相当于时间复杂度从 O(n) 降为 O(1)&lt;/p&gt;
+&lt;/details&gt;
+&lt;h3 id=&#34;epoll的伪码描述&#34;&gt;epoll的伪码描述&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;for{
+    active_fd = epoll_wait(fds)
+    read fd
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://notes.shichao.io/unp/ch6/#signal-driven-io-model&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Chapter 6. I/O Multiplexing: The select and poll Functions&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/CyC2018/CS-Notes/blob/master/notes/Socket.md&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Socket&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://imageslr.github.io/2020/02/27/select-poll-epoll.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;【操作系统】I/O 多路复用，select / poll / epoll 详解&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.zhihu.com/question/19732473/answer/241673170&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;怎样理解阻塞非阻塞与同步异步的区别&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://cloud.tencent.com/developer/article/1005481&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;大话 Select、Poll、Epoll&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://gityuan.com/2019/01/06/linux-epoll/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;源码解读epoll内核机制&lt;/a&gt;&lt;/p&gt;
+&lt;br/&gt;
+&lt;hr&gt;
 </description>
     </item>
     

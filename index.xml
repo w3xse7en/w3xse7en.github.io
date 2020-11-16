@@ -7,7 +7,7 @@
     <description>w3xse7en</description>
     <generator>Wowchemy (https://wowchemy.com)</generator><language>zh</language>
     <image>
-      <url>https://w3xse7en.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
+      <url>https://w3xse7en.github.io/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_2.png</url>
       <title>w3xse7en</title>
       <link>https://w3xse7en.github.io/</link>
     </image>
@@ -688,11 +688,554 @@ subjects:
     </item>
     
     <item>
-      <title>Q&amp;A</title>
-      <link>https://w3xse7en.github.io/docs/web/qa/</link>
+      <title>process</title>
+      <link>https://w3xse7en.github.io/docs/os/process/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://w3xse7en.github.io/docs/web/qa/</guid>
-      <description>&lt;h1 id=&#34;qa&#34;&gt;Q&amp;amp;A&lt;/h1&gt;
+      <guid>https://w3xse7en.github.io/docs/os/process/</guid>
+      <description>&lt;hr&gt;
+&lt;h2&gt;目录&lt;/h2&gt;
+&lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#进程&#34;&gt;进程&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#什么是孤儿进程&#34;&gt;什么是孤儿进程&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#什么是僵尸进程&#34;&gt;什么是僵尸进程&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#进程上下文&#34;&gt;进程上下文&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#内核与用户&#34;&gt;内核与用户&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#进程状态转换&#34;&gt;进程状态转换&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#进程间通信的同步异步-阻塞非阻塞&#34;&gt;进程间通信的同步/异步， 阻塞/非阻塞&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#线程&#34;&gt;线程&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#线程上下文&#34;&gt;线程上下文&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#线程上下文切换耗时比进程大吗&#34;&gt;线程上下文切换耗时比进程大吗？&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#协程&#34;&gt;协程&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#参考&#34;&gt;参考&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;进程&#34;&gt;进程&lt;/h2&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;进程是资源封装的单位。&lt;/strong&gt; 进程封装的资源包括：内存、文件、文件系统、信号、控制台等等。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;在任意时刻， 一个 CPU 核心上（processor）只可能运行一个进程 。&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;什么是孤儿进程&#34;&gt;什么是孤儿进程&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;当父进程退出时，它的子进程们（一个或者多个）就成了孤儿进程&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;当孤儿进程结束后，init进程会释放孤儿进程的资源，因此孤儿进程不会有危害&lt;/p&gt;
+&lt;p&gt;一个父进程退出，而它的一个或多个子进程还在运行，那么那些子进程将成为孤儿进程。孤儿进程将被init进程(进程号为1)所收养，并由init进程对它们完成状态收集工作。
+由于孤儿进程会被init进程给收养，所以孤儿进程不会对系统造成危害。&lt;/p&gt;
+&lt;h3 id=&#34;什么是僵尸进程&#34;&gt;什么是僵尸进程&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;子进程先退出，而父进程又没有去处理回收释放子进程的资源，这个时候子进程就成了僵尸进程&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;通常系统的进程数量都是有限制的，如果有大量的僵尸进程占用进程号，导致新的进程无法创建&lt;/p&gt;
+&lt;p&gt;在fork()/execve()过程中，假设子进程结束时父进程仍存在，而父进程fork()之前既没安装SIGCHLD信号处理函数调用waitpid()等待子进程结束，又没有显式忽略该信号，则子进程成为僵死进程，无法正常结束，此时即使是root身份kill -9也不能杀死僵死进程。&lt;/p&gt;
+&lt;h3 id=&#34;进程上下文&#34;&gt;进程上下文&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;当一个进程在执行时,CPU的所有寄存器中的值、进程的状态以及堆栈中的内容被称为该进程的上下文。&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;当内核需要切换到另一个进程时，它需要保存当前进程的所有状态，即保存当前进程的上下文，以便在再次执行该进程时，能够必得到切换时的状态执行下去。&lt;/p&gt;
+&lt;p&gt;在LINUX中，当前进程上下文均保存在进程的任务数据结构中。&lt;/p&gt;
+&lt;p&gt;在发生中断时,内核就在被中断进程的上下文中，在内核态下执行中断服务例程。但同时会保留所有需要用到的资源，以便中继服务结束时能恢复被中断进程的执行。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;发生进程上下文切换的场景&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol&gt;
+&lt;li&gt;为了保证所有进程可以得到公平调度，CPU 时间被划分为一段段的时间片，这些时间片再被轮流分配给各个进程。这样，当某个进程的时间片耗尽了，就会被系统挂起，切换到其它正在等待 CPU 的进程运行。&lt;/li&gt;
+&lt;li&gt;进程在系统资源不足（比如内存不足）时，要等到资源满足后才可以运行，这个时候进程也会被挂起，并由系统调度其他进程运行。&lt;/li&gt;
+&lt;li&gt;当进程通过睡眠函数 sleep 这样的方法将自己主动挂起时，自然也会重新调度。&lt;/li&gt;
+&lt;li&gt;当有优先级更高的进程运行时，为了保证高优先级进程的运行，当前进程会被挂起，由高优先级进程来运行&lt;/li&gt;
+&lt;li&gt;发生硬件中断时，CPU 上的进程会被中断挂起，转而执行内核中的中断服务程序。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;内核与用户&#34;&gt;内核与用户&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;当进程在执行用户自己的代码时，则称其处于用户运行态（用户态）。&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;此时处理器在特权级最低的（3级）用户代码中运行。当正在执行用户程序而突然被中断程序中断时，此时用户程序也可以象征性地称为处于进程的内核态。因为中断处理程序将使用当前进程的内核栈。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;当一个任务（进程）执行系统调用而陷入内核代码中执行时，称进程处于内核运行态（内核态）。&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;此时处理器处于特权级最高的（0级）内核代码中执行。当进程处于内核态时，执行的内核代码会使用当前进程的内核栈。每个进程都有自己的内核栈。&lt;/p&gt;
+&lt;h3 id=&#34;进程状态转换&#34;&gt;进程状态转换&lt;/h3&gt;
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id=&#34;figure-进程状态轮转图&#34;&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/os/process-status-transfer-en.jpg&#34; data-caption=&#34;进程状态轮转图&#34;&gt;
+
+
+  &lt;img src=&#34;https://w3xse7en.github.io/media/os/process-status-transfer-en.jpg&#34; alt=&#34;&#34;  &gt;
+&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    进程状态轮转图
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+&lt;p&gt;上图展示了一个进程的不同状态&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;New. 进程正在被创建.&lt;/li&gt;
+&lt;li&gt;Ready. 进程在等待被操作系统调度&lt;/li&gt;
+&lt;li&gt;Running. 进程的指令正在被执行&lt;/li&gt;
+&lt;li&gt;Waiting. 进程正在等待一些事件的发生（例如 I/O 的完成或者收到某个信号）&lt;/li&gt;
+&lt;li&gt;Terminated. 进程执行完毕（可能是被强行终止的）&lt;/li&gt;
+&lt;/ul&gt;
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/os/process-status-transfer-cn.jpg&#34; &gt;
+
+
+  &lt;img src=&#34;https://w3xse7en.github.io/media/os/process-status-transfer-cn.jpg&#34; alt=&#34;&#34;  &gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+&lt;ul&gt;
+&lt;li&gt;在程序中，创建一个MySQL Client实例，对应创建进程&lt;/li&gt;
+&lt;li&gt;MySQL Client启动时会连接MySQL Server，等待MySQL语句执行，对应进程就绪&lt;/li&gt;
+&lt;li&gt;使用MySQL Client执行Select语句，对应进程运行&lt;/li&gt;
+&lt;li&gt;等待MySQL Server返回Select结果，对应进程阻塞&lt;/li&gt;
+&lt;li&gt;Select结果返回后，MySQL Client重新等待语句执行，对应进程就绪&lt;/li&gt;
+&lt;li&gt;MySQL Client 执行exit操作，对应进程运行，中止MySQL Client 对应进程中止&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;进程间通信的同步异步-阻塞非阻塞&#34;&gt;进程间通信的同步/异步， 阻塞/非阻塞&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;进程间的通信是通过 send() 和 receive() 两种基本操作完成的。具体如何实现这两种基础操作，存在着不同的设计。 消息的传递有可能是阻塞的或非阻塞的 – 也被称为同步或异步的&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;阻塞式发送（blocking send）发送方进程会被一直阻塞， 直到消息被接受方进程收到。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;非阻塞式发送（nonblocking send）。发送方进程调用 send() 后， 立即就可以其他操作。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;阻塞式接收（blocking receive） 接收方调用 receive() 后一直阻塞， 直到消息到达可用。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;非阻塞式接受（nonblocking receive） 接收方调用 receive() 函数后， 要么得到一个有效的结果， 要么得到一个空值， 即不会被阻塞。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;线程&#34;&gt;线程&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;线程则是Linux的调度单位，共享同一个进程下的资源。&lt;/strong&gt; Linux内核调度器是以线程为单位进行调度和上下文切换的。&lt;/p&gt;
+&lt;h3 id=&#34;线程上下文&#34;&gt;线程上下文&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;线程是调度的基本单位，而进程则是资源拥有的基本单位。&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;说白了，所谓内核中的任务调度，实际上的调度对象是线程；而进程只是给线程提供了虚拟内存、全局变量等资源。&lt;/p&gt;
+&lt;p&gt;所以，对于线程和进程，我们可以这么理解：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;当进程只有一个线程时，可以认为进程就等于线程。&lt;/li&gt;
+&lt;li&gt;当进程拥有多个线程时，这些线程会共享相同的虚拟内存和全局变量等资源。这些资源在上下文切换时是不需要修改的。另外，线程也有自己的私有数据，比如栈和寄存器等，这些在上下文切换时也是需要保存的。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;发生线程上下文切换的场景&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol&gt;
+&lt;li&gt;前后两个线程属于不同进程。此时，因为资源不共享，所以切换过程就跟进程上下文切换是一样。&lt;/li&gt;
+&lt;li&gt;前后两个线程属于同一个进程。此时，因为虚拟内存是共享的，所以在切换时，虚拟内存这些资源就保持不动，只需要切换线程的私有数据、寄存器等不共享的数据&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;线程上下文切换耗时比进程大吗&#34;&gt;线程上下文切换耗时比进程大吗？&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;从上下文切换的耗时上来看，Linux线程（轻量级进程）其实和进程差别不太大。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;协程&#34;&gt;协程&lt;/h2&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.jianshu.com/p/7390f73ad668&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;孤儿进程、僵尸进程和守护进程&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://xie.infoq.cn/article/3a980c8f6a5a0a7a26cc3d2e8&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;面试官问：僵尸进程和孤儿进程有了解过吗&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.cnblogs.com/Anker/p/3269106.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;用户空间与内核空间，进程上下文与中断上下文[总结]&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://zhuanlan.zhihu.com/p/79772089&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;进程/线程上下文切换会用掉你多少CPU&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>redis</title>
+      <link>https://w3xse7en.github.io/docs/sql/redis/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://w3xse7en.github.io/docs/sql/redis/</guid>
+      <description>&lt;hr&gt;
+&lt;h2&gt;目录&lt;/h2&gt;
+&lt;nav id=&#34;TableOfContents&#34;&gt;&lt;/nav&gt;
+&lt;hr&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>socket</title>
+      <link>https://w3xse7en.github.io/docs/web/socket/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://w3xse7en.github.io/docs/web/socket/</guid>
+      <description>&lt;hr&gt;
+&lt;h2&gt;目录&lt;/h2&gt;
+&lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#io模型&#34;&gt;I/O模型&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#blocking-io---阻塞io&#34;&gt;Blocking I/O - 阻塞I/O&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#nonblocking-io---非阻塞io&#34;&gt;Nonblocking I/O - 非阻塞I/O&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#io-multiplexing---io多路复用&#34;&gt;I/O Multiplexing - I/O多路复用&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#signal-driven-io----信号驱动io&#34;&gt;Signal-Driven I/O  - 信号驱动I/O&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#asynchronous-io---异步io&#34;&gt;Asynchronous I/O - 异步I/O&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#五种-io-模型比较&#34;&gt;五种 I/O 模型比较&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#select&#34;&gt;select&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#select遇到的问题&#34;&gt;select遇到的问题&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#epoll&#34;&gt;epoll&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#epoll是如何解决select的三个问题&#34;&gt;epoll是如何解决select的三个问题&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#epoll的伪码描述&#34;&gt;epoll的伪码描述&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#参考&#34;&gt;参考&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;io模型&#34;&gt;I/O模型&lt;/h2&gt;
+&lt;p&gt;[UNIX: registered: Network Programming] 提供了5种IO模型&lt;/p&gt;
+&lt;h3 id=&#34;blocking-io---阻塞io&#34;&gt;Blocking I/O - 阻塞I/O&lt;/h3&gt;
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/os/block-io.png&#34; &gt;
+
+
+  &lt;img src=&#34;https://w3xse7en.github.io/media/os/block-io.png&#34; alt=&#34;&#34;  &gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+&lt;h3 id=&#34;nonblocking-io---非阻塞io&#34;&gt;Nonblocking I/O - 非阻塞I/O&lt;/h3&gt;
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/os/nonblock-io.png&#34; &gt;
+
+
+  &lt;img src=&#34;https://w3xse7en.github.io/media/os/nonblock-io.png&#34; alt=&#34;&#34;  &gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+&lt;h3 id=&#34;io-multiplexing---io多路复用&#34;&gt;I/O Multiplexing - I/O多路复用&lt;/h3&gt;
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/os/io-multiplexing.png&#34; &gt;
+
+
+  &lt;img src=&#34;https://w3xse7en.github.io/media/os/io-multiplexing.png&#34; alt=&#34;&#34;  &gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+&lt;h3 id=&#34;signal-driven-io----信号驱动io&#34;&gt;Signal-Driven I/O  - 信号驱动I/O&lt;/h3&gt;
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/os/signal-driven-io.png&#34; &gt;
+
+
+  &lt;img src=&#34;https://w3xse7en.github.io/media/os/signal-driven-io.png&#34; alt=&#34;&#34;  &gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+&lt;h3 id=&#34;asynchronous-io---异步io&#34;&gt;Asynchronous I/O - 异步I/O&lt;/h3&gt;
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/os/asynchronous-io.png&#34; &gt;
+
+
+  &lt;img src=&#34;https://w3xse7en.github.io/media/os/asynchronous-io.png&#34; alt=&#34;&#34;  &gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+&lt;h3 id=&#34;五种-io-模型比较&#34;&gt;五种 I/O 模型比较&lt;/h3&gt;
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/os/asynchronous-io.png&#34; &gt;
+
+
+  &lt;img src=&#34;https://w3xse7en.github.io/media/os/asynchronous-io.png&#34; alt=&#34;&#34;  &gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+&lt;hr&gt;
+&lt;h2 id=&#34;select&#34;&gt;select&lt;/h2&gt;
+&lt;p&gt;io多路复用是为了解决一个进程同时处理多个socket问题&lt;/p&gt;
+&lt;p&gt;一个简单的思路是&lt;/p&gt;
+&lt;p&gt;假设有N个socket链接，检测有socket接收到数据，遍历所有socket进行处理&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;// fds = file decriptors
+for {
+    select (fds) // wait while fds poll callback POLL_IN
+    for fd range fds{
+        if fd has data{
+            read fd
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;被监控的fds需要从用户空间拷贝到内核空间
+为了减少数据拷贝带来的性能损坏，内核对被监控的fds集合大小做了限制，并且这个是通过宏控制的，大小不可改变(限制为1024)。&lt;/li&gt;
+&lt;li&gt;被监控的fds集合中，只要有一个有数据可读，整个socket集合就会被遍历一次调用sk的poll函数收集可读事件
+由于当初的需求是朴素，仅仅关心是否有数据可读这样一个事件，当事件通知来的时候，由于数据的到来是异步的，我们不知道事件来的时候，有多少个被监控的socket有数据可读了，于是，只能挨个遍历每个socket来收集可读事件。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;select遇到的问题&#34;&gt;select遇到的问题&lt;/h3&gt;
+&lt;p&gt;总共有三个问题需要解决&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;被监控的fds集合大小被限制了1024，不够用&lt;/li&gt;
+&lt;li&gt;fds集合需要从用户空间拷贝到内核空间的问题，耗费性能&lt;/li&gt;
+&lt;li&gt;需要遍历fds集合才能知道有数据接收的fds列表&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;epoll&#34;&gt;epoll&lt;/h2&gt;
+&lt;p&gt;epoll 是对 select 和 poll 的改进，避免了“性能开销大”和“文件描述符数量少”两个缺点。&lt;/p&gt;
+&lt;p&gt;epoll 有以下几个特点：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;使用&lt;strong&gt;红黑树&lt;/strong&gt;存储文件描述符集合&lt;/li&gt;
+&lt;li&gt;使用&lt;strong&gt;队列&lt;/strong&gt;存储就绪的文件描述符&lt;/li&gt;
+&lt;li&gt;每个文件描述符只需在添加时传入一次；通过事件更改文件描述符状态&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;epoll一共有3个接口&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;epoll_create创建epoll实例，其实例内部存储：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;监听列表：所有要监听的文件描述符，使用&lt;strong&gt;红黑树&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;就绪列表：所有就绪的文件描述符，使用&lt;strong&gt;队列&lt;/strong&gt;&lt;/p&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;epoll_ctl用来维护监视列表，可以添加或删除所要监听的 socket&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;epoll_ctl 会将文件描述符 fd 添加到 epoll 实例的监听列表里，同时为 fd 设置一个回调函数，并监听事件event。当fd上发生相应事件时，会调用回调函数，将 fd 添加到 epoll 实例的就绪队列上。&lt;/p&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;当调用epoll_wait时，如果就绪列表中存在socket，则直接返回，如果没有，则阻塞进程&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;epoll是如何解决select的三个问题&#34;&gt;epoll是如何解决select的三个问题&lt;/h3&gt;
+&lt;details&gt;
+  &lt;summary&gt;被监控的fds集合大小被限制了1024，不够用&lt;/summary&gt;
+&lt;p&gt;select 使用整型数组存储文件描述符集合，而 epoll 使用红黑树存储，数量较大。&lt;/p&gt;
+&lt;/details&gt;
+&lt;details&gt;
+  &lt;summary&gt;fds集合需要从用户空间拷贝到内核空间的问题，耗费性能&lt;/summary&gt;
+&lt;p&gt;epoll通过内核与用户空间使用mmap(内存映射)，将用户空间的一块地址和内核空间的一块地址同时映射到相同的一块物理内存地址，减少用户态和内核态之间的数据交换。&lt;/p&gt;
+&lt;p&gt;epoll 对于每个描述符，只需要在 epoll_ctl 传递一次，之后 epoll_wait 不需要再次传递这也大大提高了效率。&lt;/p&gt;
+&lt;/details&gt;
+&lt;details&gt;
+  &lt;summary&gt;需要遍历fds集合才能知道有数据接收的fds列表&lt;/summary&gt;
+&lt;p&gt;epoll_ctl 中为每个文件描述符指定了回调函数，并在就绪时将其加入到就绪列表，因此 epoll 不需要像 select 那样遍历检测每个文件描述符，只需要判断就绪列表是否为空即可。这样，在没有描述符就绪时，epoll 能更早地让出系统资源。&lt;/p&gt;
+&lt;p&gt;相当于时间复杂度从 O(n) 降为 O(1)&lt;/p&gt;
+&lt;/details&gt;
+&lt;h3 id=&#34;epoll的伪码描述&#34;&gt;epoll的伪码描述&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;for{
+    active_fd = epoll_wait(fds)
+    read fd
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://notes.shichao.io/unp/ch6/#signal-driven-io-model&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Chapter 6. I/O Multiplexing: The select and poll Functions&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/CyC2018/CS-Notes/blob/master/notes/Socket.md&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Socket&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://imageslr.github.io/2020/02/27/select-poll-epoll.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;【操作系统】I/O 多路复用，select / poll / epoll 详解&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.zhihu.com/question/19732473/answer/241673170&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;怎样理解阻塞非阻塞与同步异步的区别&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://cloud.tencent.com/developer/article/1005481&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;大话 Select、Poll、Epoll&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://gityuan.com/2019/01/06/linux-epoll/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;源码解读epoll内核机制&lt;/a&gt;&lt;/p&gt;
+&lt;br/&gt;
+&lt;hr&gt;
 </description>
     </item>
     

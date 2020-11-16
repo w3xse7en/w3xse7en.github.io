@@ -9,7 +9,17 @@
   
   <url>
     <loc>https://w3xse7en.github.io/k8s_local/hyper-v_install_centos/</loc>
-    <lastmod>2020-10-07T00:30:47+08:00</lastmod>
+    <lastmod>2020-10-08T08:57:07+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://w3xse7en.github.io/docs/os/</loc>
+    <lastmod>2020-11-02T00:32:03+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://w3xse7en.github.io/docs/sql/</loc>
+    <lastmod>2020-11-08T14:25:59+08:00</lastmod>
   </url>
   
   <url>
@@ -19,7 +29,7 @@
   
   <url>
     <loc>https://w3xse7en.github.io/docs/lang/go/</loc>
-    <lastmod>2020-09-20T18:50:09+08:00</lastmod>
+    <lastmod>2020-10-08T08:57:07+08:00</lastmod>
   </url>
   
   <url>
@@ -29,12 +39,22 @@
   
   <url>
     <loc>https://w3xse7en.github.io/k8s_local/install_k8s/</loc>
-    <lastmod>2020-10-07T00:30:47+08:00</lastmod>
+    <lastmod>2020-11-02T00:32:03+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://w3xse7en.github.io/docs/web/qa/</loc>
-    <lastmod>2020-09-20T18:50:09+08:00</lastmod>
+    <loc>https://w3xse7en.github.io/docs/os/process/</loc>
+    <lastmod>2020-11-08T14:25:59+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://w3xse7en.github.io/docs/sql/redis/</loc>
+    <lastmod>2020-11-08T14:25:59+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://w3xse7en.github.io/docs/web/socket/</loc>
+    <lastmod>2020-11-08T14:25:59+08:00</lastmod>
   </url>
   
   <url>
@@ -65,7 +85,7 @@
   
   <url>
     <loc>https://w3xse7en.github.io/</loc>
-    <lastmod>2020-10-07T00:30:47+08:00</lastmod>
+    <lastmod>2020-11-08T14:25:59+08:00</lastmod>
   </url>
   
   <url>

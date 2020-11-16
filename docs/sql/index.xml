@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>SQL | w3xse7en</title>
+    <link>https://w3xse7en.github.io/docs/sql/</link>
+      <atom:link href="https://w3xse7en.github.io/docs/sql/index.xml" rel="self" type="application/rss+xml" />
+    <description>SQL</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>zh</language>
+    <image>
+      <url>https://w3xse7en.github.io/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_2.png</url>
+      <title>SQL</title>
+      <link>https://w3xse7en.github.io/docs/sql/</link>
+    </image>
+    
+    <item>
+      <title>redis</title>
+      <link>https://w3xse7en.github.io/docs/sql/redis/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://w3xse7en.github.io/docs/sql/redis/</guid>
+      <description>&lt;hr&gt;
+&lt;h2&gt;目录&lt;/h2&gt;
+&lt;nav id=&#34;TableOfContents&#34;&gt;&lt;/nav&gt;
+&lt;hr&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
