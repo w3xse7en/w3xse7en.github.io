@@ -1,0 +1,969 @@
+<!DOCTYPE html><html lang="zh" >
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+  
+  
+  <meta name="generator" content="Wowchemy 5.0.0-beta.0 for Hugo">
+  
+
+  
+
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+  
+  
+    
+  
+  <meta name="description" content="参考 Setting up a Kubernetes CI/CD Service Account
+   场景  权限划分，cicd限定namespace=dev使用kubectl apply -f部署服务
+ 创建 namespace dev  cat &lt;&lt;EOF | kubectl apply -f - { &quot;apiVersion&quot;: &quot;v1&quot;, &quot;kind&quot;: &quot;Namespace&quot;, &quot;metadata&quot;: { &quot;name&quot;: &quot;dev&quot;, &quot;labels&quot;: { &quot;name&quot;: &quot;dev&quot; } } } EOF  创建 service account cicd-user # 该脚本依赖 jq 组件 yum install jq -y # [可修改] SERVICE_ACCOUNT_NAME=&quot;cicd-user&quot; # [可修改] NAMESPACE=&quot;dev&quot; # [可修改] TARGET_FOLDER=&quot;/home/k8s/kube&quot; kubectl create sa &quot;${SERVICE_ACCOUNT_NAME}&quot; --namespace &quot;${NAMESPACE}&quot; mkdir -p &quot;${TARGET_FOLDER}&quot; SECRET_NAME=$(kubectl get sa &quot;${SERVICE_ACCOUNT_NAME}&quot; --namespace=&quot;${NAMESPACE}&quot; -o json | jq -r .">
+
+  
+  <link rel="alternate" hreflang="zh" href="https://w3xse7en.github.io/k8s_local/40_service_account/">
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+
+  
+  
+  
+  <meta name="theme-color" content="#2962ff">
+  
+
+  
+  
+
+  
+  
+  
+  
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha256-FMvZuGapsJLjouA6k7Eo2lusoAX9i0ShlWFG6qt7SLc=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/styles/github.min.css" crossorigin="anonymous" title="hl-light">
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark" disabled>
+        
+      
+    
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.css" integrity="sha512-1xoFisiGdy9nvho8EgXuXvnpR5GAMSjFwp40gSRE3NwdUdIMIKuPa7bqoUhLD0O/5tPNhteAsE5XyyMi5reQVA==" crossorigin="anonymous">
+    
+
+    
+
+    
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.2.2/lazysizes.min.js" integrity="sha512-TmDwFLhg3UA4ZG0Eb4MIyT1O1Mb+Oww5kFG0uHqXsdbyZz9DcvYQhKpGgNkamAI6h2lGGZq2X8ftOJvF/XjTUg==" crossorigin="anonymous" async></script>
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+        
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+
+  
+
+  
+  
+  
+    
+      
+      
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700%7CRoboto:400,400italic,700%7CRoboto+Mono&display=swap">
+    
+  
+
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/wowchemy.css">
+
+  
+
+
+
+
+  
+
+  
+
+
+  
+  
+
+  
+
+  <link rel="manifest" href="/index.webmanifest">
+  <link rel="icon" type="image/png" href="/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_32x32_fill_lanczos_center_2.png">
+  <link rel="apple-touch-icon" type="image/png" href="/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_192x192_fill_lanczos_center_2.png">
+
+  <link rel="canonical" href="https://w3xse7en.github.io/k8s_local/40_service_account/">
+
+  
+  
+  
+  
+  
+  
+  
+    
+    
+  
+  
+  <meta property="twitter:card" content="summary">
+  
+  <meta property="og:site_name" content="w3xse7en">
+  <meta property="og:url" content="https://w3xse7en.github.io/k8s_local/40_service_account/">
+  <meta property="og:title" content="创建 service account | w3xse7en">
+  <meta property="og:description" content="参考 Setting up a Kubernetes CI/CD Service Account
+   场景  权限划分，cicd限定namespace=dev使用kubectl apply -f部署服务
+ 创建 namespace dev  cat &lt;&lt;EOF | kubectl apply -f - { &quot;apiVersion&quot;: &quot;v1&quot;, &quot;kind&quot;: &quot;Namespace&quot;, &quot;metadata&quot;: { &quot;name&quot;: &quot;dev&quot;, &quot;labels&quot;: { &quot;name&quot;: &quot;dev&quot; } } } EOF  创建 service account cicd-user # 该脚本依赖 jq 组件 yum install jq -y # [可修改] SERVICE_ACCOUNT_NAME=&quot;cicd-user&quot; # [可修改] NAMESPACE=&quot;dev&quot; # [可修改] TARGET_FOLDER=&quot;/home/k8s/kube&quot; kubectl create sa &quot;${SERVICE_ACCOUNT_NAME}&quot; --namespace &quot;${NAMESPACE}&quot; mkdir -p &quot;${TARGET_FOLDER}&quot; SECRET_NAME=$(kubectl get sa &quot;${SERVICE_ACCOUNT_NAME}&quot; --namespace=&quot;${NAMESPACE}&quot; -o json | jq -r ."><meta property="og:image" content="https://w3xse7en.github.io/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_2.png">
+  <meta property="twitter:image" content="https://w3xse7en.github.io/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_2.png"><meta property="og:locale" content="zh">
+  
+    
+    <meta property="article:modified_time" content="2020-11-27T11:55:03&#43;08:00">
+  
+
+  
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  <title>创建 service account | w3xse7en</title>
+
+</head>
+
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper  ">
+
+  
+  
+  
+  
+  
+  <script src="/js/wowchemy-init.js"></script>
+
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>搜索</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="搜索..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search" class="form-control">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+  <div class="page-header">
+    
+
+
+
+
+
+
+
+
+
+
+
+
+<nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+  <div class="container">
+
+    
+    <div class="d-none d-lg-inline-flex">
+      <a class="navbar-brand" href="/">w3xse7en</a>
+    </div>
+    
+
+    
+    <button type="button" class="navbar-toggler" data-toggle="collapse"
+            data-target="#navbar-content" aria-controls="navbar" aria-expanded="false" aria-label="切换导航">
+    <span><i class="fas fa-bars"></i></span>
+    </button>
+    
+
+    
+    <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+      <a class="navbar-brand" href="/">w3xse7en</a>
+    </div>
+    
+
+    
+    
+    <div class="navbar-collapse main-menu-item collapse justify-content-start" id="navbar-content">
+
+      
+      <ul class="navbar-nav d-md-inline-flex">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/docs/"><span>知识树</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link  active" href="/k8s_local"><span>探索k8s</span></a>
+        </li>
+
+        
+        
+
+      
+
+        
+      </ul>
+    </div>
+
+    <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+      
+      
+      <li class="nav-item">
+        <a class="nav-link js-search" href="#" aria-label="搜索"><i class="fas fa-search" aria-hidden="true"></i></a>
+      </li>
+      
+
+      
+      
+      <li class="nav-item dropdown theme-dropdown">
+        <a href="#" class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-label="Display preferences">
+          <i class="fas fa-moon" aria-hidden="true"></i>
+        </a>
+        <div class="dropdown-menu">
+          <a href="#" class="dropdown-item js-set-theme-light">
+            <span>浅色</span>
+          </a>
+          <a href="#" class="dropdown-item js-set-theme-dark">
+            <span>深色</span>
+          </a>
+          <a href="#" class="dropdown-item js-set-theme-auto">
+            <span>自动</span>
+          </a>
+        </div>
+      </li>
+      
+
+      
+
+    </ul>
+
+  </div>
+</nav>
+
+
+  </div>
+
+  <div class="page-body">
+    
+
+<div class="container-fluid docs">
+  <div class="row flex-xl-nowrap">
+    <div class="col-12 col-md-3 col-xl-2 docs-sidebar">
+      <form class="docs-search d-flex align-items-center">
+  <button class="btn docs-toggle d-md-none p-0 mr-3" type="button" data-toggle="collapse" data-target="#docs-nav" aria-controls="docs-nav" aria-expanded="false" aria-label="Toggle section navigation">
+    <span><i class="fas fa-bars"></i></span>
+  </button>
+
+  
+  <input name="q" type="search" class="form-control" placeholder="搜索..." autocomplete="off">
+  
+</form>
+
+<nav class="collapse docs-links" id="docs-nav">
+  
+  
+  
+  
+  
+  
+  
+    
+    
+
+    
+    
+  
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <ul class="nav docs-sidenav">
+        <li class=""><a href="/k8s_local/">介绍</a></li>
+    
+      
+
+
+  <li class=""><a href="/k8s_local/10_hyper-v_install_centos/">hyper-v 安装 centos</a></li>
+
+
+
+  <li class=""><a href="/k8s_local/20_install_k8s/">kubespray 安装 k8s</a></li>
+
+
+
+  <li class=""><a href="/k8s_local/30_add_remove_node/">添加/删除节点</a></li>
+
+
+
+  <li class="active"><a href="/k8s_local/40_service_account/">创建 service account</a></li>
+
+
+
+  <li class=""><a href="/k8s_local/999_qa/">solve k8s problem</a></li>
+
+      
+    
+
+    
+      </ul>
+    
+</nav>
+
+    </div>
+
+    
+    
+    <div class="d-none d-xl-block col-xl-2 docs-toc">
+      <ul class="nav toc-top">
+        <li><a href="#" id="back_to_top" class="docs-toc-title">在本页</a></li>
+      </ul>
+
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#参考">参考</a></li>
+    <li><a href="#创建-service-account-cicd-user">创建 <code>service account</code> <code>cicd-user</code></a></li>
+    <li><a href="#为-cicd-user-配置权限">为 <code>cicd-user</code> 配置权限</a></li>
+    <li><a href="#其他实例使用-cicd-user">其他实例使用 <code>cicd-user</code></a></li>
+  </ul>
+</nav>
+
+      
+    </div>
+    
+
+    <main class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 docs-content" role="main">
+
+      <article class="article">
+
+        <div class="docs-article-container">
+          <h1>创建 service account</h1>
+
+          <div class="article-style">
+            <hr>
+<h2 id="参考">参考</h2>
+<p><a href="https://www.auroria.io/kubernetes-ci-cd-service-account-setup/" target="_blank" rel="noopener">Setting up a Kubernetes CI/CD Service Account</a></p>
+<br/>
+<hr>
+<ul>
+<li>场景</li>
+</ul>
+<p>权限划分，<code>cicd</code>限定<code>namespace=dev</code>使用<code>kubectl apply -f</code>部署服务</p>
+<ul>
+<li>创建 <code>namespace</code> <code>dev</code></li>
+</ul>
+<pre><code class="language-sh">cat &lt;&lt;EOF | kubectl apply -f -
+{
+  &quot;apiVersion&quot;: &quot;v1&quot;,
+  &quot;kind&quot;: &quot;Namespace&quot;,
+  &quot;metadata&quot;: {
+    &quot;name&quot;: &quot;dev&quot;,
+    &quot;labels&quot;: {
+      &quot;name&quot;: &quot;dev&quot;
+    }
+  }
+}
+EOF
+</code></pre>
+<h2 id="创建-service-account-cicd-user">创建 <code>service account</code> <code>cicd-user</code></h2>
+<pre><code class="language-sh"># 该脚本依赖 jq 组件
+yum install jq -y
+
+# [可修改]
+SERVICE_ACCOUNT_NAME=&quot;cicd-user&quot;
+
+# [可修改]
+NAMESPACE=&quot;dev&quot;
+
+# [可修改]
+TARGET_FOLDER=&quot;/home/k8s/kube&quot;
+
+kubectl create sa &quot;${SERVICE_ACCOUNT_NAME}&quot; --namespace &quot;${NAMESPACE}&quot;
+
+mkdir -p &quot;${TARGET_FOLDER}&quot;
+
+SECRET_NAME=$(kubectl get sa &quot;${SERVICE_ACCOUNT_NAME}&quot; --namespace=&quot;${NAMESPACE}&quot; -o json | jq -r .secrets[].name)
+
+kubectl get secret --namespace &quot;${NAMESPACE}&quot; &quot;${SECRET_NAME}&quot; -o json | jq -r '.data[&quot;ca.crt&quot;]' | base64 --decode &gt; &quot;${TARGET_FOLDER}/ca.crt&quot;
+
+USER_TOKEN=$(kubectl get secret --namespace &quot;${NAMESPACE}&quot; &quot;${SECRET_NAME}&quot; -o json | jq -r '.data[&quot;token&quot;]' | base64 --decode)
+
+KUBECFG_FILE_NAME=&quot;${TARGET_FOLDER}/k8s-${SERVICE_ACCOUNT_NAME}-${NAMESPACE}-conf&quot;
+
+context=$(kubectl config current-context)
+
+CLUSTER_NAME=$(kubectl config get-contexts &quot;$context&quot; | awk '{print $3}' | tail -n 1)
+
+ENDPOINT=$(kubectl config view \
+-o jsonpath=&quot;{.clusters[?(@.name == \&quot;${CLUSTER_NAME}\&quot;)].cluster.server}&quot;)
+
+kubectl config set-cluster &quot;${CLUSTER_NAME}&quot; \
+--kubeconfig=&quot;${KUBECFG_FILE_NAME}&quot; \
+--server=&quot;${ENDPOINT}&quot; \
+--certificate-authority=&quot;${TARGET_FOLDER}/ca.crt&quot; \
+--embed-certs=true
+
+kubectl config set-credentials \
+&quot;${SERVICE_ACCOUNT_NAME}-${NAMESPACE}-${CLUSTER_NAME}&quot; \
+--kubeconfig=&quot;${KUBECFG_FILE_NAME}&quot; \
+--token=&quot;${USER_TOKEN}&quot;
+
+
+kubectl config set-context \
+&quot;${SERVICE_ACCOUNT_NAME}-${NAMESPACE}-${CLUSTER_NAME}&quot; \
+--kubeconfig=&quot;${KUBECFG_FILE_NAME}&quot; \
+--cluster=&quot;${CLUSTER_NAME}&quot; \
+--user=&quot;${SERVICE_ACCOUNT_NAME}-${NAMESPACE}-${CLUSTER_NAME}&quot; \
+--namespace=&quot;${NAMESPACE}&quot;
+
+kubectl config use-context &quot;${SERVICE_ACCOUNT_NAME}-${NAMESPACE}-${CLUSTER_NAME}&quot; \
+--kubeconfig=&quot;${KUBECFG_FILE_NAME}&quot;
+</code></pre>
+<h2 id="为-cicd-user-配置权限">为 <code>cicd-user</code> 配置权限</h2>
+<pre><code class="language-sh">cat &lt;&lt;EOF | kubectl apply -f -
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  name: &quot;${SERVICE_ACCOUNT_NAME}-role&quot;
+  namespace: &quot;${NAMESPACE}&quot;
+rules:
+- apiGroups:
+  - &quot;&quot;
+  - apps
+  - extensions
+  resources:
+  - '*'
+  verbs:
+  - '*'
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  name: &quot;${SERVICE_ACCOUNT_NAME}-role&quot;
+  namespace: &quot;${NAMESPACE}&quot;
+subjects:
+  - kind: ServiceAccount
+    name: &quot;${SERVICE_ACCOUNT_NAME}&quot;
+roleRef:
+  kind: Role
+  name: &quot;${SERVICE_ACCOUNT_NAME}-role&quot;
+  apiGroup: rbac.authorization.k8s.io
+EOF
+</code></pre>
+<h2 id="其他实例使用-cicd-user">其他实例使用 <code>cicd-user</code></h2>
+<ul>
+<li>将<code>${TARGET_FOLDER}</code>生成的<code>k8s-cicd-user-dev-conf</code>文件<code>copy</code>至其他实例<code>~/.kube</code>路径下改名为<code>config</code>使用</li>
+</ul>
+<div class="alert alert-warning">
+  <div>
+    <p>注意查看<code>k8s-cicd-user-dev-conf</code>里<code>cluster server</code>地址是否合法</p>
+<p>遇到证书ip问题请查看<a href="https://w3xse7en.github.io/k8s_local/999_qa/#kubectl-get-nodes-%E8%AF%81%E4%B9%A6ip%E9%97%AE%E9%A2%98">kubectl get pods 证书ip问题</a></p>
+  </div>
+</div>
+<br/>
+<hr>
+
+          </div>
+
+          
+
+
+
+          
+          
+          <div class="article-widget">
+            
+<div class="post-nav">
+  
+  
+  
+  <div class="post-nav-item">
+    <div class="meta-nav">上一页</div>
+    <a href="/k8s_local/30_add_remove_node/" rel="next">添加/删除节点</a>
+  </div>
+  
+  
+  
+  <div class="post-nav-item">
+    <div class="meta-nav">下一页</div>
+    <a href="/k8s_local/999_qa/" rel="prev">solve k8s problem</a>
+  </div>
+  
+</div>
+
+          </div>
+          
+        </div>
+
+        <div class="body-footer">
+          <p>最近更新于 Nov 27, 2020</p>
+
+          
+
+
+
+
+
+          
+
+
+
+
+          
+
+
+
+
+        </div>
+
+      </article>
+
+      <footer class="site-footer">
+  
+
+  <p class="powered-by">
+    
+  </p>
+
+  
+  
+
+
+
+
+
+
+  <p class="powered-by">
+    
+    
+    
+    Published with
+    <a href="https://wowchemy.com" target="_blank" rel="noopener">Wowchemy</a>  —
+    the free, <a href="https://github.com/wowchemy/wowchemy-hugo-modules" target="_blank" rel="noopener">
+    open source</a> website builder that empowers creators.
+    
+  </p>
+</footer>
+
+
+    </main>
+  </div>
+</div>
+
+  </div>
+
+  <div class="page-footer">
+    
+    
+  </div>
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">引用</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> 复制
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> 下载
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+
+      
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      
+
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/instant.page/5.1.0/instantpage.min.js" integrity="sha512-1+qUtKoh9XZW7j+6LhRMAyOrgSQKenQ4mluTR+cvxXjP1Z54RxZuzstR/H9kgPXQsVB8IW7DMDFUJpzLjvhGSQ==" crossorigin="anonymous"></script>
+
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/highlight.min.js" integrity="sha512-TDKKr+IvoqZnPzc3l35hdjpHD0m+b2EC2SrLEgKDRWpxf2rFCxemkgvJ5kfU48ip+Y+m2XVKyOCD85ybtlZDmw==" crossorigin="anonymous"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/r.min.js"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/latex.min.js"></script>
+        
+      
+
+    
+
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.js" integrity="sha512-SeiQaaDh73yrb56sTW/RgVdi/mMqNeM2oBwubFHagc5BkixSpP1fvqF47mKzPGWYSSy4RwbBunrJBQ4Co8fRWA==" crossorigin="anonymous"></script>
+    
+
+    
+    
+    <script>const code_highlighting = true;</script>
+    
+
+    
+    
+    
+    
+    
+    
+    <script>
+      const search_config = {"indexURI":"/index.json","minLength":1,"threshold":0.3};
+      const i18n = {"no_results":"没有找到结果","placeholder":"搜索...","results":"搜索结果"};
+      const content_type = {
+        'post': "文章",
+        'project': "项目",
+        'publication' : "出版物",
+        'talk' : "演讲",
+        'slides' : "Slides"
+        };
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.2.2/anchor.min.js" integrity="sha512-I7w3ZdSFzw5j3jU3ZkNikBNeIrl3i+hEuEdwNmqUJvwNcaBUNcijnP2gd9DtGlgVYDplfjGoD8vTNsID+lCjqg==" crossorigin="anonymous"></script>
+    <script>
+      anchors.add();
+    </script>
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    
+    
+    
+    <script src="/js/wowchemy.min.59419d2c9809de125013c581da371866.js"></script>
+
+    
+
+
+
+
+
+
+</body>
+</html>

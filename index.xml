@@ -7,16 +7,663 @@
     <description>w3xse7en</description>
     <generator>Wowchemy (https://wowchemy.com)</generator><language>zh</language>
     <image>
-      <url>https://w3xse7en.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
+      <url>https://w3xse7en.github.io/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_2.png</url>
       <title>w3xse7en</title>
       <link>https://w3xse7en.github.io/</link>
     </image>
     
     <item>
-      <title>hyper-v 安装 centos</title>
-      <link>https://w3xse7en.github.io/k8s_local/hyper-v_install_centos/</link>
+      <title>Go</title>
+      <link>https://w3xse7en.github.io/docs/lang/go/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://w3xse7en.github.io/k8s_local/hyper-v_install_centos/</guid>
+      <guid>https://w3xse7en.github.io/docs/lang/go/</guid>
+      <description>&lt;h1 id=&#34;defer&#34;&gt;defer&lt;/h1&gt;
+&lt;p&gt;defer 是否会在panic后执行&lt;/p&gt;
+&lt;h1 id=&#34;interface&#34;&gt;interface&lt;/h1&gt;
+&lt;ol&gt;
+&lt;li&gt;writing generic algorithm&lt;/li&gt;
+&lt;li&gt;hiding implementation detail&lt;/li&gt;
+&lt;li&gt;providing interception points&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;interface拥有两个指针
+一个指向类型 一个指向具体值&lt;/p&gt;
+&lt;h1 id=&#34;slice&#34;&gt;slice&lt;/h1&gt;
+&lt;p&gt;分配在连续的内存地址上&lt;/p&gt;
+&lt;p&gt;元素类型一致，元素存储宽度一致&lt;/p&gt;
+&lt;p&gt;空间大小固定，不能修改&lt;/p&gt;
+&lt;p&gt;可以通过索引计算出元素对应存储的位置（只需要知道数组内存的起始位置和数据元素宽度即可）&lt;/p&gt;
+&lt;p&gt;会出现数据溢出的问题（下标越界）&lt;/p&gt;
+&lt;h2 id=&#34;slice扩容&#34;&gt;slice扩容&lt;/h2&gt;
+&lt;p&gt;如果新的slice大小是当前大小2倍以上，则大小增长为新大小&lt;/p&gt;
+&lt;p&gt;如果当前slice cap 小于1024，按每次2倍增长，否则每次按当前大小1/4增长。直到增长的大小超过或等于新大小&lt;/p&gt;
+&lt;p&gt;append的实现是在内存中将slice的array值赋值到新申请的array上&lt;/p&gt;
+&lt;p&gt;性能&lt;/p&gt;
+&lt;p&gt;通过上面我们知道slice的扩容涉及到内存的拷贝，这样带来的好处是数据存储在连续内存上，比随机访问快很多，最直接的性能提升就是缓存命中率会高很多,这也就是为什么slice不采用动态链表实现的原因吧&lt;/p&gt;
+&lt;p&gt;我们知道拷贝内存数据是有开销的， 而其中最大的开销不在 memmove&lt;/p&gt;
+&lt;p&gt;数据上，而是在开辟一块新内存malloc及之后的GC压力&lt;/p&gt;
+&lt;p&gt;拷贝连续内存是很快的，随着cap变大，拷贝总成本还是 O(N) ,只是常数大了&lt;/p&gt;
+&lt;p&gt;假如不想发生拷贝，那你就没有连续内存。此时随机访问开销会是：链表 O(N)&lt;/p&gt;
+&lt;p&gt;当你能大致知道所需的最大空间（在大部分时候都是的）时，在make的时候预留相应的 cap 就好
+如果需要的空间很大，而且每次都不确定，那就要在浪费内存和耗 CPU 在 malloc + gc 上做权衡
+链表的查找操作是从第一个元素开始，所以相对数组要耗时间的多，因为采用这样的结构对读的性能有很大的提高&lt;/p&gt;
+&lt;h2 id=&#34;mysql&#34;&gt;mysql&lt;/h2&gt;
+&lt;h3 id=&#34;性能调优&#34;&gt;性能调优&lt;/h3&gt;
+&lt;h4 id=&#34;sql优化&#34;&gt;SQL优化&lt;/h4&gt;
+&lt;p&gt;小表驱动大表
+limit限定
+索引添加
+适当添加冗余字段，减少表关联。&lt;/p&gt;
+&lt;h4 id=&#34;系统优化&#34;&gt;系统优化&lt;/h4&gt;
+&lt;p&gt;max_connections 最大连接数&lt;/p&gt;
+&lt;p&gt;innodb_buffer_pool_size 数据缓冲区buffer pool大小&lt;/p&gt;
+&lt;p&gt;sort_buffer_size 排序缓冲区内存大小&lt;/p&gt;
+&lt;p&gt;join_buffer_size 使用连接缓冲区大小&lt;/p&gt;
+&lt;p&gt;read_buffer_size 全表扫描时分配的缓冲区大小&lt;/p&gt;
+&lt;h1 id=&#34;缓存&#34;&gt;缓存&lt;/h1&gt;
+&lt;p&gt;主动式缓存
+用户更新数据 同时更新缓存&lt;/p&gt;
+&lt;p&gt;被动式缓存
+用户更新数据 删除缓存，被读取时载入缓存&lt;/p&gt;
+&lt;h1 id=&#34;maps&#34;&gt;Maps&lt;/h1&gt;
+&lt;p&gt;线程不安全&lt;/p&gt;
+&lt;p&gt;底层使用的hash结构&lt;/p&gt;
+&lt;p&gt;hash算法使用aes hash hash值分为 高位hash和低位hash&lt;/p&gt;
+&lt;p&gt;高位哈希值：是用来确定当前的bucket（桶）有没有所存储的数据的 bmap a bucket for a Go map&lt;/p&gt;
+&lt;p&gt;低位哈希值：是用来确定，当前的数据存在了哪个bucket（桶）hmap a header for a go map&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Goroutine</title>
+      <link>https://w3xse7en.github.io/docs/lang/goroutine/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://w3xse7en.github.io/docs/lang/goroutine/</guid>
+      <description>&lt;h1 id=&#34;goroutine&#34;&gt;goroutine&lt;/h1&gt;
+&lt;p&gt;leak 协程泄露
+Goroutine为什么没有ID号&lt;/p&gt;
+&lt;h2 id=&#34;goroutine调度&#34;&gt;Goroutine调度&lt;/h2&gt;
+&lt;p&gt;G P M
+抢占式调度&lt;/p&gt;
+&lt;p&gt;动态栈&lt;/p&gt;
+&lt;h1 id=&#34;协程线程进程的区别&#34;&gt;协程，线程，进程的区别&lt;/h1&gt;
+&lt;h1 id=&#34;进程&#34;&gt;进程&lt;/h1&gt;
+&lt;p&gt;进程是具有一定独立功能的程序关于某个数据集合上的一次运行活动,进程是系统进行资源分配和调度的一个独立单位。每个进程都有自己的独立内存空间，不同进程通过进程间通信来通信。由于进程比较重量，占据独立的内存，所以上下文进程间的切换开销（栈、寄存器、虚拟内存、文件句柄等）比较大，但相对比较稳定安全。&lt;/p&gt;
+&lt;h4 id=&#34;线程&#34;&gt;线程&lt;/h4&gt;
+&lt;p&gt;线程是进程的一个实体,是CPU调度和分派的基本单位,它是比进程更小的能独立运行的基本单位.线程自己基本上不拥有系统资源,只拥有一点在运行中必不可少的资源(如程序计数器,一组寄存器和栈),但是它可与同属一个进程的其他的线程共享进程所拥有的全部资源。线程间通信主要通过共享内存，上下文切换很快，资源开销较少，但相比进程不够稳定容易丢失数据。&lt;/p&gt;
+&lt;h4 id=&#34;协程&#34;&gt;协程&lt;/h4&gt;
+&lt;p&gt;协程是一种用户态的轻量级线程，协程的调度完全由用户控制。协程拥有自己的寄存器上下文和栈。协程调度切换时，将寄存器上下文和栈保存到其他地方，在切回来的时候，恢复先前保存的寄存器上下文和栈，直接操作栈则基本没有内核切换的开销，可以不加锁的访问全局变量，所以上下文的切换非常快。&lt;/p&gt;
+&lt;h2 id=&#34;channel&#34;&gt;channel&lt;/h2&gt;
+&lt;h2 id=&#34;select&#34;&gt;select&lt;/h2&gt;
+&lt;h2 id=&#34;sync&#34;&gt;sync&lt;/h2&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>process</title>
+      <link>https://w3xse7en.github.io/docs/os/process/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://w3xse7en.github.io/docs/os/process/</guid>
+      <description>&lt;hr&gt;
+&lt;h2&gt;目录&lt;/h2&gt;
+&lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#进程&#34;&gt;进程&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#什么是孤儿进程&#34;&gt;什么是孤儿进程&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#什么是僵尸进程&#34;&gt;什么是僵尸进程&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#进程上下文&#34;&gt;进程上下文&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#内核与用户&#34;&gt;内核与用户&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#进程状态转换&#34;&gt;进程状态转换&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#进程间通信的同步异步-阻塞非阻塞&#34;&gt;进程间通信的同步/异步， 阻塞/非阻塞&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#线程&#34;&gt;线程&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#线程上下文&#34;&gt;线程上下文&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#线程上下文切换耗时比进程大吗&#34;&gt;线程上下文切换耗时比进程大吗？&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#协程&#34;&gt;协程&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#参考&#34;&gt;参考&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;进程&#34;&gt;进程&lt;/h2&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;进程是资源封装的单位。&lt;/strong&gt; 进程封装的资源包括：内存、文件、文件系统、信号、控制台等等。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;在任意时刻， 一个 CPU 核心上（processor）只可能运行一个进程 。&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;什么是孤儿进程&#34;&gt;什么是孤儿进程&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;当父进程退出时，它的子进程们（一个或者多个）就成了孤儿进程&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;当孤儿进程结束后，init进程会释放孤儿进程的资源，因此孤儿进程不会有危害&lt;/p&gt;
+&lt;p&gt;一个父进程退出，而它的一个或多个子进程还在运行，那么那些子进程将成为孤儿进程。孤儿进程将被init进程(进程号为1)所收养，并由init进程对它们完成状态收集工作。
+由于孤儿进程会被init进程给收养，所以孤儿进程不会对系统造成危害。&lt;/p&gt;
+&lt;h3 id=&#34;什么是僵尸进程&#34;&gt;什么是僵尸进程&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;子进程先退出，而父进程又没有去处理回收释放子进程的资源，这个时候子进程就成了僵尸进程&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;通常系统的进程数量都是有限制的，如果有大量的僵尸进程占用进程号，导致新的进程无法创建&lt;/p&gt;
+&lt;p&gt;在fork()/execve()过程中，假设子进程结束时父进程仍存在，而父进程fork()之前既没安装SIGCHLD信号处理函数调用waitpid()等待子进程结束，又没有显式忽略该信号，则子进程成为僵死进程，无法正常结束，此时即使是root身份kill -9也不能杀死僵死进程。&lt;/p&gt;
+&lt;h3 id=&#34;进程上下文&#34;&gt;进程上下文&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;当一个进程在执行时,CPU的所有寄存器中的值、进程的状态以及堆栈中的内容被称为该进程的上下文。&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;当内核需要切换到另一个进程时，它需要保存当前进程的所有状态，即保存当前进程的上下文，以便在再次执行该进程时，能够必得到切换时的状态执行下去。&lt;/p&gt;
+&lt;p&gt;在LINUX中，当前进程上下文均保存在进程的任务数据结构中。&lt;/p&gt;
+&lt;p&gt;在发生中断时,内核就在被中断进程的上下文中，在内核态下执行中断服务例程。但同时会保留所有需要用到的资源，以便中继服务结束时能恢复被中断进程的执行。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;发生进程上下文切换的场景&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol&gt;
+&lt;li&gt;为了保证所有进程可以得到公平调度，CPU 时间被划分为一段段的时间片，这些时间片再被轮流分配给各个进程。这样，当某个进程的时间片耗尽了，就会被系统挂起，切换到其它正在等待 CPU 的进程运行。&lt;/li&gt;
+&lt;li&gt;进程在系统资源不足（比如内存不足）时，要等到资源满足后才可以运行，这个时候进程也会被挂起，并由系统调度其他进程运行。&lt;/li&gt;
+&lt;li&gt;当进程通过睡眠函数 sleep 这样的方法将自己主动挂起时，自然也会重新调度。&lt;/li&gt;
+&lt;li&gt;当有优先级更高的进程运行时，为了保证高优先级进程的运行，当前进程会被挂起，由高优先级进程来运行&lt;/li&gt;
+&lt;li&gt;发生硬件中断时，CPU 上的进程会被中断挂起，转而执行内核中的中断服务程序。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;内核与用户&#34;&gt;内核与用户&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;当进程在执行用户自己的代码时，则称其处于用户运行态（用户态）。&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;此时处理器在特权级最低的（3级）用户代码中运行。当正在执行用户程序而突然被中断程序中断时，此时用户程序也可以象征性地称为处于进程的内核态。因为中断处理程序将使用当前进程的内核栈。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;当一个任务（进程）执行系统调用而陷入内核代码中执行时，称进程处于内核运行态（内核态）。&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;此时处理器处于特权级最高的（0级）内核代码中执行。当进程处于内核态时，执行的内核代码会使用当前进程的内核栈。每个进程都有自己的内核栈。&lt;/p&gt;
+&lt;h3 id=&#34;进程状态转换&#34;&gt;进程状态转换&lt;/h3&gt;
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id=&#34;figure-进程状态轮转图&#34;&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/os/process-status-transfer-en.jpg&#34; data-caption=&#34;进程状态轮转图&#34;&gt;
+
+
+  &lt;img src=&#34;https://w3xse7en.github.io/media/os/process-status-transfer-en.jpg&#34; alt=&#34;&#34;  &gt;
+&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    进程状态轮转图
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+&lt;p&gt;上图展示了一个进程的不同状态&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;New. 进程正在被创建.&lt;/li&gt;
+&lt;li&gt;Ready. 进程在等待被操作系统调度&lt;/li&gt;
+&lt;li&gt;Running. 进程的指令正在被执行&lt;/li&gt;
+&lt;li&gt;Waiting. 进程正在等待一些事件的发生（例如 I/O 的完成或者收到某个信号）&lt;/li&gt;
+&lt;li&gt;Terminated. 进程执行完毕（可能是被强行终止的）&lt;/li&gt;
+&lt;/ul&gt;
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/os/process-status-transfer-cn.jpg&#34; &gt;
+
+
+  &lt;img src=&#34;https://w3xse7en.github.io/media/os/process-status-transfer-cn.jpg&#34; alt=&#34;&#34;  &gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+&lt;ul&gt;
+&lt;li&gt;在程序中，创建一个MySQL Client实例，对应创建进程&lt;/li&gt;
+&lt;li&gt;MySQL Client启动时会连接MySQL Server，等待MySQL语句执行，对应进程就绪&lt;/li&gt;
+&lt;li&gt;使用MySQL Client执行Select语句，对应进程运行&lt;/li&gt;
+&lt;li&gt;等待MySQL Server返回Select结果，对应进程阻塞&lt;/li&gt;
+&lt;li&gt;Select结果返回后，MySQL Client重新等待语句执行，对应进程就绪&lt;/li&gt;
+&lt;li&gt;MySQL Client 执行exit操作，对应进程运行，中止MySQL Client 对应进程中止&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;进程间通信的同步异步-阻塞非阻塞&#34;&gt;进程间通信的同步/异步， 阻塞/非阻塞&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;进程间的通信是通过 send() 和 receive() 两种基本操作完成的。具体如何实现这两种基础操作，存在着不同的设计。 消息的传递有可能是阻塞的或非阻塞的 – 也被称为同步或异步的&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;阻塞式发送（blocking send）发送方进程会被一直阻塞， 直到消息被接受方进程收到。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;非阻塞式发送（nonblocking send）。发送方进程调用 send() 后， 立即就可以其他操作。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;阻塞式接收（blocking receive） 接收方调用 receive() 后一直阻塞， 直到消息到达可用。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;非阻塞式接受（nonblocking receive） 接收方调用 receive() 函数后， 要么得到一个有效的结果， 要么得到一个空值， 即不会被阻塞。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;线程&#34;&gt;线程&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;线程则是Linux的调度单位，共享同一个进程下的资源。&lt;/strong&gt; Linux内核调度器是以线程为单位进行调度和上下文切换的。&lt;/p&gt;
+&lt;h3 id=&#34;线程上下文&#34;&gt;线程上下文&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;线程是调度的基本单位，而进程则是资源拥有的基本单位。&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;说白了，所谓内核中的任务调度，实际上的调度对象是线程；而进程只是给线程提供了虚拟内存、全局变量等资源。&lt;/p&gt;
+&lt;p&gt;所以，对于线程和进程，我们可以这么理解：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;当进程只有一个线程时，可以认为进程就等于线程。&lt;/li&gt;
+&lt;li&gt;当进程拥有多个线程时，这些线程会共享相同的虚拟内存和全局变量等资源。这些资源在上下文切换时是不需要修改的。另外，线程也有自己的私有数据，比如栈和寄存器等，这些在上下文切换时也是需要保存的。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;发生线程上下文切换的场景&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol&gt;
+&lt;li&gt;前后两个线程属于不同进程。此时，因为资源不共享，所以切换过程就跟进程上下文切换是一样。&lt;/li&gt;
+&lt;li&gt;前后两个线程属于同一个进程。此时，因为虚拟内存是共享的，所以在切换时，虚拟内存这些资源就保持不动，只需要切换线程的私有数据、寄存器等不共享的数据&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;线程上下文切换耗时比进程大吗&#34;&gt;线程上下文切换耗时比进程大吗？&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;从上下文切换的耗时上来看，Linux线程（轻量级进程）其实和进程差别不太大。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;协程&#34;&gt;协程&lt;/h2&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.jianshu.com/p/7390f73ad668&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;孤儿进程、僵尸进程和守护进程&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://xie.infoq.cn/article/3a980c8f6a5a0a7a26cc3d2e8&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;面试官问：僵尸进程和孤儿进程有了解过吗&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.cnblogs.com/Anker/p/3269106.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;用户空间与内核空间，进程上下文与中断上下文[总结]&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://zhuanlan.zhihu.com/p/79772089&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;进程/线程上下文切换会用掉你多少CPU&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>redis</title>
+      <link>https://w3xse7en.github.io/docs/sql/redis/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://w3xse7en.github.io/docs/sql/redis/</guid>
+      <description>&lt;hr&gt;
+&lt;h2&gt;目录&lt;/h2&gt;
+&lt;nav id=&#34;TableOfContents&#34;&gt;&lt;/nav&gt;
+&lt;hr&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>socket</title>
+      <link>https://w3xse7en.github.io/docs/web/socket/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://w3xse7en.github.io/docs/web/socket/</guid>
+      <description>&lt;hr&gt;
+&lt;h2&gt;目录&lt;/h2&gt;
+&lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#io模型&#34;&gt;I/O模型&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#blocking-io---阻塞io&#34;&gt;Blocking I/O - 阻塞I/O&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#nonblocking-io---非阻塞io&#34;&gt;Nonblocking I/O - 非阻塞I/O&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#io-multiplexing---io多路复用&#34;&gt;I/O Multiplexing - I/O多路复用&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#signal-driven-io----信号驱动io&#34;&gt;Signal-Driven I/O  - 信号驱动I/O&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#asynchronous-io---异步io&#34;&gt;Asynchronous I/O - 异步I/O&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#五种-io-模型比较&#34;&gt;五种 I/O 模型比较&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#select&#34;&gt;select&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#select遇到的问题&#34;&gt;select遇到的问题&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#epoll&#34;&gt;epoll&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#epoll是如何解决select的三个问题&#34;&gt;epoll是如何解决select的三个问题&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#epoll的伪码描述&#34;&gt;epoll的伪码描述&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#参考&#34;&gt;参考&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;io模型&#34;&gt;I/O模型&lt;/h2&gt;
+&lt;p&gt;[UNIX: registered: Network Programming] 提供了5种IO模型&lt;/p&gt;
+&lt;h3 id=&#34;blocking-io---阻塞io&#34;&gt;Blocking I/O - 阻塞I/O&lt;/h3&gt;
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/os/block-io.png&#34; &gt;
+
+
+  &lt;img src=&#34;https://w3xse7en.github.io/media/os/block-io.png&#34; alt=&#34;&#34;  &gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+&lt;h3 id=&#34;nonblocking-io---非阻塞io&#34;&gt;Nonblocking I/O - 非阻塞I/O&lt;/h3&gt;
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/os/nonblock-io.png&#34; &gt;
+
+
+  &lt;img src=&#34;https://w3xse7en.github.io/media/os/nonblock-io.png&#34; alt=&#34;&#34;  &gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+&lt;h3 id=&#34;io-multiplexing---io多路复用&#34;&gt;I/O Multiplexing - I/O多路复用&lt;/h3&gt;
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/os/io-multiplexing.png&#34; &gt;
+
+
+  &lt;img src=&#34;https://w3xse7en.github.io/media/os/io-multiplexing.png&#34; alt=&#34;&#34;  &gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+&lt;h3 id=&#34;signal-driven-io----信号驱动io&#34;&gt;Signal-Driven I/O  - 信号驱动I/O&lt;/h3&gt;
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/os/signal-driven-io.png&#34; &gt;
+
+
+  &lt;img src=&#34;https://w3xse7en.github.io/media/os/signal-driven-io.png&#34; alt=&#34;&#34;  &gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+&lt;h3 id=&#34;asynchronous-io---异步io&#34;&gt;Asynchronous I/O - 异步I/O&lt;/h3&gt;
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/os/asynchronous-io.png&#34; &gt;
+
+
+  &lt;img src=&#34;https://w3xse7en.github.io/media/os/asynchronous-io.png&#34; alt=&#34;&#34;  &gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+&lt;h3 id=&#34;五种-io-模型比较&#34;&gt;五种 I/O 模型比较&lt;/h3&gt;
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/os/asynchronous-io.png&#34; &gt;
+
+
+  &lt;img src=&#34;https://w3xse7en.github.io/media/os/asynchronous-io.png&#34; alt=&#34;&#34;  &gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+&lt;hr&gt;
+&lt;h2 id=&#34;select&#34;&gt;select&lt;/h2&gt;
+&lt;p&gt;io多路复用是为了解决一个进程同时处理多个socket问题&lt;/p&gt;
+&lt;p&gt;一个简单的思路是&lt;/p&gt;
+&lt;p&gt;假设有N个socket链接，检测有socket接收到数据，遍历所有socket进行处理&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;// fds = file decriptors
+for {
+    select (fds) // wait while fds poll callback POLL_IN
+    for fd range fds{
+        if fd has data{
+            read fd
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;被监控的fds需要从用户空间拷贝到内核空间
+为了减少数据拷贝带来的性能损坏，内核对被监控的fds集合大小做了限制，并且这个是通过宏控制的，大小不可改变(限制为1024)。&lt;/li&gt;
+&lt;li&gt;被监控的fds集合中，只要有一个有数据可读，整个socket集合就会被遍历一次调用sk的poll函数收集可读事件
+由于当初的需求是朴素，仅仅关心是否有数据可读这样一个事件，当事件通知来的时候，由于数据的到来是异步的，我们不知道事件来的时候，有多少个被监控的socket有数据可读了，于是，只能挨个遍历每个socket来收集可读事件。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;select遇到的问题&#34;&gt;select遇到的问题&lt;/h3&gt;
+&lt;p&gt;总共有三个问题需要解决&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;被监控的fds集合大小被限制了1024，不够用&lt;/li&gt;
+&lt;li&gt;fds集合需要从用户空间拷贝到内核空间的问题，耗费性能&lt;/li&gt;
+&lt;li&gt;需要遍历fds集合才能知道有数据接收的fds列表&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;epoll&#34;&gt;epoll&lt;/h2&gt;
+&lt;p&gt;epoll 是对 select 和 poll 的改进，避免了“性能开销大”和“文件描述符数量少”两个缺点。&lt;/p&gt;
+&lt;p&gt;epoll 有以下几个特点：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;使用&lt;strong&gt;红黑树&lt;/strong&gt;存储文件描述符集合&lt;/li&gt;
+&lt;li&gt;使用&lt;strong&gt;队列&lt;/strong&gt;存储就绪的文件描述符&lt;/li&gt;
+&lt;li&gt;每个文件描述符只需在添加时传入一次；通过事件更改文件描述符状态&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;epoll一共有3个接口&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;epoll_create创建epoll实例，其实例内部存储：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;监听列表：所有要监听的文件描述符，使用&lt;strong&gt;红黑树&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;就绪列表：所有就绪的文件描述符，使用&lt;strong&gt;队列&lt;/strong&gt;&lt;/p&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;epoll_ctl用来维护监视列表，可以添加或删除所要监听的 socket&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;epoll_ctl 会将文件描述符 fd 添加到 epoll 实例的监听列表里，同时为 fd 设置一个回调函数，并监听事件event。当fd上发生相应事件时，会调用回调函数，将 fd 添加到 epoll 实例的就绪队列上。&lt;/p&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;当调用epoll_wait时，如果就绪列表中存在socket，则直接返回，如果没有，则阻塞进程&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;epoll是如何解决select的三个问题&#34;&gt;epoll是如何解决select的三个问题&lt;/h3&gt;
+&lt;details&gt;
+  &lt;summary&gt;被监控的fds集合大小被限制了1024，不够用&lt;/summary&gt;
+&lt;p&gt;select 使用整型数组存储文件描述符集合，而 epoll 使用红黑树存储，数量较大。&lt;/p&gt;
+&lt;/details&gt;
+&lt;details&gt;
+  &lt;summary&gt;fds集合需要从用户空间拷贝到内核空间的问题，耗费性能&lt;/summary&gt;
+&lt;p&gt;epoll通过内核与用户空间使用mmap(内存映射)，将用户空间的一块地址和内核空间的一块地址同时映射到相同的一块物理内存地址，减少用户态和内核态之间的数据交换。&lt;/p&gt;
+&lt;p&gt;epoll 对于每个描述符，只需要在 epoll_ctl 传递一次，之后 epoll_wait 不需要再次传递这也大大提高了效率。&lt;/p&gt;
+&lt;/details&gt;
+&lt;details&gt;
+  &lt;summary&gt;需要遍历fds集合才能知道有数据接收的fds列表&lt;/summary&gt;
+&lt;p&gt;epoll_ctl 中为每个文件描述符指定了回调函数，并在就绪时将其加入到就绪列表，因此 epoll 不需要像 select 那样遍历检测每个文件描述符，只需要判断就绪列表是否为空即可。这样，在没有描述符就绪时，epoll 能更早地让出系统资源。&lt;/p&gt;
+&lt;p&gt;相当于时间复杂度从 O(n) 降为 O(1)&lt;/p&gt;
+&lt;/details&gt;
+&lt;h3 id=&#34;epoll的伪码描述&#34;&gt;epoll的伪码描述&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;for{
+    active_fd = epoll_wait(fds)
+    read fd
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://notes.shichao.io/unp/ch6/#signal-driven-io-model&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Chapter 6. I/O Multiplexing: The select and poll Functions&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/CyC2018/CS-Notes/blob/master/notes/Socket.md&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Socket&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://imageslr.github.io/2020/02/27/select-poll-epoll.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;【操作系统】I/O 多路复用，select / poll / epoll 详解&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.zhihu.com/question/19732473/answer/241673170&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;怎样理解阻塞非阻塞与同步异步的区别&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://cloud.tencent.com/developer/article/1005481&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;大话 Select、Poll、Epoll&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://gityuan.com/2019/01/06/linux-epoll/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;源码解读epoll内核机制&lt;/a&gt;&lt;/p&gt;
+&lt;br/&gt;
+&lt;hr&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Q&amp;A</title>
+      <link>https://w3xse7en.github.io/docs/lang/qa/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://w3xse7en.github.io/docs/lang/qa/</guid>
+      <description>&lt;h1 id=&#34;qa&#34;&gt;Q&amp;amp;A&lt;/h1&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>hyper-v 安装 centos</title>
+      <link>https://w3xse7en.github.io/k8s_local/10_hyper-v_install_centos/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://w3xse7en.github.io/k8s_local/10_hyper-v_install_centos/</guid>
       <description>&lt;hr&gt;
 &lt;h2 id=&#34;centos&#34;&gt;Centos&lt;/h2&gt;
 &lt;ul&gt;
@@ -241,96 +888,10 @@ service network restart
     </item>
     
     <item>
-      <title>Go</title>
-      <link>https://w3xse7en.github.io/docs/lang/go/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://w3xse7en.github.io/docs/lang/go/</guid>
-      <description>&lt;h1 id=&#34;defer&#34;&gt;defer&lt;/h1&gt;
-&lt;p&gt;defer 是否会在panic后执行&lt;/p&gt;
-&lt;h1 id=&#34;interface&#34;&gt;interface&lt;/h1&gt;
-&lt;ol&gt;
-&lt;li&gt;writing generic algorithm&lt;/li&gt;
-&lt;li&gt;hiding implementation detail&lt;/li&gt;
-&lt;li&gt;providing interception points&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;interface拥有两个指针
-一个指向类型 一个指向具体值&lt;/p&gt;
-&lt;h1 id=&#34;slice&#34;&gt;slice&lt;/h1&gt;
-&lt;p&gt;分配在连续的内存地址上&lt;/p&gt;
-&lt;p&gt;元素类型一致，元素存储宽度一致&lt;/p&gt;
-&lt;p&gt;空间大小固定，不能修改&lt;/p&gt;
-&lt;p&gt;可以通过索引计算出元素对应存储的位置（只需要知道数组内存的起始位置和数据元素宽度即可）&lt;/p&gt;
-&lt;p&gt;会出现数据溢出的问题（下标越界）&lt;/p&gt;
-&lt;h2 id=&#34;slice扩容&#34;&gt;slice扩容&lt;/h2&gt;
-&lt;p&gt;如果新的slice大小是当前大小2倍以上，则大小增长为新大小&lt;/p&gt;
-&lt;p&gt;如果当前slice cap 小于1024，按每次2倍增长，否则每次按当前大小1/4增长。直到增长的大小超过或等于新大小&lt;/p&gt;
-&lt;p&gt;append的实现是在内存中将slice的array值赋值到新申请的array上&lt;/p&gt;
-&lt;p&gt;性能&lt;/p&gt;
-&lt;p&gt;通过上面我们知道slice的扩容涉及到内存的拷贝，这样带来的好处是数据存储在连续内存上，比随机访问快很多，最直接的性能提升就是缓存命中率会高很多,这也就是为什么slice不采用动态链表实现的原因吧&lt;/p&gt;
-&lt;p&gt;我们知道拷贝内存数据是有开销的， 而其中最大的开销不在 memmove&lt;/p&gt;
-&lt;p&gt;数据上，而是在开辟一块新内存malloc及之后的GC压力&lt;/p&gt;
-&lt;p&gt;拷贝连续内存是很快的，随着cap变大，拷贝总成本还是 O(N) ,只是常数大了&lt;/p&gt;
-&lt;p&gt;假如不想发生拷贝，那你就没有连续内存。此时随机访问开销会是：链表 O(N)&lt;/p&gt;
-&lt;p&gt;当你能大致知道所需的最大空间（在大部分时候都是的）时，在make的时候预留相应的 cap 就好
-如果需要的空间很大，而且每次都不确定，那就要在浪费内存和耗 CPU 在 malloc + gc 上做权衡
-链表的查找操作是从第一个元素开始，所以相对数组要耗时间的多，因为采用这样的结构对读的性能有很大的提高&lt;/p&gt;
-&lt;h2 id=&#34;mysql&#34;&gt;mysql&lt;/h2&gt;
-&lt;h3 id=&#34;性能调优&#34;&gt;性能调优&lt;/h3&gt;
-&lt;h4 id=&#34;sql优化&#34;&gt;SQL优化&lt;/h4&gt;
-&lt;p&gt;小表驱动大表
-limit限定
-索引添加
-适当添加冗余字段，减少表关联。&lt;/p&gt;
-&lt;h4 id=&#34;系统优化&#34;&gt;系统优化&lt;/h4&gt;
-&lt;p&gt;max_connections 最大连接数&lt;/p&gt;
-&lt;p&gt;innodb_buffer_pool_size 数据缓冲区buffer pool大小&lt;/p&gt;
-&lt;p&gt;sort_buffer_size 排序缓冲区内存大小&lt;/p&gt;
-&lt;p&gt;join_buffer_size 使用连接缓冲区大小&lt;/p&gt;
-&lt;p&gt;read_buffer_size 全表扫描时分配的缓冲区大小&lt;/p&gt;
-&lt;h1 id=&#34;缓存&#34;&gt;缓存&lt;/h1&gt;
-&lt;p&gt;主动式缓存
-用户更新数据 同时更新缓存&lt;/p&gt;
-&lt;p&gt;被动式缓存
-用户更新数据 删除缓存，被读取时载入缓存&lt;/p&gt;
-&lt;h1 id=&#34;maps&#34;&gt;Maps&lt;/h1&gt;
-&lt;p&gt;线程不安全&lt;/p&gt;
-&lt;p&gt;底层使用的hash结构&lt;/p&gt;
-&lt;p&gt;hash算法使用aes hash hash值分为 高位hash和低位hash&lt;/p&gt;
-&lt;p&gt;高位哈希值：是用来确定当前的bucket（桶）有没有所存储的数据的 bmap a bucket for a Go map&lt;/p&gt;
-&lt;p&gt;低位哈希值：是用来确定，当前的数据存在了哪个bucket（桶）hmap a header for a go map&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Goroutine</title>
-      <link>https://w3xse7en.github.io/docs/lang/goroutine/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://w3xse7en.github.io/docs/lang/goroutine/</guid>
-      <description>&lt;h1 id=&#34;goroutine&#34;&gt;goroutine&lt;/h1&gt;
-&lt;p&gt;leak 协程泄露
-Goroutine为什么没有ID号&lt;/p&gt;
-&lt;h2 id=&#34;goroutine调度&#34;&gt;Goroutine调度&lt;/h2&gt;
-&lt;p&gt;G P M
-抢占式调度&lt;/p&gt;
-&lt;p&gt;动态栈&lt;/p&gt;
-&lt;h1 id=&#34;协程线程进程的区别&#34;&gt;协程，线程，进程的区别&lt;/h1&gt;
-&lt;h1 id=&#34;进程&#34;&gt;进程&lt;/h1&gt;
-&lt;p&gt;进程是具有一定独立功能的程序关于某个数据集合上的一次运行活动,进程是系统进行资源分配和调度的一个独立单位。每个进程都有自己的独立内存空间，不同进程通过进程间通信来通信。由于进程比较重量，占据独立的内存，所以上下文进程间的切换开销（栈、寄存器、虚拟内存、文件句柄等）比较大，但相对比较稳定安全。&lt;/p&gt;
-&lt;h4 id=&#34;线程&#34;&gt;线程&lt;/h4&gt;
-&lt;p&gt;线程是进程的一个实体,是CPU调度和分派的基本单位,它是比进程更小的能独立运行的基本单位.线程自己基本上不拥有系统资源,只拥有一点在运行中必不可少的资源(如程序计数器,一组寄存器和栈),但是它可与同属一个进程的其他的线程共享进程所拥有的全部资源。线程间通信主要通过共享内存，上下文切换很快，资源开销较少，但相比进程不够稳定容易丢失数据。&lt;/p&gt;
-&lt;h4 id=&#34;协程&#34;&gt;协程&lt;/h4&gt;
-&lt;p&gt;协程是一种用户态的轻量级线程，协程的调度完全由用户控制。协程拥有自己的寄存器上下文和栈。协程调度切换时，将寄存器上下文和栈保存到其他地方，在切回来的时候，恢复先前保存的寄存器上下文和栈，直接操作栈则基本没有内核切换的开销，可以不加锁的访问全局变量，所以上下文的切换非常快。&lt;/p&gt;
-&lt;h2 id=&#34;channel&#34;&gt;channel&lt;/h2&gt;
-&lt;h2 id=&#34;select&#34;&gt;select&lt;/h2&gt;
-&lt;h2 id=&#34;sync&#34;&gt;sync&lt;/h2&gt;
-</description>
-    </item>
-    
-    <item>
       <title>kubespray 安装 k8s</title>
-      <link>https://w3xse7en.github.io/k8s_local/install_k8s/</link>
+      <link>https://w3xse7en.github.io/k8s_local/20_install_k8s/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://w3xse7en.github.io/k8s_local/install_k8s/</guid>
+      <guid>https://w3xse7en.github.io/k8s_local/20_install_k8s/</guid>
       <description>&lt;hr&gt;
 &lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
 &lt;p&gt;&lt;a href=&#34;https://kubespray.io/#/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;kubespray&lt;/a&gt;&lt;/p&gt;
@@ -468,13 +1029,13 @@ ntpq -p&#39;
 &lt;li&gt;
 &lt;p&gt;方案1&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;将所有源换成国内镜像加速&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.bboy.app/2020/07/20/%E4%BD%BF%E7%94%A8kubespray%E6%90%AD%E5%BB%BA%E7%94%9F%E4%BA%A7%E7%BA%A7%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;将所有源换成国内镜像加速&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;方案2&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;离线安装&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/kubernetes-sigs/kubespray/issues/6207&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;离线安装&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;
@@ -488,14 +1049,23 @@ ntpq -p&#39;
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;vi inventory/mycluster/group_vars/all/all.yml
-## Set these proxy values in order to update package manager and docker daemon to use proxies
+
 http_proxy: &amp;quot;http://192.168.1.9:1080&amp;quot;
 https_proxy: &amp;quot;http://192.168.1.9:1080&amp;quot;
 &lt;/code&gt;&lt;/pre&gt;
-&lt;br/&gt;
-&lt;h2 id=&#34;配置docker镜像源&#34;&gt;配置docker镜像源&lt;/h2&gt;
 &lt;ul&gt;
-&lt;li&gt;方便未来使用docker访问国内源&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;在阿里云环境下使用代理&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;开启自己电脑上的http proxy server&lt;/li&gt;
+&lt;li&gt;使用&lt;a href=&#34;https://github.com/fatedier/frp&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;frp&lt;/a&gt;将本地电脑http proxy port 映射至公网&lt;/li&gt;
+&lt;li&gt;配置http_proxy&lt;/li&gt;
+&lt;li&gt;直接在阿里云内使用代理可能会被警告，因此使用frp做一层中转&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;配置docker镜像源&lt;/p&gt;
+&lt;/li&gt;
 &lt;/ul&gt;
 &lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;vi inventory/mycluster/group_vars/all/docker.yml
 ## Add other registry,example China registry mirror.
@@ -503,6 +1073,69 @@ docker_registry_mirrors:
   - https://mirror.aliyuncs.com
   - https://registry.docker-cn.com
 &lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;提前下载k8s所需依赖，避免安装时报错&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;ansible-playbook -i inventory/mycluster/hosts.yaml  --become --become-user=root cluster.yml --tags container_engine
+
+ansible-playbook -i inventory/mycluster/hosts.yaml  --become --become-user=root cluster.yml --tags download
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;若遇到报错，可尝试将http_proxy注释掉重新下载，重复试几次后一般都能下完
+&lt;ul&gt;
+&lt;li&gt;阿里云apt, yum等源设置的是内网地址，需要直连才可以访问&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;vi inventory/mycluster/group_vars/all/all.yml
+
+# http_proxy: &amp;quot;http://192.168.1.9:1080&amp;quot;
+# https_proxy: &amp;quot;http://192.168.1.9:1080&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id=&#34;figure-frp-v2ray-代理下载&#34;&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/k8s_local/frp-v2ray-proxy.png&#34; data-caption=&#34;frp-v2ray-代理下载&#34;&gt;
+
+
+  &lt;img src=&#34;https://w3xse7en.github.io/media/k8s_local/frp-v2ray-proxy.png&#34; alt=&#34;&#34;  &gt;
+&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    frp-v2ray-代理下载
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+&lt;div class=&#34;alert alert-warning&#34;&gt;
+  &lt;div&gt;
+    ubuntu 系统安装完毕后，请删除&lt;code&gt;/etc/apt/apt.conf&lt;/code&gt;里的代理配置
+  &lt;/div&gt;
+&lt;/div&gt;
 &lt;br/&gt;
 &lt;h2 id=&#34;可选开启helm&#34;&gt;(可选)开启helm&lt;/h2&gt;
 &lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;vi inventory/mycluster/group_vars/k8s-cluster/addons.yml
@@ -609,9 +1242,8 @@ helm_enabled: true
 &lt;ul&gt;
 &lt;li&gt;添加admin-user用户&lt;/li&gt;
 &lt;/ul&gt;
-&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;vi dashboard-admin-user.yaml
-&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;apiVersion: v1
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;cat &amp;lt;&amp;lt;EOF | kubectl apply -f -
+apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: admin-user
@@ -630,8 +1262,7 @@ subjects:
 - kind: ServiceAccount
   name: admin-user
   namespace: kube-system
-&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;kubectl apply -f dashboard-admin-user.yaml
+EOF
 &lt;/code&gt;&lt;/pre&gt;
 &lt;ul&gt;
 &lt;li&gt;获取admin-user的token&lt;/li&gt;
@@ -644,20 +1275,288 @@ subjects:
 &lt;pre&gt;&lt;code class=&#34;language-http&#34;&gt;https://192.168.1.200:6443/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/#!/login
 &lt;/code&gt;&lt;/pre&gt;
 &lt;br/&gt;
-&lt;h2 id=&#34;dashboard报错处理&#34;&gt;Dashboard报错处理&lt;/h2&gt;
 &lt;div class=&#34;alert alert-warning&#34;&gt;
   &lt;div&gt;
     &lt;p&gt;&lt;code&gt;services &amp;quot;https:kubernetes-dashboard:&amp;quot; is forbidden: User &amp;quot;system:anonymous&amp;quot; cannot get services/proxy in the namespace &amp;quot;kube-system&amp;quot;&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;遇到此报错执行 添加system:anonymous的访问权限 步骤&lt;/p&gt;
-&lt;p&gt;否则请跳过&lt;/p&gt;
+&lt;p&gt;遇到此问题请查看&lt;a href=&#34;https://w3xse7en.github.io/k8s_local/999_qa/#system:anonymous-%E6%97%A0%E6%B3%95%E8%AE%BF%E9%97%AE-k8s-dashboard&#34;&gt;system:anonymous 无法访问 k8s dashboard&lt;/a&gt;&lt;/p&gt;
   &lt;/div&gt;
 &lt;/div&gt;
-&lt;ul&gt;
-&lt;li&gt;添加system:anonymous的访问权限&lt;/li&gt;
-&lt;/ul&gt;
-&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;vi dashboard-access.yaml
+</description>
+    </item>
+    
+    <item>
+      <title>添加/删除节点</title>
+      <link>https://w3xse7en.github.io/k8s_local/30_add_remove_node/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://w3xse7en.github.io/k8s_local/30_add_remove_node/</guid>
+      <description>&lt;hr&gt;
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/kubernetes-sigs/kubespray/blob/master/docs/getting-started.md&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;kubespray&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.youtube.com/watch?v=duAvUhNydh4&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;[ Kube 65.3 ] Kubespray - Adding &amp;amp; Removing Kubernetes nodes&lt;/a&gt;&lt;/p&gt;
+&lt;br/&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;添加节点&#34;&gt;添加节点&lt;/h2&gt;
+&lt;h3 id=&#34;配置ansible访问新节点1921681203&#34;&gt;配置ansible访问新节点(192.168.1.203)&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;vi /etc/ansible/hosts
 &lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;kind: ClusterRole
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;[k8s]
+
+192.168.1.200 ansible_ssh_user=root
+192.168.1.201 ansible_ssh_user=root
+192.168.1.202 ansible_ssh_user=root
+192.168.1.203 ansible_ssh_user=root
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;测试&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;ansible k8s -m ping
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://w3xse7en.github.io/k8s_local/20_install_k8s/#使用ansible对每台机器进行批处理&#34;&gt;更新新节点功能(时区,防火墙等)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;新增node4&#34;&gt;新增node4&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;vi inventory/mycluster/hosts.yaml
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;all:
+  hosts:
+    node1:
+      ansible_host: 192.168.1.200
+      ip: 192.168.1.200
+      access_ip: 192.168.1.200
+    node2:
+      ansible_host: 192.168.1.201
+      ip: 192.168.1.201
+      access_ip: 192.168.1.201
+    node3:
+      ansible_host: 192.168.1.202
+      ip: 192.168.1.202
+      access_ip: 192.168.1.202
+    node4:
+      ansible_host: 192.168.1.203
+      ip: 192.168.1.203
+      access_ip: 192.168.1.203
+  children:
+    kube-master:
+      hosts:
+        node1:
+        node2:
+    kube-node:
+      hosts:
+        node1:
+        node2:
+        node3:
+        node4:
+    etcd:
+      hosts:
+        node1:
+        node2:
+        node3:
+    k8s-cluster:
+      children:
+        kube-master:
+        kube-node:
+    calico-rr:
+      hosts: {}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;下载依赖&#34;&gt;下载依赖&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;假设&lt;code&gt;node1&lt;/code&gt;与&lt;code&gt;node4&lt;/code&gt;为同系统
+将&lt;code&gt;node1&lt;/code&gt; &lt;code&gt;/tmp/releases&lt;/code&gt; &lt;code&gt;copy&lt;/code&gt;至&lt;code&gt;node4&lt;/code&gt; &lt;code&gt;/tmp/releases&lt;/code&gt;即可避免&lt;code&gt;node4&lt;/code&gt;再次下载k8s依赖组件&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;scp /tmp/releases root@192.168.1.203:/tmp/releases
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;确定依赖已完善&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;ansible-playbook -i inventory/mycluster/hosts.yaml  --become --become-user=root cluster.yml --tags container_engine
+
+ansible-playbook -i inventory/mycluster/hosts.yaml  --become --become-user=root cluster.yml --tags download
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;添加节点-1&#34;&gt;添加节点&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;ansible-playbook -i inventory/mycluster/hosts.yaml scale.yml
+&lt;/code&gt;&lt;/pre&gt;
+&lt;br/&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;移除节点&#34;&gt;移除节点&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;ansible-playbook -i inventory/mycluster/hosts.yaml remove-node.yml --extra-vars &amp;quot;node=node4&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>创建 service account</title>
+      <link>https://w3xse7en.github.io/k8s_local/40_service_account/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://w3xse7en.github.io/k8s_local/40_service_account/</guid>
+      <description>&lt;hr&gt;
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.auroria.io/kubernetes-ci-cd-service-account-setup/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Setting up a Kubernetes CI/CD Service Account&lt;/a&gt;&lt;/p&gt;
+&lt;br/&gt;
+&lt;hr&gt;
+&lt;ul&gt;
+&lt;li&gt;场景&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;权限划分，&lt;code&gt;cicd&lt;/code&gt;限定&lt;code&gt;namespace=dev&lt;/code&gt;使用&lt;code&gt;kubectl apply -f&lt;/code&gt;部署服务&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;创建 &lt;code&gt;namespace&lt;/code&gt; &lt;code&gt;dev&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;cat &amp;lt;&amp;lt;EOF | kubectl apply -f -
+{
+  &amp;quot;apiVersion&amp;quot;: &amp;quot;v1&amp;quot;,
+  &amp;quot;kind&amp;quot;: &amp;quot;Namespace&amp;quot;,
+  &amp;quot;metadata&amp;quot;: {
+    &amp;quot;name&amp;quot;: &amp;quot;dev&amp;quot;,
+    &amp;quot;labels&amp;quot;: {
+      &amp;quot;name&amp;quot;: &amp;quot;dev&amp;quot;
+    }
+  }
+}
+EOF
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;创建-service-account-cicd-user&#34;&gt;创建 &lt;code&gt;service account&lt;/code&gt; &lt;code&gt;cicd-user&lt;/code&gt;&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;# 该脚本依赖 jq 组件
+yum install jq -y
+
+# [可修改]
+SERVICE_ACCOUNT_NAME=&amp;quot;cicd-user&amp;quot;
+
+# [可修改]
+NAMESPACE=&amp;quot;dev&amp;quot;
+
+# [可修改]
+TARGET_FOLDER=&amp;quot;/home/k8s/kube&amp;quot;
+
+kubectl create sa &amp;quot;${SERVICE_ACCOUNT_NAME}&amp;quot; --namespace &amp;quot;${NAMESPACE}&amp;quot;
+
+mkdir -p &amp;quot;${TARGET_FOLDER}&amp;quot;
+
+SECRET_NAME=$(kubectl get sa &amp;quot;${SERVICE_ACCOUNT_NAME}&amp;quot; --namespace=&amp;quot;${NAMESPACE}&amp;quot; -o json | jq -r .secrets[].name)
+
+kubectl get secret --namespace &amp;quot;${NAMESPACE}&amp;quot; &amp;quot;${SECRET_NAME}&amp;quot; -o json | jq -r &#39;.data[&amp;quot;ca.crt&amp;quot;]&#39; | base64 --decode &amp;gt; &amp;quot;${TARGET_FOLDER}/ca.crt&amp;quot;
+
+USER_TOKEN=$(kubectl get secret --namespace &amp;quot;${NAMESPACE}&amp;quot; &amp;quot;${SECRET_NAME}&amp;quot; -o json | jq -r &#39;.data[&amp;quot;token&amp;quot;]&#39; | base64 --decode)
+
+KUBECFG_FILE_NAME=&amp;quot;${TARGET_FOLDER}/k8s-${SERVICE_ACCOUNT_NAME}-${NAMESPACE}-conf&amp;quot;
+
+context=$(kubectl config current-context)
+
+CLUSTER_NAME=$(kubectl config get-contexts &amp;quot;$context&amp;quot; | awk &#39;{print $3}&#39; | tail -n 1)
+
+ENDPOINT=$(kubectl config view \
+-o jsonpath=&amp;quot;{.clusters[?(@.name == \&amp;quot;${CLUSTER_NAME}\&amp;quot;)].cluster.server}&amp;quot;)
+
+kubectl config set-cluster &amp;quot;${CLUSTER_NAME}&amp;quot; \
+--kubeconfig=&amp;quot;${KUBECFG_FILE_NAME}&amp;quot; \
+--server=&amp;quot;${ENDPOINT}&amp;quot; \
+--certificate-authority=&amp;quot;${TARGET_FOLDER}/ca.crt&amp;quot; \
+--embed-certs=true
+
+kubectl config set-credentials \
+&amp;quot;${SERVICE_ACCOUNT_NAME}-${NAMESPACE}-${CLUSTER_NAME}&amp;quot; \
+--kubeconfig=&amp;quot;${KUBECFG_FILE_NAME}&amp;quot; \
+--token=&amp;quot;${USER_TOKEN}&amp;quot;
+
+
+kubectl config set-context \
+&amp;quot;${SERVICE_ACCOUNT_NAME}-${NAMESPACE}-${CLUSTER_NAME}&amp;quot; \
+--kubeconfig=&amp;quot;${KUBECFG_FILE_NAME}&amp;quot; \
+--cluster=&amp;quot;${CLUSTER_NAME}&amp;quot; \
+--user=&amp;quot;${SERVICE_ACCOUNT_NAME}-${NAMESPACE}-${CLUSTER_NAME}&amp;quot; \
+--namespace=&amp;quot;${NAMESPACE}&amp;quot;
+
+kubectl config use-context &amp;quot;${SERVICE_ACCOUNT_NAME}-${NAMESPACE}-${CLUSTER_NAME}&amp;quot; \
+--kubeconfig=&amp;quot;${KUBECFG_FILE_NAME}&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;为-cicd-user-配置权限&#34;&gt;为 &lt;code&gt;cicd-user&lt;/code&gt; 配置权限&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;cat &amp;lt;&amp;lt;EOF | kubectl apply -f -
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  name: &amp;quot;${SERVICE_ACCOUNT_NAME}-role&amp;quot;
+  namespace: &amp;quot;${NAMESPACE}&amp;quot;
+rules:
+- apiGroups:
+  - &amp;quot;&amp;quot;
+  - apps
+  - extensions
+  resources:
+  - &#39;*&#39;
+  verbs:
+  - &#39;*&#39;
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  name: &amp;quot;${SERVICE_ACCOUNT_NAME}-role&amp;quot;
+  namespace: &amp;quot;${NAMESPACE}&amp;quot;
+subjects:
+  - kind: ServiceAccount
+    name: &amp;quot;${SERVICE_ACCOUNT_NAME}&amp;quot;
+roleRef:
+  kind: Role
+  name: &amp;quot;${SERVICE_ACCOUNT_NAME}-role&amp;quot;
+  apiGroup: rbac.authorization.k8s.io
+EOF
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;其他实例使用-cicd-user&#34;&gt;其他实例使用 &lt;code&gt;cicd-user&lt;/code&gt;&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;将&lt;code&gt;${TARGET_FOLDER}&lt;/code&gt;生成的&lt;code&gt;k8s-cicd-user-dev-conf&lt;/code&gt;文件&lt;code&gt;copy&lt;/code&gt;至其他实例&lt;code&gt;~/.kube&lt;/code&gt;路径下改名为&lt;code&gt;config&lt;/code&gt;使用&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;alert alert-warning&#34;&gt;
+  &lt;div&gt;
+    &lt;p&gt;注意查看&lt;code&gt;k8s-cicd-user-dev-conf&lt;/code&gt;里&lt;code&gt;cluster server&lt;/code&gt;地址是否合法&lt;/p&gt;
+&lt;p&gt;遇到证书ip问题请查看&lt;a href=&#34;https://w3xse7en.github.io/k8s_local/999_qa/#kubectl-get-nodes-%E8%AF%81%E4%B9%A6ip%E9%97%AE%E9%A2%98&#34;&gt;kubectl get pods 证书ip问题&lt;/a&gt;&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;br/&gt;
+&lt;hr&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>solve k8s problem</title>
+      <link>https://w3xse7en.github.io/k8s_local/999_qa/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://w3xse7en.github.io/k8s_local/999_qa/</guid>
+      <description>&lt;hr&gt;
+&lt;h2 id=&#34;介绍&#34;&gt;介绍&lt;/h2&gt;
+&lt;p&gt;记录在使用k8s过程中所遇到的问题，以及解决方案&lt;/p&gt;
+&lt;br/&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;kubectl-get-nodes-证书ip问题&#34;&gt;kubectl get nodes 证书ip问题&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;Unable to connect to the server: x509: certificate is valid for 10.233.0.1, 172.19.157.57, 172.19.157.57, 10.233.0.1, 127.0.0.1, 172.19.157.57, 172.19.252.199, not 47.xxx.xx.x
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;场景&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;阿里云安装，全部使用私网地址，创建&lt;code&gt;service account&lt;/code&gt;后使用&lt;code&gt;kubectl&lt;/code&gt;从公网访问报错&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;解决方案
+&lt;code&gt;supplementary_addresses_in_ssl_keys&lt;/code&gt; 添加公网地址&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;vi inventory/mycluster/group_vars/k8s-cluster/k8s-cluster.yml
+
+supplementary_addresses_in_ssl_keys: [47.xxx.xx.x]
+
+# 重新安装部署，使配置生效
+ansible-playbook -i inventory/mycluster/hosts.yaml  --become --become-user=root cluster.yml
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;参考&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a href=&#34;https://stackoverflow.com/a/55065519&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Invalid x509 certificate for kubernetes master&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;经验证&lt;code&gt;kubespray v2.14.1&lt;/code&gt;不需要执行&lt;code&gt;rm /etc/kubernetes/pki/apiserver.*&lt;/code&gt;&lt;/p&gt;
+&lt;br/&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;systemanonymous-无法访问-k8s-dashboard&#34;&gt;system:anonymous 无法访问 k8s dashboard&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;`services &amp;quot;https:kubernetes-dashboard:&amp;quot; is forbidden: User &amp;quot;system:anonymous&amp;quot; cannot get services/proxy in the namespace &amp;quot;kube-system&amp;quot;`
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;解决方案
+添加&lt;code&gt;system:anonymous&lt;/code&gt;的访问权限&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;cat &amp;lt;&amp;lt;EOF | kubectl apply -f -
+kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: kubernetes-dashboard-anonymous
@@ -681,27 +1580,14 @@ roleRef:
 subjects:
 - kind: User
   name: system:anonymous
+EOF
 &lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;kubectl apply -f dashboard-access.yaml
-&lt;/code&gt;&lt;/pre&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Q&amp;A</title>
-      <link>https://w3xse7en.github.io/docs/web/qa/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://w3xse7en.github.io/docs/web/qa/</guid>
-      <description>&lt;h1 id=&#34;qa&#34;&gt;Q&amp;amp;A&lt;/h1&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Q&amp;A</title>
-      <link>https://w3xse7en.github.io/docs/lang/qa/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://w3xse7en.github.io/docs/lang/qa/</guid>
-      <description>&lt;h1 id=&#34;qa&#34;&gt;Q&amp;amp;A&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;参考&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a href=&#34;https://stackoverflow.com/a/57830002&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Enable Access for Kubernetes Dashboard via external VIP or Floating IP&lt;/a&gt;&lt;/p&gt;
+&lt;br/&gt;
+&lt;hr&gt;
 </description>
     </item>
     

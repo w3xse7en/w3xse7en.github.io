@@ -7,16 +7,16 @@
     <description>介绍</description>
     <generator>Wowchemy (https://wowchemy.com)</generator><language>zh</language>
     <image>
-      <url>https://w3xse7en.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
+      <url>https://w3xse7en.github.io/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_2.png</url>
       <title>介绍</title>
       <link>https://w3xse7en.github.io/k8s_local/</link>
     </image>
     
     <item>
       <title>hyper-v 安装 centos</title>
-      <link>https://w3xse7en.github.io/k8s_local/hyper-v_install_centos/</link>
+      <link>https://w3xse7en.github.io/k8s_local/10_hyper-v_install_centos/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://w3xse7en.github.io/k8s_local/hyper-v_install_centos/</guid>
+      <guid>https://w3xse7en.github.io/k8s_local/10_hyper-v_install_centos/</guid>
       <description>&lt;hr&gt;
 &lt;h2 id=&#34;centos&#34;&gt;Centos&lt;/h2&gt;
 &lt;ul&gt;
@@ -242,9 +242,9 @@ service network restart
     
     <item>
       <title>kubespray 安装 k8s</title>
-      <link>https://w3xse7en.github.io/k8s_local/install_k8s/</link>
+      <link>https://w3xse7en.github.io/k8s_local/20_install_k8s/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://w3xse7en.github.io/k8s_local/install_k8s/</guid>
+      <guid>https://w3xse7en.github.io/k8s_local/20_install_k8s/</guid>
       <description>&lt;hr&gt;
 &lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
 &lt;p&gt;&lt;a href=&#34;https://kubespray.io/#/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;kubespray&lt;/a&gt;&lt;/p&gt;
@@ -382,13 +382,13 @@ ntpq -p&#39;
 &lt;li&gt;
 &lt;p&gt;方案1&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;将所有源换成国内镜像加速&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.bboy.app/2020/07/20/%E4%BD%BF%E7%94%A8kubespray%E6%90%AD%E5%BB%BA%E7%94%9F%E4%BA%A7%E7%BA%A7%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;将所有源换成国内镜像加速&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;方案2&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;离线安装&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/kubernetes-sigs/kubespray/issues/6207&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;离线安装&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;
@@ -402,14 +402,23 @@ ntpq -p&#39;
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;vi inventory/mycluster/group_vars/all/all.yml
-## Set these proxy values in order to update package manager and docker daemon to use proxies
+
 http_proxy: &amp;quot;http://192.168.1.9:1080&amp;quot;
 https_proxy: &amp;quot;http://192.168.1.9:1080&amp;quot;
 &lt;/code&gt;&lt;/pre&gt;
-&lt;br/&gt;
-&lt;h2 id=&#34;配置docker镜像源&#34;&gt;配置docker镜像源&lt;/h2&gt;
 &lt;ul&gt;
-&lt;li&gt;方便未来使用docker访问国内源&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;在阿里云环境下使用代理&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;开启自己电脑上的http proxy server&lt;/li&gt;
+&lt;li&gt;使用&lt;a href=&#34;https://github.com/fatedier/frp&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;frp&lt;/a&gt;将本地电脑http proxy port 映射至公网&lt;/li&gt;
+&lt;li&gt;配置http_proxy&lt;/li&gt;
+&lt;li&gt;直接在阿里云内使用代理可能会被警告，因此使用frp做一层中转&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;配置docker镜像源&lt;/p&gt;
+&lt;/li&gt;
 &lt;/ul&gt;
 &lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;vi inventory/mycluster/group_vars/all/docker.yml
 ## Add other registry,example China registry mirror.
@@ -417,6 +426,69 @@ docker_registry_mirrors:
   - https://mirror.aliyuncs.com
   - https://registry.docker-cn.com
 &lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;提前下载k8s所需依赖，避免安装时报错&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;ansible-playbook -i inventory/mycluster/hosts.yaml  --become --become-user=root cluster.yml --tags container_engine
+
+ansible-playbook -i inventory/mycluster/hosts.yaml  --become --become-user=root cluster.yml --tags download
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;若遇到报错，可尝试将http_proxy注释掉重新下载，重复试几次后一般都能下完
+&lt;ul&gt;
+&lt;li&gt;阿里云apt, yum等源设置的是内网地址，需要直连才可以访问&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;vi inventory/mycluster/group_vars/all/all.yml
+
+# http_proxy: &amp;quot;http://192.168.1.9:1080&amp;quot;
+# https_proxy: &amp;quot;http://192.168.1.9:1080&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id=&#34;figure-frp-v2ray-代理下载&#34;&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/k8s_local/frp-v2ray-proxy.png&#34; data-caption=&#34;frp-v2ray-代理下载&#34;&gt;
+
+
+  &lt;img src=&#34;https://w3xse7en.github.io/media/k8s_local/frp-v2ray-proxy.png&#34; alt=&#34;&#34;  &gt;
+&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    frp-v2ray-代理下载
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+&lt;div class=&#34;alert alert-warning&#34;&gt;
+  &lt;div&gt;
+    ubuntu 系统安装完毕后，请删除&lt;code&gt;/etc/apt/apt.conf&lt;/code&gt;里的代理配置
+  &lt;/div&gt;
+&lt;/div&gt;
 &lt;br/&gt;
 &lt;h2 id=&#34;可选开启helm&#34;&gt;(可选)开启helm&lt;/h2&gt;
 &lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;vi inventory/mycluster/group_vars/k8s-cluster/addons.yml
@@ -523,9 +595,8 @@ helm_enabled: true
 &lt;ul&gt;
 &lt;li&gt;添加admin-user用户&lt;/li&gt;
 &lt;/ul&gt;
-&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;vi dashboard-admin-user.yaml
-&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;apiVersion: v1
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;cat &amp;lt;&amp;lt;EOF | kubectl apply -f -
+apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: admin-user
@@ -544,8 +615,7 @@ subjects:
 - kind: ServiceAccount
   name: admin-user
   namespace: kube-system
-&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;kubectl apply -f dashboard-admin-user.yaml
+EOF
 &lt;/code&gt;&lt;/pre&gt;
 &lt;ul&gt;
 &lt;li&gt;获取admin-user的token&lt;/li&gt;
@@ -558,20 +628,288 @@ subjects:
 &lt;pre&gt;&lt;code class=&#34;language-http&#34;&gt;https://192.168.1.200:6443/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/#!/login
 &lt;/code&gt;&lt;/pre&gt;
 &lt;br/&gt;
-&lt;h2 id=&#34;dashboard报错处理&#34;&gt;Dashboard报错处理&lt;/h2&gt;
 &lt;div class=&#34;alert alert-warning&#34;&gt;
   &lt;div&gt;
     &lt;p&gt;&lt;code&gt;services &amp;quot;https:kubernetes-dashboard:&amp;quot; is forbidden: User &amp;quot;system:anonymous&amp;quot; cannot get services/proxy in the namespace &amp;quot;kube-system&amp;quot;&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;遇到此报错执行 添加system:anonymous的访问权限 步骤&lt;/p&gt;
-&lt;p&gt;否则请跳过&lt;/p&gt;
+&lt;p&gt;遇到此问题请查看&lt;a href=&#34;https://w3xse7en.github.io/k8s_local/999_qa/#system:anonymous-%E6%97%A0%E6%B3%95%E8%AE%BF%E9%97%AE-k8s-dashboard&#34;&gt;system:anonymous 无法访问 k8s dashboard&lt;/a&gt;&lt;/p&gt;
   &lt;/div&gt;
 &lt;/div&gt;
-&lt;ul&gt;
-&lt;li&gt;添加system:anonymous的访问权限&lt;/li&gt;
-&lt;/ul&gt;
-&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;vi dashboard-access.yaml
+</description>
+    </item>
+    
+    <item>
+      <title>添加/删除节点</title>
+      <link>https://w3xse7en.github.io/k8s_local/30_add_remove_node/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://w3xse7en.github.io/k8s_local/30_add_remove_node/</guid>
+      <description>&lt;hr&gt;
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/kubernetes-sigs/kubespray/blob/master/docs/getting-started.md&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;kubespray&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.youtube.com/watch?v=duAvUhNydh4&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;[ Kube 65.3 ] Kubespray - Adding &amp;amp; Removing Kubernetes nodes&lt;/a&gt;&lt;/p&gt;
+&lt;br/&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;添加节点&#34;&gt;添加节点&lt;/h2&gt;
+&lt;h3 id=&#34;配置ansible访问新节点1921681203&#34;&gt;配置ansible访问新节点(192.168.1.203)&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;vi /etc/ansible/hosts
 &lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;kind: ClusterRole
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;[k8s]
+
+192.168.1.200 ansible_ssh_user=root
+192.168.1.201 ansible_ssh_user=root
+192.168.1.202 ansible_ssh_user=root
+192.168.1.203 ansible_ssh_user=root
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;测试&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;ansible k8s -m ping
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://w3xse7en.github.io/k8s_local/20_install_k8s/#使用ansible对每台机器进行批处理&#34;&gt;更新新节点功能(时区,防火墙等)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;新增node4&#34;&gt;新增node4&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;vi inventory/mycluster/hosts.yaml
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;all:
+  hosts:
+    node1:
+      ansible_host: 192.168.1.200
+      ip: 192.168.1.200
+      access_ip: 192.168.1.200
+    node2:
+      ansible_host: 192.168.1.201
+      ip: 192.168.1.201
+      access_ip: 192.168.1.201
+    node3:
+      ansible_host: 192.168.1.202
+      ip: 192.168.1.202
+      access_ip: 192.168.1.202
+    node4:
+      ansible_host: 192.168.1.203
+      ip: 192.168.1.203
+      access_ip: 192.168.1.203
+  children:
+    kube-master:
+      hosts:
+        node1:
+        node2:
+    kube-node:
+      hosts:
+        node1:
+        node2:
+        node3:
+        node4:
+    etcd:
+      hosts:
+        node1:
+        node2:
+        node3:
+    k8s-cluster:
+      children:
+        kube-master:
+        kube-node:
+    calico-rr:
+      hosts: {}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;下载依赖&#34;&gt;下载依赖&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;假设&lt;code&gt;node1&lt;/code&gt;与&lt;code&gt;node4&lt;/code&gt;为同系统
+将&lt;code&gt;node1&lt;/code&gt; &lt;code&gt;/tmp/releases&lt;/code&gt; &lt;code&gt;copy&lt;/code&gt;至&lt;code&gt;node4&lt;/code&gt; &lt;code&gt;/tmp/releases&lt;/code&gt;即可避免&lt;code&gt;node4&lt;/code&gt;再次下载k8s依赖组件&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;scp /tmp/releases root@192.168.1.203:/tmp/releases
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;确定依赖已完善&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;ansible-playbook -i inventory/mycluster/hosts.yaml  --become --become-user=root cluster.yml --tags container_engine
+
+ansible-playbook -i inventory/mycluster/hosts.yaml  --become --become-user=root cluster.yml --tags download
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;添加节点-1&#34;&gt;添加节点&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;ansible-playbook -i inventory/mycluster/hosts.yaml scale.yml
+&lt;/code&gt;&lt;/pre&gt;
+&lt;br/&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;移除节点&#34;&gt;移除节点&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;ansible-playbook -i inventory/mycluster/hosts.yaml remove-node.yml --extra-vars &amp;quot;node=node4&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>创建 service account</title>
+      <link>https://w3xse7en.github.io/k8s_local/40_service_account/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://w3xse7en.github.io/k8s_local/40_service_account/</guid>
+      <description>&lt;hr&gt;
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.auroria.io/kubernetes-ci-cd-service-account-setup/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Setting up a Kubernetes CI/CD Service Account&lt;/a&gt;&lt;/p&gt;
+&lt;br/&gt;
+&lt;hr&gt;
+&lt;ul&gt;
+&lt;li&gt;场景&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;权限划分，&lt;code&gt;cicd&lt;/code&gt;限定&lt;code&gt;namespace=dev&lt;/code&gt;使用&lt;code&gt;kubectl apply -f&lt;/code&gt;部署服务&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;创建 &lt;code&gt;namespace&lt;/code&gt; &lt;code&gt;dev&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;cat &amp;lt;&amp;lt;EOF | kubectl apply -f -
+{
+  &amp;quot;apiVersion&amp;quot;: &amp;quot;v1&amp;quot;,
+  &amp;quot;kind&amp;quot;: &amp;quot;Namespace&amp;quot;,
+  &amp;quot;metadata&amp;quot;: {
+    &amp;quot;name&amp;quot;: &amp;quot;dev&amp;quot;,
+    &amp;quot;labels&amp;quot;: {
+      &amp;quot;name&amp;quot;: &amp;quot;dev&amp;quot;
+    }
+  }
+}
+EOF
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;创建-service-account-cicd-user&#34;&gt;创建 &lt;code&gt;service account&lt;/code&gt; &lt;code&gt;cicd-user&lt;/code&gt;&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;# 该脚本依赖 jq 组件
+yum install jq -y
+
+# [可修改]
+SERVICE_ACCOUNT_NAME=&amp;quot;cicd-user&amp;quot;
+
+# [可修改]
+NAMESPACE=&amp;quot;dev&amp;quot;
+
+# [可修改]
+TARGET_FOLDER=&amp;quot;/home/k8s/kube&amp;quot;
+
+kubectl create sa &amp;quot;${SERVICE_ACCOUNT_NAME}&amp;quot; --namespace &amp;quot;${NAMESPACE}&amp;quot;
+
+mkdir -p &amp;quot;${TARGET_FOLDER}&amp;quot;
+
+SECRET_NAME=$(kubectl get sa &amp;quot;${SERVICE_ACCOUNT_NAME}&amp;quot; --namespace=&amp;quot;${NAMESPACE}&amp;quot; -o json | jq -r .secrets[].name)
+
+kubectl get secret --namespace &amp;quot;${NAMESPACE}&amp;quot; &amp;quot;${SECRET_NAME}&amp;quot; -o json | jq -r &#39;.data[&amp;quot;ca.crt&amp;quot;]&#39; | base64 --decode &amp;gt; &amp;quot;${TARGET_FOLDER}/ca.crt&amp;quot;
+
+USER_TOKEN=$(kubectl get secret --namespace &amp;quot;${NAMESPACE}&amp;quot; &amp;quot;${SECRET_NAME}&amp;quot; -o json | jq -r &#39;.data[&amp;quot;token&amp;quot;]&#39; | base64 --decode)
+
+KUBECFG_FILE_NAME=&amp;quot;${TARGET_FOLDER}/k8s-${SERVICE_ACCOUNT_NAME}-${NAMESPACE}-conf&amp;quot;
+
+context=$(kubectl config current-context)
+
+CLUSTER_NAME=$(kubectl config get-contexts &amp;quot;$context&amp;quot; | awk &#39;{print $3}&#39; | tail -n 1)
+
+ENDPOINT=$(kubectl config view \
+-o jsonpath=&amp;quot;{.clusters[?(@.name == \&amp;quot;${CLUSTER_NAME}\&amp;quot;)].cluster.server}&amp;quot;)
+
+kubectl config set-cluster &amp;quot;${CLUSTER_NAME}&amp;quot; \
+--kubeconfig=&amp;quot;${KUBECFG_FILE_NAME}&amp;quot; \
+--server=&amp;quot;${ENDPOINT}&amp;quot; \
+--certificate-authority=&amp;quot;${TARGET_FOLDER}/ca.crt&amp;quot; \
+--embed-certs=true
+
+kubectl config set-credentials \
+&amp;quot;${SERVICE_ACCOUNT_NAME}-${NAMESPACE}-${CLUSTER_NAME}&amp;quot; \
+--kubeconfig=&amp;quot;${KUBECFG_FILE_NAME}&amp;quot; \
+--token=&amp;quot;${USER_TOKEN}&amp;quot;
+
+
+kubectl config set-context \
+&amp;quot;${SERVICE_ACCOUNT_NAME}-${NAMESPACE}-${CLUSTER_NAME}&amp;quot; \
+--kubeconfig=&amp;quot;${KUBECFG_FILE_NAME}&amp;quot; \
+--cluster=&amp;quot;${CLUSTER_NAME}&amp;quot; \
+--user=&amp;quot;${SERVICE_ACCOUNT_NAME}-${NAMESPACE}-${CLUSTER_NAME}&amp;quot; \
+--namespace=&amp;quot;${NAMESPACE}&amp;quot;
+
+kubectl config use-context &amp;quot;${SERVICE_ACCOUNT_NAME}-${NAMESPACE}-${CLUSTER_NAME}&amp;quot; \
+--kubeconfig=&amp;quot;${KUBECFG_FILE_NAME}&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;为-cicd-user-配置权限&#34;&gt;为 &lt;code&gt;cicd-user&lt;/code&gt; 配置权限&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;cat &amp;lt;&amp;lt;EOF | kubectl apply -f -
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  name: &amp;quot;${SERVICE_ACCOUNT_NAME}-role&amp;quot;
+  namespace: &amp;quot;${NAMESPACE}&amp;quot;
+rules:
+- apiGroups:
+  - &amp;quot;&amp;quot;
+  - apps
+  - extensions
+  resources:
+  - &#39;*&#39;
+  verbs:
+  - &#39;*&#39;
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  name: &amp;quot;${SERVICE_ACCOUNT_NAME}-role&amp;quot;
+  namespace: &amp;quot;${NAMESPACE}&amp;quot;
+subjects:
+  - kind: ServiceAccount
+    name: &amp;quot;${SERVICE_ACCOUNT_NAME}&amp;quot;
+roleRef:
+  kind: Role
+  name: &amp;quot;${SERVICE_ACCOUNT_NAME}-role&amp;quot;
+  apiGroup: rbac.authorization.k8s.io
+EOF
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;其他实例使用-cicd-user&#34;&gt;其他实例使用 &lt;code&gt;cicd-user&lt;/code&gt;&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;将&lt;code&gt;${TARGET_FOLDER}&lt;/code&gt;生成的&lt;code&gt;k8s-cicd-user-dev-conf&lt;/code&gt;文件&lt;code&gt;copy&lt;/code&gt;至其他实例&lt;code&gt;~/.kube&lt;/code&gt;路径下改名为&lt;code&gt;config&lt;/code&gt;使用&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;alert alert-warning&#34;&gt;
+  &lt;div&gt;
+    &lt;p&gt;注意查看&lt;code&gt;k8s-cicd-user-dev-conf&lt;/code&gt;里&lt;code&gt;cluster server&lt;/code&gt;地址是否合法&lt;/p&gt;
+&lt;p&gt;遇到证书ip问题请查看&lt;a href=&#34;https://w3xse7en.github.io/k8s_local/999_qa/#kubectl-get-nodes-%E8%AF%81%E4%B9%A6ip%E9%97%AE%E9%A2%98&#34;&gt;kubectl get pods 证书ip问题&lt;/a&gt;&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;br/&gt;
+&lt;hr&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>solve k8s problem</title>
+      <link>https://w3xse7en.github.io/k8s_local/999_qa/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://w3xse7en.github.io/k8s_local/999_qa/</guid>
+      <description>&lt;hr&gt;
+&lt;h2 id=&#34;介绍&#34;&gt;介绍&lt;/h2&gt;
+&lt;p&gt;记录在使用k8s过程中所遇到的问题，以及解决方案&lt;/p&gt;
+&lt;br/&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;kubectl-get-nodes-证书ip问题&#34;&gt;kubectl get nodes 证书ip问题&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;Unable to connect to the server: x509: certificate is valid for 10.233.0.1, 172.19.157.57, 172.19.157.57, 10.233.0.1, 127.0.0.1, 172.19.157.57, 172.19.252.199, not 47.xxx.xx.x
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;场景&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;阿里云安装，全部使用私网地址，创建&lt;code&gt;service account&lt;/code&gt;后使用&lt;code&gt;kubectl&lt;/code&gt;从公网访问报错&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;解决方案
+&lt;code&gt;supplementary_addresses_in_ssl_keys&lt;/code&gt; 添加公网地址&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;vi inventory/mycluster/group_vars/k8s-cluster/k8s-cluster.yml
+
+supplementary_addresses_in_ssl_keys: [47.xxx.xx.x]
+
+# 重新安装部署，使配置生效
+ansible-playbook -i inventory/mycluster/hosts.yaml  --become --become-user=root cluster.yml
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;参考&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a href=&#34;https://stackoverflow.com/a/55065519&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Invalid x509 certificate for kubernetes master&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;经验证&lt;code&gt;kubespray v2.14.1&lt;/code&gt;不需要执行&lt;code&gt;rm /etc/kubernetes/pki/apiserver.*&lt;/code&gt;&lt;/p&gt;
+&lt;br/&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;systemanonymous-无法访问-k8s-dashboard&#34;&gt;system:anonymous 无法访问 k8s dashboard&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;`services &amp;quot;https:kubernetes-dashboard:&amp;quot; is forbidden: User &amp;quot;system:anonymous&amp;quot; cannot get services/proxy in the namespace &amp;quot;kube-system&amp;quot;`
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;解决方案
+添加&lt;code&gt;system:anonymous&lt;/code&gt;的访问权限&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;cat &amp;lt;&amp;lt;EOF | kubectl apply -f -
+kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: kubernetes-dashboard-anonymous
@@ -595,9 +933,14 @@ roleRef:
 subjects:
 - kind: User
   name: system:anonymous
+EOF
 &lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;kubectl apply -f dashboard-access.yaml
-&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;参考&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a href=&#34;https://stackoverflow.com/a/57830002&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Enable Access for Kubernetes Dashboard via external VIP or Floating IP&lt;/a&gt;&lt;/p&gt;
+&lt;br/&gt;
+&lt;hr&gt;
 </description>
     </item>
     
