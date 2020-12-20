@@ -8,7 +8,7 @@
   
   
   
-  <meta name="generator" content="Wowchemy 5.0.0-beta.0 for Hugo">
+  <meta name="generator" content="Wowchemy 5.0.0-beta.1 for Hugo">
   
 
   
@@ -30,7 +30,7 @@
   
     
   
-  <meta name="description" content=" 目录   ">
+  <meta name="description" content="目录  Redis有哪些数据结构 缓存  缓存穿透/击穿 缓存雪崩 热点缓存   布隆过滤器(Bloom Filter)  概念 原理 缺点   分布式锁  为什么要用分布式锁 简单的分布式锁实现 RedLock 个人想法   持久化  RDB优缺点 AOF优缺点 同步机制   高可用/集群 参考    Redis有哪些数据结构 String、Hash、List、Set、SortedSet。">
 
   
   <link rel="alternate" hreflang="zh" href="https://w3xse7en.github.io/docs/sql/redis/">
@@ -234,7 +234,7 @@
   
   
   
-  <link rel="stylesheet" href="/css/wowchemy.css">
+  <link rel="stylesheet" href="/css/wowchemy.min.fff9d345339f94bb91cf929bf1cbc4d4.css">
 
   
 
@@ -273,7 +273,7 @@
   <meta property="og:site_name" content="w3xse7en">
   <meta property="og:url" content="https://w3xse7en.github.io/docs/sql/redis/">
   <meta property="og:title" content="redis | w3xse7en">
-  <meta property="og:description" content=" 目录   "><meta property="og:image" content="https://w3xse7en.github.io/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_2.png">
+  <meta property="og:description" content="目录  Redis有哪些数据结构 缓存  缓存穿透/击穿 缓存雪崩 热点缓存   布隆过滤器(Bloom Filter)  概念 原理 缺点   分布式锁  为什么要用分布式锁 简单的分布式锁实现 RedLock 个人想法   持久化  RDB优缺点 AOF优缺点 同步机制   高可用/集群 参考    Redis有哪些数据结构 String、Hash、List、Set、SortedSet。"><meta property="og:image" content="https://w3xse7en.github.io/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_2.png">
   <meta property="twitter:image" content="https://w3xse7en.github.io/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_2.png"><meta property="og:locale" content="zh">
   
     
@@ -513,13 +513,17 @@
   
   
   
+
   
-    
+  
     
 
     
-    
-  
+      
+
+      
+      
+      
 
 
   
@@ -674,6 +678,8 @@
     
       </ul>
     
+
+  
 </nav>
 
     </div>
@@ -685,7 +691,42 @@
         <li><a href="#" id="back_to_top" class="docs-toc-title">在本页</a></li>
       </ul>
 
-      <nav id="TableOfContents"></nav>
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#redis有哪些数据结构">Redis有哪些数据结构</a></li>
+    <li><a href="#缓存">缓存</a>
+      <ul>
+        <li><a href="#缓存穿透击穿">缓存穿透/击穿</a></li>
+        <li><a href="#缓存雪崩">缓存雪崩</a></li>
+        <li><a href="#热点缓存">热点缓存</a></li>
+      </ul>
+    </li>
+    <li><a href="#布隆过滤器bloom-filter">布隆过滤器(Bloom Filter)</a>
+      <ul>
+        <li><a href="#概念">概念</a></li>
+        <li><a href="#原理">原理</a></li>
+        <li><a href="#缺点">缺点</a></li>
+      </ul>
+    </li>
+    <li><a href="#分布式锁">分布式锁</a>
+      <ul>
+        <li><a href="#为什么要用分布式锁">为什么要用分布式锁</a></li>
+        <li><a href="#简单的分布式锁实现">简单的分布式锁实现</a></li>
+        <li><a href="#redlock">RedLock</a></li>
+        <li><a href="#个人想法">个人想法</a></li>
+      </ul>
+    </li>
+    <li><a href="#持久化">持久化</a>
+      <ul>
+        <li><a href="#rdb优缺点">RDB优缺点</a></li>
+        <li><a href="#aof优缺点">AOF优缺点</a></li>
+        <li><a href="#同步机制">同步机制</a></li>
+      </ul>
+    </li>
+    <li><a href="#高可用集群">高可用/集群</a></li>
+    <li><a href="#参考">参考</a></li>
+  </ul>
+</nav>
 
       
     </div>
@@ -701,7 +742,218 @@
           <div class="article-style">
             <hr>
 <h2>目录</h2>
-<nav id="TableOfContents"></nav>
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#redis有哪些数据结构">Redis有哪些数据结构</a></li>
+    <li><a href="#缓存">缓存</a>
+      <ul>
+        <li><a href="#缓存穿透击穿">缓存穿透/击穿</a></li>
+        <li><a href="#缓存雪崩">缓存雪崩</a></li>
+        <li><a href="#热点缓存">热点缓存</a></li>
+      </ul>
+    </li>
+    <li><a href="#布隆过滤器bloom-filter">布隆过滤器(Bloom Filter)</a>
+      <ul>
+        <li><a href="#概念">概念</a></li>
+        <li><a href="#原理">原理</a></li>
+        <li><a href="#缺点">缺点</a></li>
+      </ul>
+    </li>
+    <li><a href="#分布式锁">分布式锁</a>
+      <ul>
+        <li><a href="#为什么要用分布式锁">为什么要用分布式锁</a></li>
+        <li><a href="#简单的分布式锁实现">简单的分布式锁实现</a></li>
+        <li><a href="#redlock">RedLock</a></li>
+        <li><a href="#个人想法">个人想法</a></li>
+      </ul>
+    </li>
+    <li><a href="#持久化">持久化</a>
+      <ul>
+        <li><a href="#rdb优缺点">RDB优缺点</a></li>
+        <li><a href="#aof优缺点">AOF优缺点</a></li>
+        <li><a href="#同步机制">同步机制</a></li>
+      </ul>
+    </li>
+    <li><a href="#高可用集群">高可用/集群</a></li>
+    <li><a href="#参考">参考</a></li>
+  </ul>
+</nav>
+<hr>
+<h2 id="redis有哪些数据结构">Redis有哪些数据结构</h2>
+<p>String、Hash、List、Set、SortedSet。</p>
+<br>
+<hr>
+<h2 id="缓存">缓存</h2>
+<h3 id="缓存穿透击穿">缓存穿透/击穿</h3>
+<ul>
+<li>查询一个数据库中不存在的数据，请求会越过Redis，直接请求DB。</li>
+</ul>
+<p>做好防高频请求
+非正常用户量的请求，10s内发起1000次请求
+对于此请求的ip进行验证码校验，或者封禁处理</p>
+<p>接口参数合法性校验
+请求id需要&gt;=0,分页每页最多100条等</p>
+<p>将此key对应的value设置为一个默认的值，并设置相对短的失效时间例如30分钟</p>
+<p>使用<a href="https://w3xse7en.github.io/docs/sql/redis/#布隆过滤器(Bloom Filter)">布隆过滤器(Bloom Filter)</a></p>
+<h3 id="缓存雪崩">缓存雪崩</h3>
+<ul>
+<li>大量Key同时失效，又有大量请求同时到来，导致请求冲向DB，DB最终卡死。</li>
+</ul>
+<p>处理缓存雪崩，在批量往Redis存数据的时候，把每个Key的失效时间都加个随机值，这样可以保证Key不会在同一时间大面积失效</p>
+<h3 id="热点缓存">热点缓存</h3>
+<ul>
+<li>某个Key过热，压力集中到一台Redis上</li>
+</ul>
+<p>使用多级缓存机制，将过热的Key分散到各个服务器的本地缓存中，降低过热Key所在的Redis节点的压力，其他的Key依旧由分布式Redis集群承担</p>
+<br>
+<hr>
+<h2 id="布隆过滤器bloom-filter">布隆过滤器(Bloom Filter)</h2>
+<h3 id="概念">概念</h3>
+<p>布隆过滤器可以用于检索一个元素是否在一个集合中。它的优点是空间效率和查询时间都远远超过一般的算法，缺点是有一定的误识别率和删除困难。</p>
+<h3 id="原理">原理</h3>
+<p>布隆过滤器的原理是，当一个元素被加入集合时，通过K个散列函数将这个元素映射成一个位数组中的K个点，把它们置为1。</p>
+<p>检索时，我们只要看看这些点是不是都是1就（大约）知道集合中有没有它了</p>
+<p>如果这些点有任何一个0，则被检元素一定不在</p>
+<p>如果都是1，则被检元素很可能在。这就是布隆过滤器的基本思想。</p>
+<p>Bloom Filter跟单哈希函数Bit-Map不同之处在于：Bloom Filter使用了k个哈希函数，每个字符串跟k个bit对应。从而降低了冲突的概率。</p>
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure id="figure-bloom-filter">
+
+
+  <a data-fancybox="" href="/media/redis/Bloom-Filter.jpg" data-caption="Bloom Filter">
+
+
+  <img src="/media/redis/Bloom-Filter.jpg" alt=""  >
+</a>
+
+
+  
+  
+  <figcaption>
+    Bloom Filter
+  </figcaption>
+
+
+</figure>
+
+<h3 id="缺点">缺点</h3>
+<p>bloom filter之所以能做到在时间和空间上的效率比较高，是因为牺牲了判断的准确率、删除的便利性</p>
+<ul>
+<li>
+<p>存在误判，可能要查到的元素并没有在容器中，但是hash之后得到的k个位置上值都是1。如果bloom filter中存储的是黑名单，那么可以通过建立一个白名单来存储可能会误判的元素。</p>
+</li>
+<li>
+<p>删除困难。一个放入容器的元素映射到bit数组的k个位置上是1，删除的时候不能简单的直接置为0，可能会影响其他元素的判断。可以采用Counting Bloom Filter</p>
+</li>
+</ul>
+<br>
+<hr>
+<h2 id="分布式锁">分布式锁</h2>
+<h3 id="为什么要用分布式锁">为什么要用分布式锁</h3>
+<ul>
+<li>Efficiency（效率） 在分布式系统中，避免不同节点重复做相同的工作，节约计算机资源。</li>
+<li>Correctness（正确) 避免不同节点并发处理同一段数据时，相互干扰结果。例如对一个订单同时进行不同流程，最终订单状态出现混乱</li>
+</ul>
+<h3 id="简单的分布式锁实现">简单的分布式锁实现</h3>
+<p>单节点Redis</p>
+<p>简单实现，可以使用 <code>SET key value PX milliseoncds NX</code></p>
+<p>这个方案会引申出两个问题</p>
+<ol>
+<li>
+<p>锁从master复制到slave的时候挂了，会出现同一资源被多个client加锁。</p>
+</li>
+<li>
+<p>执行时间超过了锁的过期时间。很难保证任务一定能在锁的过期时间内完成。</p>
+</li>
+</ol>
+<h3 id="redlock">RedLock</h3>
+<p>Redlock算法是Antirez在单Redis节点基础上引入的高可用模式。</p>
+<p>在Redis的分布式环境中，我们假设有N个完全互相独立的Redis节点，在N个Redis实例上使用与在Redis单实例下相同方法获取锁和释放锁。</p>
+<p>现在假设有5个Redis主节点(大于3的奇数个)，这样基本保证他们不会同时都宕掉。</p>
+<p>获取锁和释放锁的过程中，客户端会执行以下操作:</p>
+<p>1.获取当前Unix时间，以毫秒为单位</p>
+<p>2.依次尝试从5个实例，使用相同的key和具有唯一性的value获取锁当向Redis请求获取锁时，客户端应该设置一个网络连接和响应超时时间，这个超时时间应该小于锁的失效时间，这样可以避免客户端死等</p>
+<p>3.客户端使用当前时间减去开始获取锁时间就得到获取锁使用的时间。当且仅当从半数以上的Redis节点取到锁，并且使用的时间小于锁失效时间时，锁才算获取成功</p>
+<p>4.如果取到了锁，key的真正有效时间等于有效时间减去获取锁所使用的时间，这个很重要</p>
+<p>5.如果因为某些原因，获取锁失败（没有在半数以上实例取到锁或者取锁时间已经超过了有效时间），客户端应该在所有的Redis实例上进行解锁，无论Redis实例是否加锁成功，因为可能服务端响应消息丢失了但是实际成功了，毕竟多释放一次也不会有问题</p>
+<h3 id="个人想法">个人想法</h3>
+<p>能不用分布式锁就不用分布式锁，避免引入新的复杂度，对于需要使用锁的场景，优先基于中间件原子性的机制操作。</p>
+<p>MySQL数据库，加上version字段，强制要求所有update语句带上<code>set version=version+1 where version={old_version}</code></p>
+<p>可能重复insert的场景，对合理的业务id加上唯一索引，由数据库自有机制保证不会有重复数据插入</p>
+<p>秒杀，统计等场景，使用Redis的incr,decr语句来替代分布式锁操作库存</p>
+<br>
+<hr>
+<h2 id="持久化">持久化</h2>
+<ul>
+<li>
+<p>RDB 持久化可以在指定的时间间隔内生成数据集的时间点快照（point-in-time snapshot）。（适合冷备）</p>
+</li>
+<li>
+<p>AOF 持久化记录服务器执行的所有写操作命令，并在服务器启动时，通过重新执行这些命令来还原数据集。
+AOF 文件中的命令全部以 Redis 协议的格式来保存，新命令会被追加到文件的末尾。（适合热备）</p>
+</li>
+</ul>
+<p>Redis 还可以在后台对 AOF 文件进行重写（rewrite），使得 AOF 文件的体积不会超出保存数据集状态所需的实际大小。</p>
+<p>Redis 还可以同时使用 AOF 持久化和 RDB 持久化。
+在这种情况下， 当 Redis 重启时， 它会优先使用 AOF 文件来还原数据集， 因为 AOF 文件保存的数据集通常比 RDB 文件所保存的数据集更完整。</p>
+<p>但实际上持久化会对Redis的性能造成非常严重的影响，如果一定需要保存数据，那么数据就不应该依靠缓存来保存，建议使用其他方式如数据库。所以Redis的持久化意义不大。</p>
+<h3 id="rdb优缺点">RDB优缺点</h3>
+<ul>
+<li>优点：</li>
+</ul>
+<p>他会生成多个数据文件，每个数据文件分别都代表了某一时刻Redis里面的数据，这种方式，适合做冷备。</p>
+<p>RDB对Redis的性能影响非常小，是因为在同步数据的时候他只是fork了一个子进程去做持久化的，而且他在数据恢复的时候速度比AOF来的快。</p>
+<ul>
+<li>缺点：</li>
+</ul>
+<p>RDB都是快照文件，都是默认五分钟甚至更久的时间才会生成一次，这意味着你这次同步到下次同步这中间五分钟的数据都很可能全部丢失掉。</p>
+<p>RDB在生成数据快照的时候，如果文件很大，客户端可能会暂停几毫秒甚至几秒。</p>
+<h3 id="aof优缺点">AOF优缺点</h3>
+<ul>
+<li>优点：</li>
+</ul>
+<p>RDB五分钟一次生成快照，但是AOF是一秒一次去通过一个后台的线程fsync操作，那最多丢这一秒的数据。</p>
+<p>AOF在对日志文件进行操作的时候是以append-only的方式去写的，他只是追加的方式写数据，自然就少了很多磁盘寻址的开销了，写入性能惊人，文件也不容易破损。</p>
+<p>AOF的日志是通过一个叫非常可读的方式记录的，这样的特性就适合做灾难性数据误删除的紧急恢复了，比如公司的实习生通过flushall清空了所有的数据，只要这个时候后台重写还没发生，你马上拷贝一份AOF日志文件，把最后一条flushall命令删了就完事了。</p>
+<ul>
+<li>缺点：</li>
+</ul>
+<p>一样的数据，AOF文件比RDB还要大。</p>
+<p>AOF开启后，Redis支持写的QPS会比RDB支持写的要低。</p>
+<h3 id="同步机制">同步机制</h3>
+<p>Redis可以使用主从同步，从从同步。</p>
+<p>第一次同步时，主节点做一次bgsave，并同时将后续修改操作记录到内存buffer，待完成后将RDB文件全量同步到复制节点，复制节点接受完成后将RDB镜像加载到内存。</p>
+<p>加载完成后，再通知主节点将期间修改的操作记录同步到复制节点进行重放就完成了同步过程。</p>
+<p>后续的增量数据通过AOF日志同步即可，有点类似数据库的binlog。</p>
+<br>
+<hr>
+<h2 id="高可用集群">高可用/集群</h2>
+<p>Redis Sentinal 着眼于高可用，在master宕机时会自动将slave提升为master，继续提供服务。</p>
+<p>Redis Cluster 着眼于扩展性，在单个redis内存不足时，使用Cluster进行分片存储。</p>
+<br/>
+<hr>
+<h2 id="参考">参考</h2>
+<p><a href="https://juejin.cn/post/6844904039218429960" target="_blank" rel="noopener">基于Redis的分布式锁和Redlock算法</a></p>
+<p><a href="https://github.com/javagrowing/JGrowing/blob/master/%E5%88%86%E5%B8%83%E5%BC%8F/%E5%86%8D%E6%9C%89%E4%BA%BA%E9%97%AE%E4%BD%A0%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%EF%BC%8C%E8%BF%99%E7%AF%87%E6%96%87%E7%AB%A0%E6%89%94%E7%BB%99%E4%BB%96.md" target="_blank" rel="noopener">再有人问你分布式锁，这篇文章扔给他</a></p>
 <hr>
 
           </div>
@@ -766,7 +1018,7 @@
     
     
     Published with
-    <a href="https://wowchemy.com" target="_blank" rel="noopener">Wowchemy</a>  —
+    <a href="https://wowchemy.com/?utm_campaign=poweredby" target="_blank" rel="noopener">Wowchemy</a>  —
     the free, <a href="https://github.com/wowchemy/wowchemy-hugo-modules" target="_blank" rel="noopener">
     open source</a> website builder that empowers creators.
     
@@ -921,12 +1173,13 @@
     
     
     
+    
       
     
     
     
     
-    <script src="/js/wowchemy.min.59419d2c9809de125013c581da371866.js"></script>
+    <script src="/js/wowchemy.min.76130252bc8c287b25144aa7a54dcd1f.js"></script>
 
     
 

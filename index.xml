@@ -147,6 +147,7 @@ Goroutine为什么没有ID号&lt;/p&gt;
 &lt;/ul&gt;
 &lt;p&gt;通常系统的进程数量都是有限制的，如果有大量的僵尸进程占用进程号，导致新的进程无法创建&lt;/p&gt;
 &lt;p&gt;在fork()/execve()过程中，假设子进程结束时父进程仍存在，而父进程fork()之前既没安装SIGCHLD信号处理函数调用waitpid()等待子进程结束，又没有显式忽略该信号，则子进程成为僵死进程，无法正常结束，此时即使是root身份kill -9也不能杀死僵死进程。&lt;/p&gt;
+&lt;p&gt;当我们寻求如何消灭系统中大量的僵尸进程时，答案就是把产生大量僵尸进程的那个元凶枪毙掉（通过kill发送SIGTERM或者SIGKILL信号）。枪毙了元凶进程之后，它产生的僵尸进程就变成了孤儿进程，这些孤儿进程会被init进程接管，init进程会wait()这些孤儿进程，释放它们占用的系统进程表中的资源。&lt;/p&gt;
 &lt;h3 id=&#34;进程上下文&#34;&gt;进程上下文&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;当一个进程在执行时,CPU的所有寄存器中的值、进程的状态以及堆栈中的内容被称为该进程的上下文。&lt;/strong&gt;&lt;/li&gt;
@@ -322,7 +323,218 @@ Goroutine为什么没有ID号&lt;/p&gt;
       <guid>https://w3xse7en.github.io/docs/sql/redis/</guid>
       <description>&lt;hr&gt;
 &lt;h2&gt;目录&lt;/h2&gt;
-&lt;nav id=&#34;TableOfContents&#34;&gt;&lt;/nav&gt;
+&lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#redis有哪些数据结构&#34;&gt;Redis有哪些数据结构&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#缓存&#34;&gt;缓存&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#缓存穿透击穿&#34;&gt;缓存穿透/击穿&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#缓存雪崩&#34;&gt;缓存雪崩&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#热点缓存&#34;&gt;热点缓存&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#布隆过滤器bloom-filter&#34;&gt;布隆过滤器(Bloom Filter)&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#概念&#34;&gt;概念&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#原理&#34;&gt;原理&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#缺点&#34;&gt;缺点&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#分布式锁&#34;&gt;分布式锁&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#为什么要用分布式锁&#34;&gt;为什么要用分布式锁&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#简单的分布式锁实现&#34;&gt;简单的分布式锁实现&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#redlock&#34;&gt;RedLock&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#个人想法&#34;&gt;个人想法&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#持久化&#34;&gt;持久化&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#rdb优缺点&#34;&gt;RDB优缺点&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#aof优缺点&#34;&gt;AOF优缺点&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#同步机制&#34;&gt;同步机制&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#高可用集群&#34;&gt;高可用/集群&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#参考&#34;&gt;参考&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;redis有哪些数据结构&#34;&gt;Redis有哪些数据结构&lt;/h2&gt;
+&lt;p&gt;String、Hash、List、Set、SortedSet。&lt;/p&gt;
+&lt;br&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;缓存&#34;&gt;缓存&lt;/h2&gt;
+&lt;h3 id=&#34;缓存穿透击穿&#34;&gt;缓存穿透/击穿&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;查询一个数据库中不存在的数据，请求会越过Redis，直接请求DB。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;做好防高频请求
+非正常用户量的请求，10s内发起1000次请求
+对于此请求的ip进行验证码校验，或者封禁处理&lt;/p&gt;
+&lt;p&gt;接口参数合法性校验
+请求id需要&amp;gt;=0,分页每页最多100条等&lt;/p&gt;
+&lt;p&gt;将此key对应的value设置为一个默认的值，并设置相对短的失效时间例如30分钟&lt;/p&gt;
+&lt;p&gt;使用&lt;a href=&#34;https://w3xse7en.github.io/docs/sql/redis/#布隆过滤器(Bloom Filter)&#34;&gt;布隆过滤器(Bloom Filter)&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;缓存雪崩&#34;&gt;缓存雪崩&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;大量Key同时失效，又有大量请求同时到来，导致请求冲向DB，DB最终卡死。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;处理缓存雪崩，在批量往Redis存数据的时候，把每个Key的失效时间都加个随机值，这样可以保证Key不会在同一时间大面积失效&lt;/p&gt;
+&lt;h3 id=&#34;热点缓存&#34;&gt;热点缓存&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;某个Key过热，压力集中到一台Redis上&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;使用多级缓存机制，将过热的Key分散到各个服务器的本地缓存中，降低过热Key所在的Redis节点的压力，其他的Key依旧由分布式Redis集群承担&lt;/p&gt;
+&lt;br&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;布隆过滤器bloom-filter&#34;&gt;布隆过滤器(Bloom Filter)&lt;/h2&gt;
+&lt;h3 id=&#34;概念&#34;&gt;概念&lt;/h3&gt;
+&lt;p&gt;布隆过滤器可以用于检索一个元素是否在一个集合中。它的优点是空间效率和查询时间都远远超过一般的算法，缺点是有一定的误识别率和删除困难。&lt;/p&gt;
+&lt;h3 id=&#34;原理&#34;&gt;原理&lt;/h3&gt;
+&lt;p&gt;布隆过滤器的原理是，当一个元素被加入集合时，通过K个散列函数将这个元素映射成一个位数组中的K个点，把它们置为1。&lt;/p&gt;
+&lt;p&gt;检索时，我们只要看看这些点是不是都是1就（大约）知道集合中有没有它了&lt;/p&gt;
+&lt;p&gt;如果这些点有任何一个0，则被检元素一定不在&lt;/p&gt;
+&lt;p&gt;如果都是1，则被检元素很可能在。这就是布隆过滤器的基本思想。&lt;/p&gt;
+&lt;p&gt;Bloom Filter跟单哈希函数Bit-Map不同之处在于：Bloom Filter使用了k个哈希函数，每个字符串跟k个bit对应。从而降低了冲突的概率。&lt;/p&gt;
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id=&#34;figure-bloom-filter&#34;&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/redis/Bloom-Filter.jpg&#34; data-caption=&#34;Bloom Filter&#34;&gt;
+
+
+  &lt;img src=&#34;https://w3xse7en.github.io/media/redis/Bloom-Filter.jpg&#34; alt=&#34;&#34;  &gt;
+&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Bloom Filter
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+&lt;h3 id=&#34;缺点&#34;&gt;缺点&lt;/h3&gt;
+&lt;p&gt;bloom filter之所以能做到在时间和空间上的效率比较高，是因为牺牲了判断的准确率、删除的便利性&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;存在误判，可能要查到的元素并没有在容器中，但是hash之后得到的k个位置上值都是1。如果bloom filter中存储的是黑名单，那么可以通过建立一个白名单来存储可能会误判的元素。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;删除困难。一个放入容器的元素映射到bit数组的k个位置上是1，删除的时候不能简单的直接置为0，可能会影响其他元素的判断。可以采用Counting Bloom Filter&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;br&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;分布式锁&#34;&gt;分布式锁&lt;/h2&gt;
+&lt;h3 id=&#34;为什么要用分布式锁&#34;&gt;为什么要用分布式锁&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Efficiency（效率） 在分布式系统中，避免不同节点重复做相同的工作，节约计算机资源。&lt;/li&gt;
+&lt;li&gt;Correctness（正确) 避免不同节点并发处理同一段数据时，相互干扰结果。例如对一个订单同时进行不同流程，最终订单状态出现混乱&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;简单的分布式锁实现&#34;&gt;简单的分布式锁实现&lt;/h3&gt;
+&lt;p&gt;单节点Redis&lt;/p&gt;
+&lt;p&gt;简单实现，可以使用 &lt;code&gt;SET key value PX milliseoncds NX&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;这个方案会引申出两个问题&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;锁从master复制到slave的时候挂了，会出现同一资源被多个client加锁。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;执行时间超过了锁的过期时间。很难保证任务一定能在锁的过期时间内完成。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;redlock&#34;&gt;RedLock&lt;/h3&gt;
+&lt;p&gt;Redlock算法是Antirez在单Redis节点基础上引入的高可用模式。&lt;/p&gt;
+&lt;p&gt;在Redis的分布式环境中，我们假设有N个完全互相独立的Redis节点，在N个Redis实例上使用与在Redis单实例下相同方法获取锁和释放锁。&lt;/p&gt;
+&lt;p&gt;现在假设有5个Redis主节点(大于3的奇数个)，这样基本保证他们不会同时都宕掉。&lt;/p&gt;
+&lt;p&gt;获取锁和释放锁的过程中，客户端会执行以下操作:&lt;/p&gt;
+&lt;p&gt;1.获取当前Unix时间，以毫秒为单位&lt;/p&gt;
+&lt;p&gt;2.依次尝试从5个实例，使用相同的key和具有唯一性的value获取锁当向Redis请求获取锁时，客户端应该设置一个网络连接和响应超时时间，这个超时时间应该小于锁的失效时间，这样可以避免客户端死等&lt;/p&gt;
+&lt;p&gt;3.客户端使用当前时间减去开始获取锁时间就得到获取锁使用的时间。当且仅当从半数以上的Redis节点取到锁，并且使用的时间小于锁失效时间时，锁才算获取成功&lt;/p&gt;
+&lt;p&gt;4.如果取到了锁，key的真正有效时间等于有效时间减去获取锁所使用的时间，这个很重要&lt;/p&gt;
+&lt;p&gt;5.如果因为某些原因，获取锁失败（没有在半数以上实例取到锁或者取锁时间已经超过了有效时间），客户端应该在所有的Redis实例上进行解锁，无论Redis实例是否加锁成功，因为可能服务端响应消息丢失了但是实际成功了，毕竟多释放一次也不会有问题&lt;/p&gt;
+&lt;h3 id=&#34;个人想法&#34;&gt;个人想法&lt;/h3&gt;
+&lt;p&gt;能不用分布式锁就不用分布式锁，避免引入新的复杂度，对于需要使用锁的场景，优先基于中间件原子性的机制操作。&lt;/p&gt;
+&lt;p&gt;MySQL数据库，加上version字段，强制要求所有update语句带上&lt;code&gt;set version=version+1 where version={old_version}&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;可能重复insert的场景，对合理的业务id加上唯一索引，由数据库自有机制保证不会有重复数据插入&lt;/p&gt;
+&lt;p&gt;秒杀，统计等场景，使用Redis的incr,decr语句来替代分布式锁操作库存&lt;/p&gt;
+&lt;br&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;持久化&#34;&gt;持久化&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;RDB 持久化可以在指定的时间间隔内生成数据集的时间点快照（point-in-time snapshot）。（适合冷备）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;AOF 持久化记录服务器执行的所有写操作命令，并在服务器启动时，通过重新执行这些命令来还原数据集。
+AOF 文件中的命令全部以 Redis 协议的格式来保存，新命令会被追加到文件的末尾。（适合热备）&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Redis 还可以在后台对 AOF 文件进行重写（rewrite），使得 AOF 文件的体积不会超出保存数据集状态所需的实际大小。&lt;/p&gt;
+&lt;p&gt;Redis 还可以同时使用 AOF 持久化和 RDB 持久化。
+在这种情况下， 当 Redis 重启时， 它会优先使用 AOF 文件来还原数据集， 因为 AOF 文件保存的数据集通常比 RDB 文件所保存的数据集更完整。&lt;/p&gt;
+&lt;p&gt;但实际上持久化会对Redis的性能造成非常严重的影响，如果一定需要保存数据，那么数据就不应该依靠缓存来保存，建议使用其他方式如数据库。所以Redis的持久化意义不大。&lt;/p&gt;
+&lt;h3 id=&#34;rdb优缺点&#34;&gt;RDB优缺点&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;优点：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;他会生成多个数据文件，每个数据文件分别都代表了某一时刻Redis里面的数据，这种方式，适合做冷备。&lt;/p&gt;
+&lt;p&gt;RDB对Redis的性能影响非常小，是因为在同步数据的时候他只是fork了一个子进程去做持久化的，而且他在数据恢复的时候速度比AOF来的快。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;缺点：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;RDB都是快照文件，都是默认五分钟甚至更久的时间才会生成一次，这意味着你这次同步到下次同步这中间五分钟的数据都很可能全部丢失掉。&lt;/p&gt;
+&lt;p&gt;RDB在生成数据快照的时候，如果文件很大，客户端可能会暂停几毫秒甚至几秒。&lt;/p&gt;
+&lt;h3 id=&#34;aof优缺点&#34;&gt;AOF优缺点&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;优点：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;RDB五分钟一次生成快照，但是AOF是一秒一次去通过一个后台的线程fsync操作，那最多丢这一秒的数据。&lt;/p&gt;
+&lt;p&gt;AOF在对日志文件进行操作的时候是以append-only的方式去写的，他只是追加的方式写数据，自然就少了很多磁盘寻址的开销了，写入性能惊人，文件也不容易破损。&lt;/p&gt;
+&lt;p&gt;AOF的日志是通过一个叫非常可读的方式记录的，这样的特性就适合做灾难性数据误删除的紧急恢复了，比如公司的实习生通过flushall清空了所有的数据，只要这个时候后台重写还没发生，你马上拷贝一份AOF日志文件，把最后一条flushall命令删了就完事了。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;缺点：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;一样的数据，AOF文件比RDB还要大。&lt;/p&gt;
+&lt;p&gt;AOF开启后，Redis支持写的QPS会比RDB支持写的要低。&lt;/p&gt;
+&lt;h3 id=&#34;同步机制&#34;&gt;同步机制&lt;/h3&gt;
+&lt;p&gt;Redis可以使用主从同步，从从同步。&lt;/p&gt;
+&lt;p&gt;第一次同步时，主节点做一次bgsave，并同时将后续修改操作记录到内存buffer，待完成后将RDB文件全量同步到复制节点，复制节点接受完成后将RDB镜像加载到内存。&lt;/p&gt;
+&lt;p&gt;加载完成后，再通知主节点将期间修改的操作记录同步到复制节点进行重放就完成了同步过程。&lt;/p&gt;
+&lt;p&gt;后续的增量数据通过AOF日志同步即可，有点类似数据库的binlog。&lt;/p&gt;
+&lt;br&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;高可用集群&#34;&gt;高可用/集群&lt;/h2&gt;
+&lt;p&gt;Redis Sentinal 着眼于高可用，在master宕机时会自动将slave提升为master，继续提供服务。&lt;/p&gt;
+&lt;p&gt;Redis Cluster 着眼于扩展性，在单个redis内存不足时，使用Cluster进行分片存储。&lt;/p&gt;
+&lt;br/&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://juejin.cn/post/6844904039218429960&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;基于Redis的分布式锁和Redlock算法&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/javagrowing/JGrowing/blob/master/%E5%88%86%E5%B8%83%E5%BC%8F/%E5%86%8D%E6%9C%89%E4%BA%BA%E9%97%AE%E4%BD%A0%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%EF%BC%8C%E8%BF%99%E7%AF%87%E6%96%87%E7%AB%A0%E6%89%94%E7%BB%99%E4%BB%96.md&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;再有人问你分布式锁，这篇文章扔给他&lt;/a&gt;&lt;/p&gt;
 &lt;hr&gt;
 </description>
     </item>
@@ -557,10 +769,10 @@ Goroutine为什么没有ID号&lt;/p&gt;
 &lt;figure &gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/os/asynchronous-io.png&#34; &gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/os/compare-five-io.png&#34; &gt;
 
 
-  &lt;img src=&#34;https://w3xse7en.github.io/media/os/asynchronous-io.png&#34; alt=&#34;&#34;  &gt;
+  &lt;img src=&#34;https://w3xse7en.github.io/media/os/compare-five-io.png&#34; alt=&#34;&#34;  &gt;
 &lt;/a&gt;
 
 
