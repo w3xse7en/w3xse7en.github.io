@@ -21,7 +21,16 @@
 &lt;h2&gt;目录&lt;/h2&gt;
 &lt;nav id=&#34;TableOfContents&#34;&gt;
   &lt;ul&gt;
-    &lt;li&gt;&lt;a href=&#34;#redis有哪些数据结构&#34;&gt;Redis有哪些数据结构&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#数据结构&#34;&gt;数据结构&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#redis内部存储结构&#34;&gt;Redis内部存储结构&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#string&#34;&gt;String&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#hash&#34;&gt;Hash&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#rehash&#34;&gt;ReHash&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#skiplist&#34;&gt;SkipList&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#高级数据结构&#34;&gt;高级数据结构&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
     &lt;li&gt;&lt;a href=&#34;#缓存&#34;&gt;缓存&lt;/a&gt;
       &lt;ul&gt;
         &lt;li&gt;&lt;a href=&#34;#缓存穿透击穿&#34;&gt;缓存穿透/击穿&lt;/a&gt;&lt;/li&gt;
@@ -51,13 +60,390 @@
         &lt;li&gt;&lt;a href=&#34;#同步机制&#34;&gt;同步机制&lt;/a&gt;&lt;/li&gt;
       &lt;/ul&gt;
     &lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#高可用集群&#34;&gt;高可用/集群&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#高可用集群&#34;&gt;高可用/集群&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#gossip协议&#34;&gt;Gossip协议&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#redis的分片机制&#34;&gt;Redis的分片机制&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#为什么rediscluster会设计成16384个槽呢&#34;&gt;为什么RedisCluster会设计成16384个槽呢？&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#redis数据增多了是该加内存还是加实例&#34;&gt;Redis数据增多了，是该加内存还是加实例？&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#集群脑裂&#34;&gt;集群脑裂&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
     &lt;li&gt;&lt;a href=&#34;#参考&#34;&gt;参考&lt;/a&gt;&lt;/li&gt;
   &lt;/ul&gt;
 &lt;/nav&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;redis有哪些数据结构&#34;&gt;Redis有哪些数据结构&lt;/h2&gt;
-&lt;p&gt;String、Hash、List、Set、SortedSet。&lt;/p&gt;
+&lt;br&gt;
+&lt;h2 id=&#34;数据结构&#34;&gt;数据结构&lt;/h2&gt;
+&lt;p&gt;String Hash List Set SortedSet。&lt;/p&gt;
+&lt;h3 id=&#34;redis内部存储结构&#34;&gt;Redis内部存储结构&lt;/h3&gt;
+&lt;p&gt;dictEntry&lt;/p&gt;
+&lt;p&gt;因为 Redis 是 KV 的数据库，它是通过 hashtable 实现的（我们把这个叫做外层的哈希）。&lt;/p&gt;
+&lt;p&gt;所以每个键值对都会有一个 dictEntry，里面指向了 key 和 value 的指针。next 指向下一个 dictEntry。源码如下：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;typedef struct dictEntry {
+    void *key;              //关键字
+    union {
+        void *val;
+        uint64_t u64;
+        int64_t s64;
+        double d;
+    } v;                    //val
+    struct dictEntry *next; //next
+} dictEntry;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;key 是字符串，但是 Redis 没有直接使用 C 的字符数组，而是存储在自定义的 SDS中。&lt;/p&gt;
+&lt;p&gt;value 既不是直接作为字符串存储，也不是直接存储在 SDS 中，而是存储在redisObject 中。&lt;/p&gt;
+&lt;p&gt;实际上五种常用的数据类型的任何一种，都是通过 redisObject 来存储的。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;typedef struct redisObject {
+    unsigned type:4; /* 对象的类型， 包括： OBJ_STRING、 OBJ_LIST、 OBJ_HASH、 OBJ_SET、 OBJ_ZSET */
+    unsigned encoding:4; /* 具体的数据结构 */
+    unsigned lru:LRU_BITS; /* 24 位， 对象最后一次被命令程序访问的时间， 与内存回收有关 */
+    int refcount; /* 引用计数。 当 refcount 为 0 的时候， 表示该对象已经不被任何对象引用， 则可以进行垃圾回收了*/
+    void *ptr; /* 指向对象实际的数据结构 */
+} robj;
+&lt;/code&gt;&lt;/pre&gt;
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/redis/redis_object.jpg&#34; &gt;
+
+
+  &lt;img src=&#34;https://w3xse7en.github.io/media/redis/redis_object.jpg&#34; alt=&#34;&#34;  &gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+&lt;h3 id=&#34;string&#34;&gt;String&lt;/h3&gt;
+&lt;p&gt;sds是在Redis中被广泛使用的字符串结构，它的全称是Simple Dynamic String。与其它语言环境中出现的字符串相比，它具有如下显著的特点：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;可动态扩展内存。sds表示的字符串其内容可以修改，也可以追加。在很多语言中字符串会分为mutable和immutable两种，显然sds属于mutable类型的。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;二进制安全（Binary Safe）。sds能存储任意二进制数据，而不仅仅是可打印字符。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;与传统的C语言字符串类型兼容。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;hash&#34;&gt;Hash&lt;/h3&gt;
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id=&#34;figure-hash链接法&#34;&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/redis/hash_dict_jg.png&#34; data-caption=&#34;Hash链接法&#34;&gt;
+
+
+  &lt;img src=&#34;https://w3xse7en.github.io/media/redis/hash_dict_jg.png&#34; alt=&#34;&#34;  &gt;
+&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Hash链接法
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+&lt;h3 id=&#34;rehash&#34;&gt;ReHash&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;为ht[1] 分配空间，这个哈希表的空间大小取决于要执行的操作， 以及ht[0]当前包含的键值对数量 （也即是ht[0].used属性的值）：
+&lt;ul&gt;
+&lt;li&gt;如果执行的是扩展操作， 那么 ht[1] 的大小为第一个大于等于 ht[0].used * 2 的 2^n （2 的 n 次方幂）；&lt;/li&gt;
+&lt;li&gt;如果执行的是收缩操作， 那么 ht[1] 的大小为第一个大于等于 ht[0].used 的 2^n 。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;将rehashidx 初始化为0 ，代表rehash 工作正式开始。&lt;/li&gt;
+&lt;li&gt;每次字典进行删除、查找、更新操作时， 会同时在两个hash表上进行（先查找ht[0], 如果没找到，再去查找ht[1]）。 进行添加操作时，会直接添加到ht[1]。&lt;/li&gt;
+&lt;li&gt;在进行每次增删改查操作时， 会同时把ht[0] 在rehashidx 索引上的所有键值对都rehash到ht[1]上， 完成后 rehashidx 加1.&lt;/li&gt;
+&lt;li&gt;当ht[0] 所有元素都被复制到ht[1]， 设置rehashidx 的值为-1 。&lt;/li&gt;
+&lt;li&gt;回收 ht[0]，将 ht[1] 设置为 ht[0] ， 并在 ht[1] 新创建一个空白哈希表， 为下一次 rehash 做准备。。&lt;/li&gt;
+&lt;/ol&gt;
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id=&#34;figure-rehash&#34;&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/redis/hash_hashtable_rehash.png&#34; data-caption=&#34;rehash&#34;&gt;
+
+
+  &lt;img src=&#34;https://w3xse7en.github.io/media/redis/hash_hashtable_rehash.png&#34; alt=&#34;&#34;  &gt;
+&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    rehash
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+&lt;h3 id=&#34;skiplist&#34;&gt;SkipList&lt;/h3&gt;
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id=&#34;figure-跳表&#34;&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/redis/ziplist_yl.png&#34; data-caption=&#34;跳表&#34;&gt;
+
+
+  &lt;img src=&#34;https://w3xse7en.github.io/media/redis/ziplist_yl.png&#34; alt=&#34;&#34;  &gt;
+&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    跳表
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id=&#34;figure-跳表查找过程&#34;&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/redis/skip_list_search.png&#34; data-caption=&#34;跳表查找过程&#34;&gt;
+
+
+  &lt;img src=&#34;https://w3xse7en.github.io/media/redis/skip_list_search.png&#34; alt=&#34;&#34;  &gt;
+&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    跳表查找过程
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+&lt;p&gt;跳表不要求上下相邻两层链表之间的节点个数有严格的对应关系，而是为每个节点随机出一个层数(level)。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;#define ZSKIPLIST_MAXLEVEL 32 
+#define ZSKIPLIST_P 0.25 
+
+int zslRandomLevel(void) {
+    int level = 1;
+    while ((random()&amp;amp;0xFFFF) &amp;lt; (ZSKIPLIST_P * 0xFFFF))
+        level += 1;
+    return (level&amp;lt;ZSKIPLIST_MAXLEVEL) ? level : ZSKIPLIST_MAXLEVEL;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;执行插入操作时计算随机数的过程，是一个很关键的过程，它对skiplist的统计特性有着很重要的影响。&lt;/p&gt;
+&lt;p&gt;这并不是一个普通的服从均匀分布的随机数，而是服从一定规则的：&lt;/p&gt;
+&lt;p&gt;首先，每个节点肯定都有第1层指针（每个节点都在第1层链表里）。
+如果一个节点有第i层(i&amp;gt;=1)指针（即节点已经在第1层到第i层链表中），那么它有第(i+1)层指针的概率为p。
+节点最大的层数不允许超过一个最大值，记为MaxLevel（Redis里是32）。
+比如，一个节点随机出的层数是3，那么就把它链入到第1层到第3层这三层链表中。&lt;/p&gt;
+&lt;p&gt;下图展示了如何通过一步步的插入操作从而形成一个skiplist的过程：&lt;/p&gt;
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id=&#34;figure-跳表插入过程&#34;&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/redis/skip_list_insert.png&#34; data-caption=&#34;跳表插入过程&#34;&gt;
+
+
+  &lt;img src=&#34;https://w3xse7en.github.io/media/redis/skip_list_insert.png&#34; alt=&#34;&#34;  &gt;
+&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    跳表插入过程
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id=&#34;figure-跳表&#34;&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/redis/skiplist.png&#34; data-caption=&#34;跳表&#34;&gt;
+
+
+  &lt;img src=&#34;https://w3xse7en.github.io/media/redis/skiplist.png&#34; alt=&#34;&#34;  &gt;
+&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    跳表
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+&lt;h4 id=&#34;为什么跳表层数上限是32&#34;&gt;为什么跳表层数上限是32？&lt;/h4&gt;
+&lt;p&gt;根据前面的随机算法当level[0]有2的64次方个节点时，才能达到32层，因此层数上限是32完全够用了。&lt;/p&gt;
+&lt;h4 id=&#34;为什么采用跳表而不使用哈希表或平衡树实现&#34;&gt;为什么采用跳表，而不使用哈希表或平衡树实现&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;skiplist和各种平衡树（如AVL、红黑树等）的元素是有序排列的，而哈希表不是有序的。因此，在哈希表上只能做单个key的查找，不适宜做范围查找。所谓范围查找，指的是查找那些大小在指定的两个值之间的所有节点。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;在做范围查找的时候，平衡树比skiplist操作要复杂。在平衡树上，我们找到指定范围的小值之后，还需要以中序遍历的顺序继续寻找其它不超过大值的节点。如果不对平衡树进行一定的改造，这里的中序遍历并不容易实现。而在skiplist上进行范围查找就非常简单，只需要在找到小值之后，对第1层链表进行若干步的遍历就可以实现。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;平衡树的插入和删除操作可能引发子树的调整，逻辑复杂，而skiplist的插入和删除只需要修改相邻节点的指针，操作简单又快速。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;从内存占用上来说，skiplist比平衡树更灵活一些。一般来说，平衡树每个节点包含2个指针（分别指向左右子树），而skiplist每个节点包含的指针数目平均为1/(1-p)，具体取决于参数p的大小。如果像Redis里的实现一样，取p=1/4，那么平均每个节点包含1.33个指针，比平衡树更有优势。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;高级数据结构&#34;&gt;高级数据结构&lt;/h3&gt;
+&lt;p&gt;Bitmaps Hyperloglogs GEO&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;HyperLogLog是用于计算唯一事物的概率数据结构（从技术上讲，这被称为估计集合的基数）。
+如果统计唯一项，项目越多，需要的内存就越多。因为需要记住过去已经看过的项，从而避免多次统计这些项。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;GEO可以将用户给定的地理位置（经度和纬度）信息储存起来，并对这些信息进行操作&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
 &lt;br&gt;
 &lt;hr&gt;
 &lt;h2 id=&#34;缓存&#34;&gt;缓存&lt;/h2&gt;
@@ -226,11 +612,96 @@ AOF 文件中的命令全部以 Redis 协议的格式来保存，新命令会被
 &lt;h2 id=&#34;高可用集群&#34;&gt;高可用/集群&lt;/h2&gt;
 &lt;p&gt;Redis Sentinal 着眼于高可用，在master宕机时会自动将slave提升为master，继续提供服务。&lt;/p&gt;
 &lt;p&gt;Redis Cluster 着眼于扩展性，在单个redis内存不足时，使用Cluster进行分片存储。&lt;/p&gt;
+&lt;h3 id=&#34;gossip协议&#34;&gt;Gossip协议&lt;/h3&gt;
+&lt;p&gt;Gossip算法又被称为反熵（Anti-Entropy），熵是物理学上的一个概念，代表杂乱无章，而反熵就是在杂乱无章中寻求一致&lt;/p&gt;
+&lt;p&gt;这充分说明了Gossip的特点：在一个有界网络中，每个节点都随机地与其他节点通信，经过一番杂乱无章的通信，最终所有节点的状态都会达成一致。&lt;/p&gt;
+&lt;p&gt;每个节点可能知道所有其他节点，也可能仅知道几个邻居节点，只要这些节可以通过网络连通，最终他们的状态都是一致的&lt;/p&gt;
+&lt;p&gt;Redis Gossip消息分为消息头和消息体，消息体一共有4类，其中MEET、PING和PONG消息都用clusterMsgDataGossip结构来表示。&lt;/p&gt;
+&lt;p&gt;随机周期性发送PING消息&lt;/p&gt;
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id=&#34;figure-gossip协议下一种可能的消息传播过程&#34;&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/redis/gossip.gif&#34; data-caption=&#34;Gossip协议下一种可能的消息传播过程&#34;&gt;
+
+
+  &lt;img src=&#34;https://w3xse7en.github.io/media/redis/gossip.gif&#34; alt=&#34;&#34;  &gt;
+&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    Gossip协议下一种可能的消息传播过程
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+&lt;h3 id=&#34;redis的分片机制&#34;&gt;Redis的分片机制&lt;/h3&gt;
+&lt;p&gt;Redis 集群没有使用一致性hash, 而是引入了哈希槽的概念。&lt;/p&gt;
+&lt;p&gt;Redis Cluster 采用虚拟哈希槽分区，所有的键根据哈希函数映射到 0 ~ 16383 整数槽内，每个key通过CRC16校验后对16384取模来决定放置哪个槽(Slot)，每一个节点负责维护一部分槽以及槽所映射的键值数据。&lt;/p&gt;
+&lt;p&gt;计算公式：slot = CRC16(key) &amp;amp; 16383。&lt;/p&gt;
+&lt;p&gt;这种结构很容易添加或者删除节点，并且无论是添加删除或者修改某一个节点，都不会造成集群不可用的状态。使用哈希槽的好处就在于可以方便的添加或移除节点。&lt;/p&gt;
+&lt;p&gt;当需要增加节点时，只需要把其他节点的某些哈希槽挪到新节点就可以了；&lt;/p&gt;
+&lt;p&gt;当需要移除节点时，只需要把移除节点上的哈希槽挪到其他节点就行了。&lt;/p&gt;
+&lt;h3 id=&#34;为什么rediscluster会设计成16384个槽呢&#34;&gt;为什么RedisCluster会设计成16384个槽呢？&lt;/h3&gt;
+&lt;p&gt;1.如果槽位为65536，发送心跳信息的消息头达8k，发送的心跳包过于庞大。&lt;/p&gt;
+&lt;p&gt;如上所述，在消息头中，最占空间的是 slots[CLUSTER_SLOTS/8]。 当槽位为65536时，这块的大小是: 65536÷8÷1024=8kb因为每秒钟，redis节点需要发送一定数量的ping消息作为心跳包，如果槽位为65536，这个ping消息的消息头太大了，浪费带宽。&lt;/p&gt;
+&lt;p&gt;2.redis的集群主节点数量基本不可能超过1000个。&lt;/p&gt;
+&lt;p&gt;如上所述，集群节点越多，心跳包的消息体内携带的数据越多。如果节点过1000个，也会导致网络拥堵。因此redis作者，不建议redis cluster节点数量超过1000个。 那么，对于节点数在1000以内的redis cluster集群，16384个槽位够用了。没有必要拓展到65536个。&lt;/p&gt;
+&lt;p&gt;3.槽位越小，节点少的情况下，压缩率高&lt;/p&gt;
+&lt;p&gt;Redis主节点的配置信息中，它所负责的哈希槽是通过一张bitmap的形式来保存的，在传输过程中，会对bitmap进行压缩，但是如果bitmap的填充率slots / N很高的话(N表示节点数)，bitmap的压缩率就很低。 如果节点数很少，而哈希槽数量很多的话，bitmap的压缩率就很低。&lt;/p&gt;
+&lt;h3 id=&#34;redis数据增多了是该加内存还是加实例&#34;&gt;Redis数据增多了，是该加内存还是加实例？&lt;/h3&gt;
+&lt;p&gt;这跟 Redis 的持久化机制有关系。&lt;/p&gt;
+&lt;p&gt;在使用 RDB 进行持久化时，Redis 会 fork 子进程来完成，fork 操作的用时和 Redis 的数据量是正相关的，而 fork 在执行时会阻塞主线程。&lt;/p&gt;
+&lt;p&gt;数据量越大，fork 操作造成的主线程阻塞的时间越长。所以，在使用 RDB 对 25GB 的数据进行持久化时，数据量较大，后台运行的子进程在 fork 创建时阻塞了主线程，于是就导致 Redis 响应变慢了。&lt;/p&gt;
+&lt;h3 id=&#34;集群脑裂&#34;&gt;集群脑裂&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;min-replicas-to-write 3
+min-replicas-max-lag 10
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;要求至少3个slave节点，且数据复制和同步的延迟不能超过10秒。否则master就拒绝读写，这样发生集群脑裂原先的master节点接收到写入请求就会拒绝&lt;/p&gt;
+&lt;h4 id=&#34;raft协议解决脑裂&#34;&gt;Raft协议解决脑裂&lt;/h4&gt;
+&lt;p&gt;选举安全性，即在一个任期内最多一个领导人被选出，如果有多余的领导人被选出，则被称为脑裂（brain split），如果出现脑裂会导致数据的丢失或者覆盖。&lt;/p&gt;
+&lt;p&gt;Raft通过下面两点保证了不会出现脑裂的情况；&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;一个节点某一任期内最多只能投一票；&lt;/li&gt;
+&lt;li&gt;只有获得大多数选票才能成为领导人；&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;通过增加约束避免了脑裂的情况出现，保证了同一时间集群中只有一个领导者。&lt;/p&gt;
+&lt;p&gt;但是当一个节点崩溃了一段时间，他的状态机已经落后其他节点很多，突然他重启恢复被选举为领导者，这个时候，客户端发来的请求再经由他复制给其他节点的状态机执行，就会出现集群状态机状态不一致的问题。&lt;/p&gt;
 &lt;br/&gt;
 &lt;hr&gt;
 &lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://itzones.cn/2020/06/30/Redis%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B9%8BHash/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Redis基本数据类型之Hash&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://juejin.cn/post/6844903446475177998&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Redis 为什么用跳表而不用平衡树？&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://juejin.cn/post/6844903433716105224&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Redis 内部数据结构详解 (2)——sds&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://itzones.cn/2020/07/11/Redis%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B9%8BZSet/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Redis基本数据类型之ZSet&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href=&#34;https://juejin.cn/post/6844904039218429960&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;基于Redis的分布式锁和Redlock算法&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href=&#34;https://github.com/javagrowing/JGrowing/blob/master/%E5%88%86%E5%B8%83%E5%BC%8F/%E5%86%8D%E6%9C%89%E4%BA%BA%E9%97%AE%E4%BD%A0%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%EF%BC%8C%E8%BF%99%E7%AF%87%E6%96%87%E7%AB%A0%E6%89%94%E7%BB%99%E4%BB%96.md&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;再有人问你分布式锁，这篇文章扔给他&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.jianshu.com/p/b52336ebfc43&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;漫谈Gossip协议与其在Redis Cluster中的实现&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://zhuanlan.zhihu.com/p/308641354&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;redis集群中的gossip协议&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://qyuan.top/2019/07/16/raft-1/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;分布式一致性协议之Raft(二)&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.bilibili.com/video/BV1Fi4y147ad&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;动画演示 raft 在脑裂发生之后仍然可以正常工作吗？&lt;/a&gt;&lt;/p&gt;
 &lt;hr&gt;
 </description>
     </item>

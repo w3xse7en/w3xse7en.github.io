@@ -30,16 +30,14 @@
   
     
   
-  <meta name="description" content="defer defer 是否会在panic后执行
-interface  writing generic algorithm hiding implementation detail providing interception points  interface拥有两个指针 一个指向类型 一个指向具体值
-slice 分配在连续的内存地址上
-元素类型一致，元素存储宽度一致
-空间大小固定，不能修改
-可以通过索引计算出元素对应存储的位置（只需要知道数组内存的起始位置和数据元素宽度即可）
-会出现数据溢出的问题（下标越界）
-slice扩容 如果新的slice大小是当前大小2倍以上，则大小增长为新大小
-如果当前slice cap 小于1024，按每次2倍增长，否则每次按当前大小1/4增长。直到增长的大小超过或等于新大小
-append的实现是在内存中将slice的array值赋值到新申请的array上">
+  <meta name="description" content="select go select思想来源于网络IO模型中的select，本质上也是IO多路复用，只不过这里的IO是基于channel而不是基于网络，同时go select也有一些自己不同的特性。
+特性:   每个case都必须是一个通信
+  所有channel表达式都会被求值
+  所有被发送的表达式都会被求值
+  如果任意某个通信可以进行，它就执行；其他被忽略。
+  如果有多个case都可以运行，select会随机公平地选出一个执行。其他不会执行。否则执行default子句(如果有)
+  如果没有default字句，select将阻塞，直到某个通信可以运行；Go不会重新对channel或值进行求值。
+  冷知识：select 使用 c语言 的AsyncCall2函数 该函数执行时间为 200ms">
 
   
   <link rel="alternate" hreflang="zh" href="https://w3xse7en.github.io/docs/lang/go/">
@@ -243,7 +241,7 @@ append的实现是在内存中将slice的array值赋值到新申请的array上">
   
   
   
-  <link rel="stylesheet" href="/css/wowchemy.min.fff9d345339f94bb91cf929bf1cbc4d4.css">
+  <link rel="stylesheet" href="/css/wowchemy.min.18a81fcba9746c6a8230584f1af667d5.css">
 
   
 
@@ -282,16 +280,14 @@ append的实现是在内存中将slice的array值赋值到新申请的array上">
   <meta property="og:site_name" content="w3xse7en">
   <meta property="og:url" content="https://w3xse7en.github.io/docs/lang/go/">
   <meta property="og:title" content="Go | w3xse7en">
-  <meta property="og:description" content="defer defer 是否会在panic后执行
-interface  writing generic algorithm hiding implementation detail providing interception points  interface拥有两个指针 一个指向类型 一个指向具体值
-slice 分配在连续的内存地址上
-元素类型一致，元素存储宽度一致
-空间大小固定，不能修改
-可以通过索引计算出元素对应存储的位置（只需要知道数组内存的起始位置和数据元素宽度即可）
-会出现数据溢出的问题（下标越界）
-slice扩容 如果新的slice大小是当前大小2倍以上，则大小增长为新大小
-如果当前slice cap 小于1024，按每次2倍增长，否则每次按当前大小1/4增长。直到增长的大小超过或等于新大小
-append的实现是在内存中将slice的array值赋值到新申请的array上"><meta property="og:image" content="https://w3xse7en.github.io/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_2.png">
+  <meta property="og:description" content="select go select思想来源于网络IO模型中的select，本质上也是IO多路复用，只不过这里的IO是基于channel而不是基于网络，同时go select也有一些自己不同的特性。
+特性:   每个case都必须是一个通信
+  所有channel表达式都会被求值
+  所有被发送的表达式都会被求值
+  如果任意某个通信可以进行，它就执行；其他被忽略。
+  如果有多个case都可以运行，select会随机公平地选出一个执行。其他不会执行。否则执行default子句(如果有)
+  如果没有default字句，select将阻塞，直到某个通信可以运行；Go不会重新对channel或值进行求值。
+  冷知识：select 使用 c语言 的AsyncCall2函数 该函数执行时间为 200ms"><meta property="og:image" content="https://w3xse7en.github.io/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_2.png">
   <meta property="twitter:image" content="https://w3xse7en.github.io/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_2.png"><meta property="og:locale" content="zh">
   
     
@@ -471,6 +467,10 @@ append的实现是在内存中将slice的array值赋值到新申请的array上">
     </div>
 
     <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+
+      
+      
+
       
       
       <li class="nav-item">
@@ -711,12 +711,26 @@ append的实现是在内存中将slice的array值赋值到新申请的array上">
 
       <nav id="TableOfContents">
   <ul>
+    <li><a href="#select">select</a>
+      <ul>
+        <li><a href="#特性">特性:</a></li>
+        <li><a href="#用途">用途</a></li>
+      </ul>
+    </li>
+    <li><a href="#context">context</a></li>
+  </ul>
+
+  <ul>
     <li><a href="#slice扩容">slice扩容</a></li>
     <li><a href="#mysql">mysql</a>
       <ul>
         <li><a href="#性能调优">性能调优</a></li>
       </ul>
     </li>
+  </ul>
+
+  <ul>
+    <li><a href="#参考">参考</a></li>
   </ul>
 </nav>
 
@@ -732,7 +746,50 @@ append的实现是在内存中将slice的array值赋值到新申请的array上">
           <h1>Go</h1>
 
           <div class="article-style">
-            <h1 id="defer">defer</h1>
+            <h2 id="select">select</h2>
+<p>go select思想来源于网络IO模型中的select，本质上也是IO多路复用，只不过这里的IO是基于channel而不是基于网络，同时go select也有一些自己不同的特性。</p>
+<h3 id="特性">特性:</h3>
+<ol>
+<li>
+<p>每个case都必须是一个通信</p>
+</li>
+<li>
+<p>所有channel表达式都会被求值</p>
+</li>
+<li>
+<p>所有被发送的表达式都会被求值</p>
+</li>
+<li>
+<p>如果任意某个通信可以进行，它就执行；其他被忽略。</p>
+</li>
+<li>
+<p>如果有多个case都可以运行，select会随机公平地选出一个执行。其他不会执行。否则执行default子句(如果有)</p>
+</li>
+<li>
+<p>如果没有default字句，select将阻塞，直到某个通信可以运行；Go不会重新对channel或值进行求值。</p>
+</li>
+</ol>
+<p>冷知识：select 使用 c语言 的AsyncCall2函数 该函数执行时间为 200ms</p>
+<p>问题：分别指定耗时50ms，200ms，3000ms，select打印最先完成的异步调用耗时，预想：50ms 先 200ms 后，结果：50ms 与 200ms 随机出现</p>
+<h3 id="用途">用途</h3>
+<ol>
+<li>
+<p>结合特性5,6，可以通过带 default 语句的 select 实现非阻塞读写</p>
+</li>
+<li>
+<p>结合特性2，每次 select 都会对所有通信表达式求值，因此可通过 time.After简洁实现定时器功能，并且定时任务可通过 done channel 停止</p>
+</li>
+<li>
+<p>结合特性4，如果多个case满足读写条件，select会随机选择一个语句执行</p>
+</li>
+</ol>
+<br>
+<h2 id="context">context</h2>
+<p>context.Context 是用来设置截止日期、同步信号，传递请求相关值的结构体。</p>
+<p>在 Goroutine 构成的树形结构中对信号进行同步以减少计算资源的浪费是 context.Context 的最大作用</p>
+<p>每一个 context.Context 都会从最顶层的 Goroutine 一层一层传递到最下层。context.Context 可以在上层 Goroutine 执行出现错误时，将信号及时同步给下层</p>
+<p>当最上层的 Goroutine 因为某些原因执行失败时，下层的 Goroutine 由于没有接收到这个信号所以会继续工作；但是当我们正确地使用 context.Context 时，就可以在下层及时停掉无用的工作以减少额外资源的消耗</p>
+<h1 id="defer">defer</h1>
 <p>defer 是否会在panic后执行</p>
 <h1 id="interface">interface</h1>
 <ol>
@@ -785,6 +842,10 @@ limit限定
 <p>hash算法使用aes hash hash值分为 高位hash和低位hash</p>
 <p>高位哈希值：是用来确定当前的bucket（桶）有没有所存储的数据的 bmap a bucket for a Go map</p>
 <p>低位哈希值：是用来确定，当前的数据存在了哪个bucket（桶）hmap a header for a go map</p>
+<h2 id="参考">参考</h2>
+<p><a href="https://wudaijun.com/2017/10/go-select/" target="_blank" rel="noopener">go select机制与常见的坑</a></p>
+<br/>
+<hr>
 
           </div>
 
@@ -1015,7 +1076,7 @@ limit限定
     
     
     
-    <script src="/js/wowchemy.min.76130252bc8c287b25144aa7a54dcd1f.js"></script>
+    <script src="/js/wowchemy.min.abf79d5abd9391a904c9b122bfe98c04.js"></script>
 
     
 

@@ -42,6 +42,7 @@
   &lt;/ul&gt;
 &lt;/nav&gt;
 &lt;hr&gt;
+&lt;br&gt;
 &lt;h2 id=&#34;进程&#34;&gt;进程&lt;/h2&gt;
 &lt;hr&gt;
 &lt;p&gt;&lt;strong&gt;进程是资源封装的单位。&lt;/strong&gt; 进程封装的资源包括：内存、文件、文件系统、信号、控制台等等。&lt;/p&gt;

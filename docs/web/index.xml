@@ -46,6 +46,7 @@
   &lt;/ul&gt;
 &lt;/nav&gt;
 &lt;hr&gt;
+&lt;br&gt;
 &lt;h2 id=&#34;io模型&#34;&gt;I/O模型&lt;/h2&gt;
 &lt;p&gt;[UNIX: registered: Network Programming] 提供了5种IO模型&lt;/p&gt;
 &lt;h3 id=&#34;blocking-io---阻塞io&#34;&gt;Blocking I/O - 阻塞I/O&lt;/h3&gt;
