@@ -1,0 +1,1707 @@
+<!DOCTYPE html><html lang="zh" >
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+  
+  
+  <meta name="generator" content="Wowchemy 5.0.0-beta.1 for Hugo">
+  
+
+  
+
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+  
+  
+    
+  
+  <meta name="description" content="目录  Http  Http 常见的状态码，有哪些？ 长连接   Https  HTTPS 解决了 HTTP 的哪些问题？ 混合加密 摘要算法 数字证书 HTTPS 建立连接 ClientHello SeverHello 客户端回应 服务器的最后回应   Http/2  多路复用 (Multiplexing) 二进制分帧 首部压缩（Header Compression） Server Push 总结：   Http/3  0-RTT   Q&amp;A  与服务器建立了一个TCP连接后是否会在一个 HTTP 请求完成后断开？什么情况下会断开？ 一个TCP连接中HTTP请求发送可以一起发送么（比如一起发三个请求，再三个响应一起接收） 为什么有的时候刷新页面不需要重新建立 SSL 连接？ 浏览器对同一 Host 建立 TCP 连接到数量有没有限制？   参考    Http Http 常见的状态码，有哪些？   Http状态码   1xx 类状态码属于提示信息，是协议处理中的一种中间状态，实际用到的比较少。">
+
+  
+  <link rel="alternate" hreflang="zh" href="https://w3xse7en.github.io/docs/web/http/">
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+
+  
+  
+  
+  <meta name="theme-color" content="#2962ff">
+  
+
+  
+  
+
+  
+  
+  
+  
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha256-FMvZuGapsJLjouA6k7Eo2lusoAX9i0ShlWFG6qt7SLc=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/styles/github.min.css" crossorigin="anonymous" title="hl-light">
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark" disabled>
+        
+      
+    
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.css" integrity="sha512-1xoFisiGdy9nvho8EgXuXvnpR5GAMSjFwp40gSRE3NwdUdIMIKuPa7bqoUhLD0O/5tPNhteAsE5XyyMi5reQVA==" crossorigin="anonymous">
+    
+
+    
+
+    
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.2.2/lazysizes.min.js" integrity="sha512-TmDwFLhg3UA4ZG0Eb4MIyT1O1Mb+Oww5kFG0uHqXsdbyZz9DcvYQhKpGgNkamAI6h2lGGZq2X8ftOJvF/XjTUg==" crossorigin="anonymous" async></script>
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+        
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+
+  
+
+  
+  
+  
+    
+      
+      
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700%7CRoboto:400,400italic,700%7CRoboto+Mono&display=swap">
+    
+  
+
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/wowchemy.min.18a81fcba9746c6a8230584f1af667d5.css">
+
+  
+
+
+
+
+  
+
+  
+
+
+  
+  
+
+  
+
+  <link rel="manifest" href="/index.webmanifest">
+  <link rel="icon" type="image/png" href="/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_32x32_fill_lanczos_center_2.png">
+  <link rel="apple-touch-icon" type="image/png" href="/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_192x192_fill_lanczos_center_2.png">
+
+  <link rel="canonical" href="https://w3xse7en.github.io/docs/web/http/">
+
+  
+  
+  
+  
+  
+  
+  
+    
+    
+  
+  
+  <meta property="twitter:card" content="summary">
+  
+  <meta property="og:site_name" content="w3xse7en">
+  <meta property="og:url" content="https://w3xse7en.github.io/docs/web/http/">
+  <meta property="og:title" content="Http | w3xse7en">
+  <meta property="og:description" content="目录  Http  Http 常见的状态码，有哪些？ 长连接   Https  HTTPS 解决了 HTTP 的哪些问题？ 混合加密 摘要算法 数字证书 HTTPS 建立连接 ClientHello SeverHello 客户端回应 服务器的最后回应   Http/2  多路复用 (Multiplexing) 二进制分帧 首部压缩（Header Compression） Server Push 总结：   Http/3  0-RTT   Q&amp;A  与服务器建立了一个TCP连接后是否会在一个 HTTP 请求完成后断开？什么情况下会断开？ 一个TCP连接中HTTP请求发送可以一起发送么（比如一起发三个请求，再三个响应一起接收） 为什么有的时候刷新页面不需要重新建立 SSL 连接？ 浏览器对同一 Host 建立 TCP 连接到数量有没有限制？   参考    Http Http 常见的状态码，有哪些？   Http状态码   1xx 类状态码属于提示信息，是协议处理中的一种中间状态，实际用到的比较少。"><meta property="og:image" content="https://w3xse7en.github.io/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_2.png">
+  <meta property="twitter:image" content="https://w3xse7en.github.io/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_2.png"><meta property="og:locale" content="zh">
+  
+    
+    
+  
+
+  
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  <title>Http | w3xse7en</title>
+
+</head>
+
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper  ">
+
+  
+  
+  
+  
+  
+  <script src="/js/wowchemy-init.js"></script>
+
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>搜索</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="搜索..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search" class="form-control">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+  <div class="page-header">
+    
+
+
+
+
+
+
+
+
+
+
+
+
+<nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+  <div class="container">
+
+    
+    <div class="d-none d-lg-inline-flex">
+      <a class="navbar-brand" href="/">w3xse7en</a>
+    </div>
+    
+
+    
+    <button type="button" class="navbar-toggler" data-toggle="collapse"
+            data-target="#navbar-content" aria-controls="navbar" aria-expanded="false" aria-label="切换导航">
+    <span><i class="fas fa-bars"></i></span>
+    </button>
+    
+
+    
+    <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+      <a class="navbar-brand" href="/">w3xse7en</a>
+    </div>
+    
+
+    
+    
+    <div class="navbar-collapse main-menu-item collapse justify-content-start" id="navbar-content">
+
+      
+      <ul class="navbar-nav d-md-inline-flex">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link  active" href="/docs/"><span>知识树</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/k8s_local"><span>探索k8s</span></a>
+        </li>
+
+        
+        
+
+      
+
+        
+      </ul>
+    </div>
+
+    <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+
+      
+      
+
+      
+      
+      <li class="nav-item">
+        <a class="nav-link js-search" href="#" aria-label="搜索"><i class="fas fa-search" aria-hidden="true"></i></a>
+      </li>
+      
+
+      
+      
+      <li class="nav-item dropdown theme-dropdown">
+        <a href="#" class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-label="Display preferences">
+          <i class="fas fa-moon" aria-hidden="true"></i>
+        </a>
+        <div class="dropdown-menu">
+          <a href="#" class="dropdown-item js-set-theme-light">
+            <span>浅色</span>
+          </a>
+          <a href="#" class="dropdown-item js-set-theme-dark">
+            <span>深色</span>
+          </a>
+          <a href="#" class="dropdown-item js-set-theme-auto">
+            <span>自动</span>
+          </a>
+        </div>
+      </li>
+      
+
+      
+
+    </ul>
+
+  </div>
+</nav>
+
+
+  </div>
+
+  <div class="page-body">
+    
+
+<div class="container-fluid docs">
+  <div class="row flex-xl-nowrap">
+    <div class="col-12 col-md-3 col-xl-2 docs-sidebar">
+      <form class="docs-search d-flex align-items-center">
+  <button class="btn docs-toggle d-md-none p-0 mr-3" type="button" data-toggle="collapse" data-target="#docs-nav" aria-controls="docs-nav" aria-expanded="false" aria-label="Toggle section navigation">
+    <span><i class="fas fa-bars"></i></span>
+  </button>
+
+  
+  <input name="q" type="search" class="form-control" placeholder="搜索..." autocomplete="off">
+  
+</form>
+
+<nav class="collapse docs-links" id="docs-nav">
+  
+  
+  
+  
+  
+  
+
+  
+  
+    
+
+    
+      
+
+      
+      
+      
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <ul class="nav docs-sidenav">
+        <li class=""><a href="/docs/">Introduction</a></li>
+    
+      
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/docs/lang/">Golang</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/docs/lang/go/">Go</a></li>
+
+
+
+  <li class=""><a href="/docs/lang/goroutine/">Goroutine</a></li>
+
+
+
+  <li class=""><a href="/docs/lang/qa/">Q&amp;A</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/docs/os/">OS</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/docs/os/process/">Process</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/docs/sql/">SQL</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/docs/sql/redis/">Redis</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/docs/web/">Web</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/docs/web/socket/">Socket</a></li>
+
+
+
+  <li class=""><a href="/docs/web/tcp-ip/">TCP/IP</a></li>
+
+
+
+  <li class="active"><a href="/docs/web/http/">Http</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+      
+    
+
+    
+      </ul>
+    
+
+  
+</nav>
+
+    </div>
+
+    
+    
+    <div class="d-none d-xl-block col-xl-2 docs-toc">
+      <ul class="nav toc-top">
+        <li><a href="#" id="back_to_top" class="docs-toc-title">在本页</a></li>
+      </ul>
+
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#http">Http</a>
+      <ul>
+        <li><a href="#http-常见的状态码有哪些">Http 常见的状态码，有哪些？</a></li>
+        <li><a href="#长连接">长连接</a></li>
+      </ul>
+    </li>
+    <li><a href="#https">Https</a>
+      <ul>
+        <li><a href="#https-解决了-http-的哪些问题">HTTPS 解决了 HTTP 的哪些问题？</a></li>
+        <li><a href="#混合加密">混合加密</a></li>
+        <li><a href="#摘要算法">摘要算法</a></li>
+        <li><a href="#数字证书">数字证书</a></li>
+        <li><a href="#https-建立连接">HTTPS 建立连接</a></li>
+        <li><a href="#clienthello">ClientHello</a></li>
+        <li><a href="#severhello">SeverHello</a></li>
+        <li><a href="#客户端回应">客户端回应</a></li>
+        <li><a href="#服务器的最后回应">服务器的最后回应</a></li>
+      </ul>
+    </li>
+    <li><a href="#http2">Http/2</a>
+      <ul>
+        <li><a href="#多路复用-multiplexing">多路复用 (Multiplexing)</a></li>
+        <li><a href="#二进制分帧">二进制分帧</a></li>
+        <li><a href="#首部压缩header-compression">首部压缩（Header Compression）</a></li>
+        <li><a href="#server-push">Server Push</a></li>
+        <li><a href="#总结">总结：</a></li>
+      </ul>
+    </li>
+    <li><a href="#http3">Http/3</a>
+      <ul>
+        <li><a href="#0-rtt">0-RTT</a></li>
+      </ul>
+    </li>
+    <li><a href="#qa">Q&amp;A</a>
+      <ul>
+        <li><a href="#与服务器建立了一个tcp连接后是否会在一个-http-请求完成后断开什么情况下会断开">与服务器建立了一个TCP连接后是否会在一个 HTTP 请求完成后断开？什么情况下会断开？</a></li>
+        <li><a href="#一个tcp连接中http请求发送可以一起发送么比如一起发三个请求再三个响应一起接收">一个TCP连接中HTTP请求发送可以一起发送么（比如一起发三个请求，再三个响应一起接收）</a></li>
+        <li><a href="#为什么有的时候刷新页面不需要重新建立-ssl-连接">为什么有的时候刷新页面不需要重新建立 SSL 连接？</a></li>
+        <li><a href="#浏览器对同一-host-建立-tcp-连接到数量有没有限制">浏览器对同一 Host 建立 TCP 连接到数量有没有限制？</a></li>
+      </ul>
+    </li>
+    <li><a href="#参考">参考</a></li>
+  </ul>
+</nav>
+
+      
+    </div>
+    
+
+    <main class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 docs-content" role="main">
+
+      <article class="article">
+
+        <div class="docs-article-container">
+          <h1>Http</h1>
+
+          <div class="article-style">
+            <hr>
+<h2>目录</h2>
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#http">Http</a>
+      <ul>
+        <li><a href="#http-常见的状态码有哪些">Http 常见的状态码，有哪些？</a></li>
+        <li><a href="#长连接">长连接</a></li>
+      </ul>
+    </li>
+    <li><a href="#https">Https</a>
+      <ul>
+        <li><a href="#https-解决了-http-的哪些问题">HTTPS 解决了 HTTP 的哪些问题？</a></li>
+        <li><a href="#混合加密">混合加密</a></li>
+        <li><a href="#摘要算法">摘要算法</a></li>
+        <li><a href="#数字证书">数字证书</a></li>
+        <li><a href="#https-建立连接">HTTPS 建立连接</a></li>
+        <li><a href="#clienthello">ClientHello</a></li>
+        <li><a href="#severhello">SeverHello</a></li>
+        <li><a href="#客户端回应">客户端回应</a></li>
+        <li><a href="#服务器的最后回应">服务器的最后回应</a></li>
+      </ul>
+    </li>
+    <li><a href="#http2">Http/2</a>
+      <ul>
+        <li><a href="#多路复用-multiplexing">多路复用 (Multiplexing)</a></li>
+        <li><a href="#二进制分帧">二进制分帧</a></li>
+        <li><a href="#首部压缩header-compression">首部压缩（Header Compression）</a></li>
+        <li><a href="#server-push">Server Push</a></li>
+        <li><a href="#总结">总结：</a></li>
+      </ul>
+    </li>
+    <li><a href="#http3">Http/3</a>
+      <ul>
+        <li><a href="#0-rtt">0-RTT</a></li>
+      </ul>
+    </li>
+    <li><a href="#qa">Q&amp;A</a>
+      <ul>
+        <li><a href="#与服务器建立了一个tcp连接后是否会在一个-http-请求完成后断开什么情况下会断开">与服务器建立了一个TCP连接后是否会在一个 HTTP 请求完成后断开？什么情况下会断开？</a></li>
+        <li><a href="#一个tcp连接中http请求发送可以一起发送么比如一起发三个请求再三个响应一起接收">一个TCP连接中HTTP请求发送可以一起发送么（比如一起发三个请求，再三个响应一起接收）</a></li>
+        <li><a href="#为什么有的时候刷新页面不需要重新建立-ssl-连接">为什么有的时候刷新页面不需要重新建立 SSL 连接？</a></li>
+        <li><a href="#浏览器对同一-host-建立-tcp-连接到数量有没有限制">浏览器对同一 Host 建立 TCP 连接到数量有没有限制？</a></li>
+      </ul>
+    </li>
+    <li><a href="#参考">参考</a></li>
+  </ul>
+</nav>
+<hr>
+<br>
+<h2 id="http">Http</h2>
+<h3 id="http-常见的状态码有哪些">Http 常见的状态码，有哪些？</h3>
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure id="figure-http状态码">
+
+
+  <a data-fancybox="" href="/media/web/http/http_status.webp" data-caption="Http状态码">
+
+
+  <img src="/media/web/http/http_status.webp" alt=""  >
+</a>
+
+
+  
+  
+  <figcaption>
+    Http状态码
+  </figcaption>
+
+
+</figure>
+
+<p><code>1xx</code> 类状态码属于提示信息，是协议处理中的一种中间状态，实际用到的比较少。</p>
+<p><code>2xx</code> 类状态码表示服务器成功处理了客户端的请求，也是我们最愿意看到的状态。</p>
+<p>「200 OK」是最常见的成功状态码，表示一切正常。如果是非 HEAD 请求，服务器返回的响应头都会有 body 数据。</p>
+<p>「204 No Content」也是常见的成功状态码，与 200 OK 基本相同，但响应头没有 body 数据。</p>
+<p>「206 Partial Content」是应用于 HTTP 分块下载或断电续传，表示响应返回的 body 数据并不是资源的全部，而是其中的一部分，也是服务器处理成功的状态。</p>
+<p><code>3xx</code> 类状态码表示客户端请求的资源发送了变动，需要客户端用新的 URL 重新发送请求获取资源，也就是重定向。</p>
+<p>「301 Moved Permanently」表示永久重定向，说明请求的资源已经不存在了，需改用新的 URL 再次访问。</p>
+<p>「302 Moved Permanently」表示临时重定向，说明请求的资源还在，但暂时需要用另一个 URL 来访问。</p>
+<p>301 和 302 都会在响应头里使用字段 Location，指明后续要跳转的 URL，浏览器会自动重定向新的 URL。</p>
+<p>「304 Not Modified」不具有跳转的含义，表示资源未修改，重定向已存在的缓冲文件，也称缓存重定向，用于缓存控制。</p>
+<p><code>4xx</code> 类状态码表示客户端发送的报文有误，服务器无法处理，也就是错误码的含义。</p>
+<p>「400 Bad Request」表示客户端请求的报文有错误，但只是个笼统的错误。</p>
+<p>「403 Forbidden」表示服务器禁止访问资源，并不是客户端的请求出错。</p>
+<p>「404 Not Found」表示请求的资源在服务器上不存在或未找到，所以无法提供给客户端。</p>
+<p><code>5xx</code> 类状态码表示客户端请求报文正确，但是服务器处理时内部发生了错误，属于服务器端的错误码。</p>
+<p>「500 Internal Server Error」与 400 类型，是个笼统通用的错误码，服务器发生了什么错误，我们并不知道。</p>
+<p>「501 Not Implemented」表示客户端请求的功能还不支持，类似“即将开业，敬请期待”的意思。</p>
+<p>「502 Bad Gateway」通常是服务器作为网关或代理时返回的错误码，表示服务器自身工作正常，访问后端服务器发生了错误。</p>
+<p>「503 Service Unavailable」表示服务器当前很忙，暂时无法响应服务器，类似“网络服务正忙，请稍后重试”的意思。</p>
+<h3 id="长连接">长连接</h3>
+<p>早期 HTTP/1.0 性能上的一个很大的问题，那就是每发起一个请求，都要新建一次 TCP 连接（三次握手），而且是串行请求，做了无畏的 TCP 连接建立和断开，增加了通信开销。</p>
+<p>为了解决上述 TCP 连接问题，HTTP/1.1 提出了长连接的通信方式，也叫持久连接。这种方式的好处在于减少了 TCP 连接的重复建立和断开所造成的额外开销，减轻了服务器端的负载。</p>
+<p>持久连接的特点是，只要任意一端没有明确提出断开连接，则保持 TCP 连接状态。</p>
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure id="figure-短链接与长链接">
+
+
+  <a data-fancybox="" href="/media/web/http/http_short_long_connect.webp" data-caption="短链接与长链接">
+
+
+  <img src="/media/web/http/http_short_long_connect.webp" alt=""  >
+</a>
+
+
+  
+  
+  <figcaption>
+    短链接与长链接
+  </figcaption>
+
+
+</figure>
+
+<br>
+<h2 id="https">Https</h2>
+<h3 id="https-解决了-http-的哪些问题">HTTPS 解决了 HTTP 的哪些问题？</h3>
+<p>HTTP 由于是明文传输，所以安全上存在以下三个风险：</p>
+<ul>
+<li>
+<p>窃听风险，比如通信链路上可以获取通信内容，用户账号容易没。</p>
+</li>
+<li>
+<p>篡改风险，比如强制入垃圾广告，视觉污染，用户眼容易瞎。</p>
+</li>
+<li>
+<p>冒充风险，比如冒充淘宝网站，用户钱容易没。</p>
+</li>
+</ul>
+<p>HTTPS 在 HTTP 与 TCP 层之间加入了 SSL/TLS 协议，来解决上述风险。</p>
+<ul>
+<li>
+<p><code>混合加密</code>的方式实现信息的机密性，解决了窃听的风险。</p>
+</li>
+<li>
+<p><code>摘要算法</code>的方式来实现完整性，它能够为数据生成独一无二的「指纹」，指纹用于校验数据的完整性，解决了篡改的风险。</p>
+</li>
+<li>
+<p>将服务器公钥放入到<code>数字证书</code>中，解决了冒充的风险。</p>
+</li>
+</ul>
+<h3 id="混合加密">混合加密</h3>
+<p>HTTPS 采用的是对称加密和非对称加密结合的「混合加密」方式：</p>
+<ul>
+<li>
+<p>通信建立前采用非对称加密的方式交换「会话秘钥」，后续就不再使用非对称加密。</p>
+</li>
+<li>
+<p>通信过程中全部使用对称加密的「会话秘钥」的方式加密明文数据。</p>
+</li>
+</ul>
+<p>采用「混合加密」的方式的原因：</p>
+<ul>
+<li>
+<p>对称加密只使用一个密钥，运算速度快，密钥必须保密，无法做到安全的密钥交换。</p>
+</li>
+<li>
+<p>非对称加密使用两个密钥：公钥和私钥，公钥可以任意分发而私钥保密，解决了密钥交换问题但速度慢。</p>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure id="figure-混合加密">
+
+
+  <a data-fancybox="" href="/media/web/http/https_mix_crypt.webp" data-caption="混合加密">
+
+
+  <img src="/media/web/http/https_mix_crypt.webp" alt=""  >
+</a>
+
+
+  
+  
+  <figcaption>
+    混合加密
+  </figcaption>
+
+
+</figure>
+
+<h3 id="摘要算法">摘要算法</h3>
+<p>客户端在发送明文之前会通过摘要算法算出明文的「指纹」</p>
+<p>发送的时候把「指纹 + 明文」一同加密成密文后，发送给服务器</p>
+<p>服务器解密后，用相同的摘要算法算出发送过来的明文</p>
+<p>通过比较客户端携带的「指纹」和当前算出的「指纹」做比较，若「指纹」相同，说明数据是完整的。</p>
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure id="figure-校验完整性">
+
+
+  <a data-fancybox="" href="/media/web/http/https_verify.webp" data-caption="校验完整性">
+
+
+  <img src="/media/web/http/https_verify.webp" alt=""  >
+</a>
+
+
+  
+  
+  <figcaption>
+    校验完整性
+  </figcaption>
+
+
+</figure>
+
+<h3 id="数字证书">数字证书</h3>
+<p>客户端先向服务器端索要公钥，然后用公钥加密信息，服务器收到密文后，用自己的私钥解密。</p>
+<p>这就存在些问题，如何保证公钥不被篡改和信任度？</p>
+<p>所以这里就需要借助第三方权威机构 <code>CA</code> （数字证书认证机构），将服务器公钥放在数字证书（由数字证书认证机构颁发）中，只要证书是可信的，公钥就是可信的。</p>
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure id="figure-数字证书工作流程">
+
+
+  <a data-fancybox="" href="/media/web/http/https_ca.webp" data-caption="数字证书工作流程">
+
+
+  <img src="/media/web/http/https_ca.webp" alt=""  >
+</a>
+
+
+  
+  
+  <figcaption>
+    数字证书工作流程
+  </figcaption>
+
+
+</figure>
+
+<h3 id="https-建立连接">HTTPS 建立连接</h3>
+<p>SSL/TLS 协议基本流程：</p>
+<p>客户端向服务器索要并验证服务器的公钥。</p>
+<p>双方协商生产「会话秘钥」。</p>
+<p>双方采用「会话秘钥」进行加密通信。</p>
+<p>前两步也就是 SSL/TLS 的建立过程，也就是握手阶段。</p>
+<p>SSL/TLS 的「握手阶段」涉及四次通信，可见下图：</p>
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure id="figure-https-连接建立过程">
+
+
+  <a data-fancybox="" href="/media/web/http/https_connect.webp" data-caption="HTTPS 连接建立过程">
+
+
+  <img src="/media/web/http/https_connect.webp" alt=""  >
+</a>
+
+
+  
+  
+  <figcaption>
+    HTTPS 连接建立过程
+  </figcaption>
+
+
+</figure>
+
+<p>SSL/TLS 协议建立的详细流程：</p>
+<h3 id="clienthello">ClientHello</h3>
+<p>首先，由客户端向服务器发起加密通信请求，也就是 ClientHello 请求。</p>
+<p>在这一步，客户端主要向服务器发送以下信息：</p>
+<p>（1）客户端支持的 SSL/TLS 协议版本，如 TLS 1.2 版本。</p>
+<p>（2）客户端生产的随机数（Client Random），后面用于生产「会话秘钥」。</p>
+<p>（3）客户端支持的密码套件列表，如 RSA 加密算法。</p>
+<h3 id="severhello">SeverHello</h3>
+<p>服务器收到客户端请求后，向客户端发出响应，也就是 SeverHello。服务器回应的内容有如下内容：</p>
+<p>（1）确认 SSL/ TLS 协议版本，如果浏览器不支持，则关闭加密通信。</p>
+<p>（2）服务器生产的随机数（Server Random），后面用于生产「会话秘钥」。</p>
+<p>（3）确认的密码套件列表，如 RSA 加密算法。</p>
+<p>（4）服务器的数字证书。</p>
+<h3 id="客户端回应">客户端回应</h3>
+<p>客户端收到服务器的回应之后，首先通过浏览器或者操作系统中的 CA 公钥，确认服务器的数字证书的真实性。</p>
+<p>如果证书没有问题，客户端会从数字证书中取出服务器的公钥，然后使用它加密报文，向服务器发送如下信息：</p>
+<p>（1）一个随机数（pre-master key）。该随机数会被服务器公钥加密。</p>
+<p>（2）加密通信算法改变通知，表示随后的信息都将用「会话秘钥」加密通信。</p>
+<p>（3）客户端握手结束通知，表示客户端的握手阶段已经结束。这一项同时把之前所有内容的发生的数据做个摘要，用来供服务端校验。</p>
+<p>上面第一项的随机数是整个握手阶段的第三个随机数，这样服务器和客户端就同时有三个随机数，接着就用双方协商的加密算法，各自生成本次通信的「会话秘钥」。</p>
+<h3 id="服务器的最后回应">服务器的最后回应</h3>
+<p>服务器收到客户端的第三个随机数（pre-master key）之后，通过协商的加密算法，计算出本次通信的「会话秘钥」。然后，向客户端发生最后的信息：</p>
+<p>（1）加密通信算法改变通知，表示随后的信息都将用「会话秘钥」加密通信。</p>
+<p>（2）服务器握手结束通知，表示服务器的握手阶段已经结束。这一项同时把之前所有内容的发生的数据做个摘要，用来供客户端校验。</p>
+<p>至此，整个 SSL/TLS 的握手阶段全部结束。接下来，客户端与服务器进入加密通信，就完全是使用普通的 HTTP 协议，只不过用「会话秘钥」加密内容。</p>
+<br>
+<h2 id="http2">Http/2</h2>
+<ul>
+<li><a href="https://http2.akamai.com/demo" target="_blank" rel="noopener">Http/1.1 vs Http/2 demo</a></li>
+</ul>
+<h3 id="多路复用-multiplexing">多路复用 (Multiplexing)</h3>
+<p>在 HTTP/1.1 协议中 「浏览器客户端在同一时间，针对同一域名下的请求有一定数量限制。超过限制数目的请求会被阻塞」</p>
+<p>RFC-2616-8.1.4 Practical Considerations:</p>
+<blockquote>
+<p>Clients that use persistent connections SHOULD limit the number of simultaneous connections that they maintain to a given server.
+A single-user client SHOULD NOT maintain more than 2 connections with any server or proxy.
+A proxy SHOULD use up to 2*N connections to another server or proxy, where N is the number of simultaneously active users.
+These guidelines are intended to improve HTTP response times and avoid congestion.</p>
+</blockquote>
+<p>翻译：Chrome中，对Http/1.1协议，最多允许6个tcp链接，超过的则会被阻塞</p>
+<p>HTTP/2 的多路复用(Multiplexing) 则允许同时通过单一的 HTTP/2 连接发起多重的请求-响应消息。</p>
+<p>移除了 HTTP/1.1 中的串行请求，不需要排队等待，也就不会再出现「队头阻塞」问题，降低了延迟，大幅度提高了连接的利用率。</p>
+<p>HTTP/2 的数据包不是按顺序发送的，同一个连接里面连续的数据包，可能属于不同的回应。因此，必须要对数据包做标记，指出它属于哪个回应。</p>
+<p>每个请求或回应的所有数据包，称为一个数据流（Stream）。</p>
+<p>每个数据流都标记着一个独一无二的编号，其中规定客户端发出的数据流编号为奇数， 服务器发出的数据流编号为偶数</p>
+<p>客户端还可以指定数据流的优先级。优先级高的请求，服务器就先响应该请求。</p>
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure id="figure-http112-链接发起对比">
+
+
+  <a data-fancybox="" href="/media/web/http/http1.1_http2.0_connect.jpg" data-caption="Http/1.1/2 链接发起对比">
+
+
+  <img src="/media/web/http/http1.1_http2.0_connect.jpg" alt=""  >
+</a>
+
+
+  
+  
+  <figcaption>
+    Http/1.1/2 链接发起对比
+  </figcaption>
+
+
+</figure>
+
+<br>
+<h3 id="二进制分帧">二进制分帧</h3>
+<p>在不改动 HTTP/1.x 的语义、方法、状态码、URI 以及首部字段&hellip;的情况下, HTTP/2 是如何做到「突破 HTTP/1.1 的性能限制，改进传输性能，实现低延迟和高吞吐量」的 ?</p>
+<p>关键之一就是在 应用层(HTTP/2)和传输层(TCP or UDP)之间增加一个二进制分帧层。</p>
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure id="figure-http2二进制分帧层">
+
+
+  <a data-fancybox="" href="/media/web/http/http2.0_binary.jpg" data-caption="Http/2二进制分帧层">
+
+
+  <img src="/media/web/http/http2.0_binary.jpg" alt=""  >
+</a>
+
+
+  
+  
+  <figcaption>
+    Http/2二进制分帧层
+  </figcaption>
+
+
+</figure>
+
+<p>在二进制分帧层中，HTTP/2 会将所有传输的信息分割为更小的消息和帧（frame），并对它们采用二进制格式的编码，
+其中 HTTP1.x 的首部信息会被封装到 HEADER frame，而相应的 Request Body 则封装到 DATA frame 里面。</p>
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure >
+
+
+  <a data-fancybox="" href="/media/web/http/http2.0_stream.jpg" >
+
+
+  <img src="/media/web/http/http2.0_stream.jpg" alt=""  >
+</a>
+
+
+
+</figure>
+
+<h3 id="首部压缩header-compression">首部压缩（Header Compression）</h3>
+<p>HTTP/1.1并不支持 HTTP 首部压缩，为此 SPDY 和 HTTP/2 应运而生， SPDY 使用的是通用的DEFLATE 算法，而 HTTP/2 则使用了专门为首部压缩而设计的 HPACK 算法。</p>
+<p>客户端和服务器两端建立“字典”，用索引号表示重复的字符串，还采用哈夫曼编码来压缩整数和字符串，可以达到 50%~90% 的高压缩率。</p>
+<p>具体来说：</p>
+<p>在客户端和服务器端使用“首部表”来跟踪和存储之前发送的键 - 值对，对于相同的数据，不再通过每次请求和响应发送。</p>
+<p>首部表在 HTTP/2 的连接存续期内始终存在，由客户端和服务器共同渐进地更新。</p>
+<p>每个新的首部键 - 值对要么被追加到当前表的末尾，要么替换表中之前的值。</p>
+<p>例如下图中的两个请求， 请求一发送了所有的头部字段，第二个请求则只需要发送差异数据，这样可以减少冗余数据，降低开销 。</p>
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure >
+
+
+  <a data-fancybox="" href="/media/web/http/http2.0_header_compression.png" >
+
+
+  <img src="/media/web/http/http2.0_header_compression.png" alt=""  >
+</a>
+
+
+
+</figure>
+
+<h3 id="server-push">Server Push</h3>
+<p>Server Push 即服务端能通过 push 的方式将客户端需要的内容预先推送过去</p>
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure >
+
+
+  <a data-fancybox="" href="/media/web/http/http2.0_service_push.png" >
+
+
+  <img src="/media/web/http/http2.0_service_push.png" alt=""  >
+</a>
+
+
+
+</figure>
+
+<p>服务端可以主动推送，客户端也有权利选择是否接收。</p>
+<p>如果服务端推送的资源已经被浏览器缓存过，浏览器可以通过发送 RST_STREAM 帧来拒收。</p>
+<p>主动推送也遵守同源策略，换句话说，服务器不能随便将第三方资源推送给客户端，而必须是经过双方确认才行。</p>
+<h3 id="总结">总结：</h3>
+<ul>
+<li>
+<p>同域名下所有通信都在单个连接上完成。</p>
+</li>
+<li>
+<p>单个连接可以承载任意数量的双向数据流。</p>
+</li>
+<li>
+<p>数据流以消息的形式发送，而消息又由一个或多个帧组成，多个帧之间可以乱序发送，因为根据帧首部的流标识可以重新组装。</p>
+</li>
+<li>
+<p>同个域名只需要占用一个 TCP 连接，使用一个连接并行发送多个请求和响应, 这样整个页面资源的下载过程只需要一次慢启动，同时也避免了多个 TCP 连接竞争带宽所带来的问题。</p>
+</li>
+<li>
+<p>并行交错地发送多个请求 / 响应，请求 / 响应之间互不影响。</p>
+</li>
+<li>
+<p>在 HTTP/2 中，每个请求都可以带一个 31bit 的优先值，0 表示最高优先级， 数值越大优先级越低。</p>
+</li>
+</ul>
+<br>
+<h2 id="http3">Http/3</h2>
+<p>HTTP/2 使用了多路复用，一般来说同一域名下只需要使用一个 TCP 连接。但当这个连接中出现了丢包的情况，那就会导致 HTTP/2 的表现情况反倒不如 HTTP/1 了。</p>
+<p>因为在出现丢包的情况下，整个 TCP 都要开始等待重传，也就导致了后面的所有数据都被阻塞了。但是对于 HTTP/1.1 来说，可以开启多个 TCP 连接，出现这种情况反到只会影响其中一个连接，剩余的 TCP 连接还可以正常传输数据。</p>
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure >
+
+
+  <a data-fancybox="" href="/media/web/http/http2.0_block.png" >
+
+
+  <img src="/media/web/http/http2.0_block.png" alt=""  >
+</a>
+
+
+
+</figure>
+
+<p>那么可能就会有人考虑到去修改 TCP 协议，其实这已经是一件不可能完成的任务了。因为 TCP 存在的时间实在太长，已经充斥在各种设备中，并且这个协议是由操作系统实现的，更新起来不大现实。</p>
+<p>基于这个原因，Google 就更起炉灶搞了一个基于 UDP 协议的 QUIC 协议，并且使用在了 HTTP/3 上，HTTP/3 之前名为 HTTP-over-QUIC，从这个名字中我们也可以发现，HTTP/3 最大的改造就是使用了 QUIC。</p>
+<h3 id="0-rtt">0-RTT</h3>
+<p>通过使用类似 TCP 快速打开的技术，缓存当前会话的上下文，在下次恢复会话的时候，只需要将之前的缓存传递给服务端验证通过就可以进行传输了。<strong>0RTT 连接可以说是 QUIC 相比 HTTP2 最大的性能优势。</strong></p>
+<br>
+<h2 id="qa">Q&amp;A</h2>
+<h3 id="与服务器建立了一个tcp连接后是否会在一个-http-请求完成后断开什么情况下会断开">与服务器建立了一个TCP连接后是否会在一个 HTTP 请求完成后断开？什么情况下会断开？</h3>
+<p>HTTP/1.1 把 Connection 头写进标准，并且默认开启持久连接，除非请求中写明 Connection: close，那么浏览器和服务器之间是会维持一段时间的 TCP 连接，不会一个请求结束就断掉。</p>
+<h3 id="一个tcp连接中http请求发送可以一起发送么比如一起发三个请求再三个响应一起接收">一个TCP连接中HTTP请求发送可以一起发送么（比如一起发三个请求，再三个响应一起接收）</h3>
+<p>HTTP/1.1 存在一个问题，单个 TCP 连接在同一时刻只能处理一个请求，意思是说：两个请求的生命周期不能重叠，任意两个 HTTP 请求从开始到结束的时间在同一个 TCP 连接里不能重叠。</p>
+<p>虽然 HTTP/1.1 规范中规定了 Pipelining 来试图解决这个问题，但是这个功能在浏览器中默认是关闭的。</p>
+<p>RFC 2616 Pipelining</p>
+<blockquote>
+<p>A client that supports persistent connections MAY &ldquo;pipeline&rdquo; its requests (i.e., send multiple requests without waiting for each response).
+A server MUST send its responses to those requests in the same order that the requests were received.</p>
+<p>一个支持持久连接的客户端可以在一个连接中发送多个请求（不需要等待任意请求的响应）。收到请求的服务器必须按照请求收到的顺序发送响应。</p>
+</blockquote>
+<h3 id="为什么有的时候刷新页面不需要重新建立-ssl-连接">为什么有的时候刷新页面不需要重新建立 SSL 连接？</h3>
+<p>TCP 连接有的时候会被浏览器和服务端维持一段时间。TCP 不需要重新建立，SSL 自然也会用之前的。</p>
+<h3 id="浏览器对同一-host-建立-tcp-连接到数量有没有限制">浏览器对同一 Host 建立 TCP 连接到数量有没有限制？</h3>
+<p>Chrome 最多允许对同一个 Host 建立六个 TCP 连接。不同的浏览器有一些区别。</p>
+<br>
+<hr>
+<h2 id="参考">参考</h2>
+<p><a href="https://mp.weixin.qq.com/s?__biz=MzUxODAzNDg4NQ==&amp;mid=2247483971&amp;idx=1&amp;sn=8f2d5dae3d95efc446061b352c8e9961" target="_blank" rel="noopener">硬核！30 张图解 HTTP 常见的面试题</a></p>
+<p><a href="https://www.zhihu.com/question/34074946/answer/75364178" target="_blank" rel="noopener">HTTP/2 相比 1.0 有哪些重大改进？</a></p>
+<p><a href="https://blog.fundebug.com/2019/03/07/understand-http2-and-http3/" target="_blank" rel="noopener">一文读懂 HTTP/2 及 HTTP/3 特性</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/61423830" target="_blank" rel="noopener">你猜一个 TCP 连接上面能发多少个 HTTP 请求</a></p>
+<br/>
+<hr>
+
+          </div>
+
+          
+
+
+
+          
+          
+          <div class="article-widget">
+            
+<div class="post-nav">
+  
+  
+  
+  <div class="post-nav-item">
+    <div class="meta-nav">上一页</div>
+    <a href="/docs/web/tcp-ip/" rel="next">TCP/IP</a>
+  </div>
+  
+  
+</div>
+
+          </div>
+          
+        </div>
+
+        <div class="body-footer">
+          <p>最近更新于 Jan 1, 0001</p>
+
+          
+
+
+
+
+
+          
+
+
+
+
+          
+
+
+
+
+        </div>
+
+      </article>
+
+      <footer class="site-footer">
+  
+
+  <p class="powered-by">
+    
+  </p>
+
+  
+  
+
+
+
+
+
+
+  <p class="powered-by">
+    
+    
+    
+    Published with
+    <a href="https://wowchemy.com/?utm_campaign=poweredby" target="_blank" rel="noopener">Wowchemy</a>  —
+    the free, <a href="https://github.com/wowchemy/wowchemy-hugo-modules" target="_blank" rel="noopener">
+    open source</a> website builder that empowers creators.
+    
+  </p>
+</footer>
+
+
+    </main>
+  </div>
+</div>
+
+  </div>
+
+  <div class="page-footer">
+    
+    
+  </div>
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">引用</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> 复制
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> 下载
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+
+      
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      
+
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/instant.page/5.1.0/instantpage.min.js" integrity="sha512-1+qUtKoh9XZW7j+6LhRMAyOrgSQKenQ4mluTR+cvxXjP1Z54RxZuzstR/H9kgPXQsVB8IW7DMDFUJpzLjvhGSQ==" crossorigin="anonymous"></script>
+
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/highlight.min.js" integrity="sha512-TDKKr+IvoqZnPzc3l35hdjpHD0m+b2EC2SrLEgKDRWpxf2rFCxemkgvJ5kfU48ip+Y+m2XVKyOCD85ybtlZDmw==" crossorigin="anonymous"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/r.min.js"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/latex.min.js"></script>
+        
+      
+
+    
+
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.js" integrity="sha512-SeiQaaDh73yrb56sTW/RgVdi/mMqNeM2oBwubFHagc5BkixSpP1fvqF47mKzPGWYSSy4RwbBunrJBQ4Co8fRWA==" crossorigin="anonymous"></script>
+    
+
+    
+    
+    <script>const code_highlighting = true;</script>
+    
+
+    
+    
+    
+    
+    
+    
+    <script>
+      const search_config = {"indexURI":"/index.json","minLength":1,"threshold":0.3};
+      const i18n = {"no_results":"没有找到结果","placeholder":"搜索...","results":"搜索结果"};
+      const content_type = {
+        'post': "文章",
+        'project': "项目",
+        'publication' : "出版物",
+        'talk' : "演讲",
+        'slides' : "Slides"
+        };
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.2.2/anchor.min.js" integrity="sha512-I7w3ZdSFzw5j3jU3ZkNikBNeIrl3i+hEuEdwNmqUJvwNcaBUNcijnP2gd9DtGlgVYDplfjGoD8vTNsID+lCjqg==" crossorigin="anonymous"></script>
+    <script>
+      anchors.add();
+    </script>
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    
+    
+    
+    <script src="/js/wowchemy.min.abf79d5abd9391a904c9b122bfe98c04.js"></script>
+
+    
+
+
+
+
+
+
+</body>
+</html>

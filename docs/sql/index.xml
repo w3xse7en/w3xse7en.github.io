@@ -13,7 +13,7 @@
     </image>
     
     <item>
-      <title>redis</title>
+      <title>Redis</title>
       <link>https://w3xse7en.github.io/docs/sql/redis/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       <guid>https://w3xse7en.github.io/docs/sql/redis/</guid>
@@ -125,10 +125,10 @@
 &lt;figure &gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/redis/redis_object.jpg&#34; &gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/sql/redis/redis_object.jpg&#34; &gt;
 
 
-  &lt;img src=&#34;https://w3xse7en.github.io/media/redis/redis_object.jpg&#34; alt=&#34;&#34;  &gt;
+  &lt;img src=&#34;https://w3xse7en.github.io/media/sql/redis/redis_object.jpg&#34; alt=&#34;&#34;  &gt;
 &lt;/a&gt;
 
 
@@ -172,10 +172,10 @@
 &lt;figure id=&#34;figure-hash链接法&#34;&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/redis/hash_dict_jg.png&#34; data-caption=&#34;Hash链接法&#34;&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/sql/redis/hash_dict_jg.png&#34; data-caption=&#34;Hash链接法&#34;&gt;
 
 
-  &lt;img src=&#34;https://w3xse7en.github.io/media/redis/hash_dict_jg.png&#34; alt=&#34;&#34;  &gt;
+  &lt;img src=&#34;https://w3xse7en.github.io/media/sql/redis/hash_dict_jg.png&#34; alt=&#34;&#34;  &gt;
 &lt;/a&gt;
 
 
@@ -225,10 +225,10 @@
 &lt;figure id=&#34;figure-rehash&#34;&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/redis/hash_hashtable_rehash.png&#34; data-caption=&#34;rehash&#34;&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/sql/redis/hash_hashtable_rehash.png&#34; data-caption=&#34;rehash&#34;&gt;
 
 
-  &lt;img src=&#34;https://w3xse7en.github.io/media/redis/hash_hashtable_rehash.png&#34; alt=&#34;&#34;  &gt;
+  &lt;img src=&#34;https://w3xse7en.github.io/media/sql/redis/hash_hashtable_rehash.png&#34; alt=&#34;&#34;  &gt;
 &lt;/a&gt;
 
 
@@ -265,10 +265,10 @@
 &lt;figure id=&#34;figure-跳表&#34;&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/redis/ziplist_yl.png&#34; data-caption=&#34;跳表&#34;&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/sql/redis/ziplist_yl.png&#34; data-caption=&#34;跳表&#34;&gt;
 
 
-  &lt;img src=&#34;https://w3xse7en.github.io/media/redis/ziplist_yl.png&#34; alt=&#34;&#34;  &gt;
+  &lt;img src=&#34;https://w3xse7en.github.io/media/sql/redis/ziplist_yl.png&#34; alt=&#34;&#34;  &gt;
 &lt;/a&gt;
 
 
@@ -304,10 +304,10 @@
 &lt;figure id=&#34;figure-跳表查找过程&#34;&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/redis/skip_list_search.png&#34; data-caption=&#34;跳表查找过程&#34;&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/sql/redis/skip_list_search.png&#34; data-caption=&#34;跳表查找过程&#34;&gt;
 
 
-  &lt;img src=&#34;https://w3xse7en.github.io/media/redis/skip_list_search.png&#34; alt=&#34;&#34;  &gt;
+  &lt;img src=&#34;https://w3xse7en.github.io/media/sql/redis/skip_list_search.png&#34; alt=&#34;&#34;  &gt;
 &lt;/a&gt;
 
 
@@ -361,10 +361,10 @@ int zslRandomLevel(void) {
 &lt;figure id=&#34;figure-跳表插入过程&#34;&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/redis/skip_list_insert.png&#34; data-caption=&#34;跳表插入过程&#34;&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/sql/redis/skip_list_insert.png&#34; data-caption=&#34;跳表插入过程&#34;&gt;
 
 
-  &lt;img src=&#34;https://w3xse7en.github.io/media/redis/skip_list_insert.png&#34; alt=&#34;&#34;  &gt;
+  &lt;img src=&#34;https://w3xse7en.github.io/media/sql/redis/skip_list_insert.png&#34; alt=&#34;&#34;  &gt;
 &lt;/a&gt;
 
 
@@ -400,10 +400,10 @@ int zslRandomLevel(void) {
 &lt;figure id=&#34;figure-跳表&#34;&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/redis/skiplist.png&#34; data-caption=&#34;跳表&#34;&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/sql/redis/skiplist.png&#34; data-caption=&#34;跳表&#34;&gt;
 
 
-  &lt;img src=&#34;https://w3xse7en.github.io/media/redis/skiplist.png&#34; alt=&#34;&#34;  &gt;
+  &lt;img src=&#34;https://w3xse7en.github.io/media/sql/redis/skiplist.png&#34; alt=&#34;&#34;  &gt;
 &lt;/a&gt;
 
 
@@ -502,10 +502,10 @@ int zslRandomLevel(void) {
 &lt;figure id=&#34;figure-bloom-filter&#34;&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/redis/Bloom-Filter.jpg&#34; data-caption=&#34;Bloom Filter&#34;&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/sql/redis/Bloom-Filter.jpg&#34; data-caption=&#34;Bloom Filter&#34;&gt;
 
 
-  &lt;img src=&#34;https://w3xse7en.github.io/media/redis/Bloom-Filter.jpg&#34; alt=&#34;&#34;  &gt;
+  &lt;img src=&#34;https://w3xse7en.github.io/media/sql/redis/Bloom-Filter.jpg&#34; alt=&#34;&#34;  &gt;
 &lt;/a&gt;
 
 
@@ -641,10 +641,10 @@ AOF 文件中的命令全部以 Redis 协议的格式来保存，新命令会被
 &lt;figure id=&#34;figure-gossip协议下一种可能的消息传播过程&#34;&gt;
 
 
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/redis/gossip.gif&#34; data-caption=&#34;Gossip协议下一种可能的消息传播过程&#34;&gt;
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/sql/redis/gossip.gif&#34; data-caption=&#34;Gossip协议下一种可能的消息传播过程&#34;&gt;
 
 
-  &lt;img src=&#34;https://w3xse7en.github.io/media/redis/gossip.gif&#34; alt=&#34;&#34;  &gt;
+  &lt;img src=&#34;https://w3xse7en.github.io/media/sql/redis/gossip.gif&#34; alt=&#34;&#34;  &gt;
 &lt;/a&gt;
 
 

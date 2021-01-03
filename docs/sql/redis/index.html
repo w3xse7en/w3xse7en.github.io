@@ -272,12 +272,12 @@
   
   <meta property="og:site_name" content="w3xse7en">
   <meta property="og:url" content="https://w3xse7en.github.io/docs/sql/redis/">
-  <meta property="og:title" content="redis | w3xse7en">
+  <meta property="og:title" content="Redis | w3xse7en">
   <meta property="og:description" content="目录  数据结构  Redis内部存储结构 String Hash ReHash SkipList 高级数据结构   缓存  缓存穿透/击穿 缓存雪崩 热点缓存   布隆过滤器(Bloom Filter)  概念 原理 缺点   分布式锁  为什么要用分布式锁 简单的分布式锁实现 RedLock 个人想法   持久化  RDB优缺点 AOF优缺点 同步机制   高可用/集群  Gossip协议 Redis的分片机制 为什么RedisCluster会设计成16384个槽呢？ Redis数据增多了，是该加内存还是加实例？ 集群脑裂   参考    数据结构 String Hash List Set SortedSet。"><meta property="og:image" content="https://w3xse7en.github.io/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_2.png">
   <meta property="twitter:image" content="https://w3xse7en.github.io/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_2.png"><meta property="og:locale" content="zh">
   
     
-    <meta property="article:modified_time" content="2020-12-21T01:31:16&#43;08:00">
+    <meta property="article:modified_time" content="2020-12-27T23:11:24&#43;08:00">
   
 
   
@@ -296,7 +296,7 @@
 
 
 
-  <title>redis | w3xse7en</title>
+  <title>Redis | w3xse7en</title>
 
 </head>
 
@@ -603,7 +603,7 @@
       
 
 
-  <li class=""><a href="/docs/os/process/">process</a></li>
+  <li class=""><a href="/docs/os/process/">Process</a></li>
 
       
         </ul>
@@ -634,7 +634,7 @@
       
 
 
-  <li class="active"><a href="/docs/sql/redis/">redis</a></li>
+  <li class="active"><a href="/docs/sql/redis/">Redis</a></li>
 
       
         </ul>
@@ -665,7 +665,15 @@
       
 
 
-  <li class=""><a href="/docs/web/socket/">socket</a></li>
+  <li class=""><a href="/docs/web/socket/">Socket</a></li>
+
+
+
+  <li class=""><a href="/docs/web/tcp-ip/">TCP/IP</a></li>
+
+
+
+  <li class=""><a href="/docs/web/http/">Http</a></li>
 
       
         </ul>
@@ -758,7 +766,7 @@
       <article class="article">
 
         <div class="docs-article-container">
-          <h1>redis</h1>
+          <h1>Redis</h1>
 
           <div class="article-style">
             <hr>
@@ -869,10 +877,10 @@
 <figure >
 
 
-  <a data-fancybox="" href="/media/redis/redis_object.jpg" >
+  <a data-fancybox="" href="/media/sql/redis/redis_object.jpg" >
 
 
-  <img src="/media/redis/redis_object.jpg" alt=""  >
+  <img src="/media/sql/redis/redis_object.jpg" alt=""  >
 </a>
 
 
@@ -916,10 +924,10 @@
 <figure id="figure-hash链接法">
 
 
-  <a data-fancybox="" href="/media/redis/hash_dict_jg.png" data-caption="Hash链接法">
+  <a data-fancybox="" href="/media/sql/redis/hash_dict_jg.png" data-caption="Hash链接法">
 
 
-  <img src="/media/redis/hash_dict_jg.png" alt=""  >
+  <img src="/media/sql/redis/hash_dict_jg.png" alt=""  >
 </a>
 
 
@@ -969,10 +977,10 @@
 <figure id="figure-rehash">
 
 
-  <a data-fancybox="" href="/media/redis/hash_hashtable_rehash.png" data-caption="rehash">
+  <a data-fancybox="" href="/media/sql/redis/hash_hashtable_rehash.png" data-caption="rehash">
 
 
-  <img src="/media/redis/hash_hashtable_rehash.png" alt=""  >
+  <img src="/media/sql/redis/hash_hashtable_rehash.png" alt=""  >
 </a>
 
 
@@ -1009,10 +1017,10 @@
 <figure id="figure-跳表">
 
 
-  <a data-fancybox="" href="/media/redis/ziplist_yl.png" data-caption="跳表">
+  <a data-fancybox="" href="/media/sql/redis/ziplist_yl.png" data-caption="跳表">
 
 
-  <img src="/media/redis/ziplist_yl.png" alt=""  >
+  <img src="/media/sql/redis/ziplist_yl.png" alt=""  >
 </a>
 
 
@@ -1048,10 +1056,10 @@
 <figure id="figure-跳表查找过程">
 
 
-  <a data-fancybox="" href="/media/redis/skip_list_search.png" data-caption="跳表查找过程">
+  <a data-fancybox="" href="/media/sql/redis/skip_list_search.png" data-caption="跳表查找过程">
 
 
-  <img src="/media/redis/skip_list_search.png" alt=""  >
+  <img src="/media/sql/redis/skip_list_search.png" alt=""  >
 </a>
 
 
@@ -1105,10 +1113,10 @@ int zslRandomLevel(void) {
 <figure id="figure-跳表插入过程">
 
 
-  <a data-fancybox="" href="/media/redis/skip_list_insert.png" data-caption="跳表插入过程">
+  <a data-fancybox="" href="/media/sql/redis/skip_list_insert.png" data-caption="跳表插入过程">
 
 
-  <img src="/media/redis/skip_list_insert.png" alt=""  >
+  <img src="/media/sql/redis/skip_list_insert.png" alt=""  >
 </a>
 
 
@@ -1144,10 +1152,10 @@ int zslRandomLevel(void) {
 <figure id="figure-跳表">
 
 
-  <a data-fancybox="" href="/media/redis/skiplist.png" data-caption="跳表">
+  <a data-fancybox="" href="/media/sql/redis/skiplist.png" data-caption="跳表">
 
 
-  <img src="/media/redis/skiplist.png" alt=""  >
+  <img src="/media/sql/redis/skiplist.png" alt=""  >
 </a>
 
 
@@ -1246,10 +1254,10 @@ int zslRandomLevel(void) {
 <figure id="figure-bloom-filter">
 
 
-  <a data-fancybox="" href="/media/redis/Bloom-Filter.jpg" data-caption="Bloom Filter">
+  <a data-fancybox="" href="/media/sql/redis/Bloom-Filter.jpg" data-caption="Bloom Filter">
 
 
-  <img src="/media/redis/Bloom-Filter.jpg" alt=""  >
+  <img src="/media/sql/redis/Bloom-Filter.jpg" alt=""  >
 </a>
 
 
@@ -1385,10 +1393,10 @@ AOF 文件中的命令全部以 Redis 协议的格式来保存，新命令会被
 <figure id="figure-gossip协议下一种可能的消息传播过程">
 
 
-  <a data-fancybox="" href="/media/redis/gossip.gif" data-caption="Gossip协议下一种可能的消息传播过程">
+  <a data-fancybox="" href="/media/sql/redis/gossip.gif" data-caption="Gossip协议下一种可能的消息传播过程">
 
 
-  <img src="/media/redis/gossip.gif" alt=""  >
+  <img src="/media/sql/redis/gossip.gif" alt=""  >
 </a>
 
 
@@ -1468,7 +1476,7 @@ min-replicas-max-lag 10
         </div>
 
         <div class="body-footer">
-          <p>最近更新于 Dec 21, 2020</p>
+          <p>最近更新于 Dec 27, 2020</p>
 
           
 
