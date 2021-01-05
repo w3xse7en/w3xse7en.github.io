@@ -30,7 +30,7 @@
   
     
   
-  <meta name="description" content="目录  数据库三大范式 MySQL的binlog的几种录入格式 索引有哪几种类型 索引的数据结构（B&#43;树） 索引算法 索引设计的原则 创建索引的原则 创建索引时需要注意什么 聚簇索引与非聚簇索引 事物的四大特性(ACID) 事务的隔离级别 Redo Log（事务安全）  crash safe 与两阶段提交   MVCC（多版本并发控制）（Undo Log）  MVCC实现原理 MVCC与事务 为什么需要MVCC   隔离级别与锁的关系 锁的粒度 锁的类别 锁的算法 什么是死锁？怎么解决 乐观锁和悲观锁 大表数据查询，怎么优化？ 参考    数据库三大范式  第一范式：每个列都不可以再拆分。 第二范式：在第一范式的基础上，非主键列完全依赖于主键，而不能是依赖于主键的一部分。 第三范式：在第二范式的基础上，非主键列只依赖于主键，不依赖于其他非主键。  在设计数据库结构的时候，要尽量遵守三范式，如果不遵守，必须有足够的理由。比如性能。事实上我们经常会为了性能而妥协数据库的设计。">
+  <meta name="description" content="目录  数据库三大范式 MySQL的binlog的几种录入格式 索引有哪几种类型 索引的数据结构（B&#43;树） 索引算法 索引设计的原则 创建索引的原则 创建索引时需要注意什么 聚簇索引与非聚簇索引 事物的四大特性(ACID) 事务的隔离级别 Redo Log（事务安全）  crash safe 与两阶段提交   MVCC（多版本并发控制）（Undo Log）  MVCC实现原理 MVCC与事务 为什么需要MVCC   当前读，快照读 与 幻读  当前读 快照读   锁的粒度 锁的类别 锁的算法 什么是死锁？怎么解决 乐观锁和悲观锁 大表数据查询，怎么优化？ 参考    数据库三大范式  第一范式：每个列都不可以再拆分。 第二范式：在第一范式的基础上，非主键列完全依赖于主键，而不能是依赖于主键的一部分。 第三范式：在第二范式的基础上，非主键列只依赖于主键，不依赖于其他非主键。  在设计数据库结构的时候，要尽量遵守三范式，如果不遵守，必须有足够的理由。比如性能。事实上我们经常会为了性能而妥协数据库的设计。">
 
   
   <link rel="alternate" hreflang="zh" href="https://w3xse7en.github.io/docs/sql/mysql/">
@@ -273,11 +273,11 @@
   <meta property="og:site_name" content="w3xse7en">
   <meta property="og:url" content="https://w3xse7en.github.io/docs/sql/mysql/">
   <meta property="og:title" content="MySQL | w3xse7en">
-  <meta property="og:description" content="目录  数据库三大范式 MySQL的binlog的几种录入格式 索引有哪几种类型 索引的数据结构（B&#43;树） 索引算法 索引设计的原则 创建索引的原则 创建索引时需要注意什么 聚簇索引与非聚簇索引 事物的四大特性(ACID) 事务的隔离级别 Redo Log（事务安全）  crash safe 与两阶段提交   MVCC（多版本并发控制）（Undo Log）  MVCC实现原理 MVCC与事务 为什么需要MVCC   隔离级别与锁的关系 锁的粒度 锁的类别 锁的算法 什么是死锁？怎么解决 乐观锁和悲观锁 大表数据查询，怎么优化？ 参考    数据库三大范式  第一范式：每个列都不可以再拆分。 第二范式：在第一范式的基础上，非主键列完全依赖于主键，而不能是依赖于主键的一部分。 第三范式：在第二范式的基础上，非主键列只依赖于主键，不依赖于其他非主键。  在设计数据库结构的时候，要尽量遵守三范式，如果不遵守，必须有足够的理由。比如性能。事实上我们经常会为了性能而妥协数据库的设计。"><meta property="og:image" content="https://w3xse7en.github.io/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_2.png">
+  <meta property="og:description" content="目录  数据库三大范式 MySQL的binlog的几种录入格式 索引有哪几种类型 索引的数据结构（B&#43;树） 索引算法 索引设计的原则 创建索引的原则 创建索引时需要注意什么 聚簇索引与非聚簇索引 事物的四大特性(ACID) 事务的隔离级别 Redo Log（事务安全）  crash safe 与两阶段提交   MVCC（多版本并发控制）（Undo Log）  MVCC实现原理 MVCC与事务 为什么需要MVCC   当前读，快照读 与 幻读  当前读 快照读   锁的粒度 锁的类别 锁的算法 什么是死锁？怎么解决 乐观锁和悲观锁 大表数据查询，怎么优化？ 参考    数据库三大范式  第一范式：每个列都不可以再拆分。 第二范式：在第一范式的基础上，非主键列完全依赖于主键，而不能是依赖于主键的一部分。 第三范式：在第二范式的基础上，非主键列只依赖于主键，不依赖于其他非主键。  在设计数据库结构的时候，要尽量遵守三范式，如果不遵守，必须有足够的理由。比如性能。事实上我们经常会为了性能而妥协数据库的设计。"><meta property="og:image" content="https://w3xse7en.github.io/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_2.png">
   <meta property="twitter:image" content="https://w3xse7en.github.io/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_2.png"><meta property="og:locale" content="zh">
   
     
-    
+    <meta property="article:modified_time" content="2021-01-04T23:59:00&#43;08:00">
   
 
   
@@ -732,7 +732,12 @@
         <li><a href="#为什么需要mvcc">为什么需要MVCC</a></li>
       </ul>
     </li>
-    <li><a href="#隔离级别与锁的关系">隔离级别与锁的关系</a></li>
+    <li><a href="#当前读快照读-与-幻读">当前读，快照读 与 幻读</a>
+      <ul>
+        <li><a href="#当前读">当前读</a></li>
+        <li><a href="#快照读">快照读</a></li>
+      </ul>
+    </li>
     <li><a href="#锁的粒度">锁的粒度</a></li>
     <li><a href="#锁的类别">锁的类别</a></li>
     <li><a href="#锁的算法">锁的算法</a></li>
@@ -782,7 +787,12 @@
         <li><a href="#为什么需要mvcc">为什么需要MVCC</a></li>
       </ul>
     </li>
-    <li><a href="#隔离级别与锁的关系">隔离级别与锁的关系</a></li>
+    <li><a href="#当前读快照读-与-幻读">当前读，快照读 与 幻读</a>
+      <ul>
+        <li><a href="#当前读">当前读</a></li>
+        <li><a href="#快照读">快照读</a></li>
+      </ul>
+    </li>
     <li><a href="#锁的粒度">锁的粒度</a></li>
     <li><a href="#锁的类别">锁的类别</a></li>
     <li><a href="#锁的算法">锁的算法</a></li>
@@ -1265,12 +1275,68 @@
 <li>加读写锁</li>
 <li>一致性快照读，即 MVCC</li>
 </ol>
-<h2 id="隔离级别与锁的关系">隔离级别与锁的关系</h2>
+<h2 id="当前读快照读-与-幻读">当前读，快照读 与 幻读</h2>
+<h3 id="当前读">当前读</h3>
+<p>select&hellip;lock in share mode (共享读锁)
+select&hellip;for update
+update , delete , insert</p>
+<p>当前读, 读取的是最新版本, 并且对读取的记录加锁, 阻塞其他事务同时改动相同记录，避免出现安全问题。</p>
+<p>例如，假设要update一条记录，但是另一个事务已经delete这条数据并且commit了，如果不加锁就会产生冲突。所以update的时候肯定要是当前读，得到最新的信息并且锁定相应的记录。</p>
+<h4 id="当前读的实现方式">当前读的实现方式</h4>
 <ul>
-<li>READ-UNCOMMITTED，读取数据不需要加共享锁，这样就不会跟被修改的数据上的排他锁冲突</li>
-<li>READ-COMMITTED，读操作需要加共享锁，但是在语句执行完以后释放共享锁；</li>
-<li>REPEATABLE-READ，读操作需要加共享锁，但是在事务提交之前并不释放共享锁，也就是必须等待事务执行完毕以后才释放共享锁。</li>
-<li>SERIALIZABLE 是限制性最强的隔离级别，因为该级别锁定整个范围的键，并一直持有锁，直到事务完成。</li>
+<li>next-key锁(行记录锁+Gap间隙锁)</li>
+</ul>
+<p>间隙锁：只有在Read Repeatable、Serializable隔离级别才有，就是锁定范围空间的数据，假设id有3,4,5，锁定id&gt;3的数据，是指的4，5及后面的数字都会被锁定，因为此时如果不锁定没有的数据，例如当加入了新的数据id=6，就会出现幻读，间隙锁避免了幻读。</p>
+<p>1.对主键或唯一索引，如果当前读时，where条件全部精确命中(=或者in)，这种场景本身就不会出现幻读，所以只会加行记录锁。</p>
+<p>2.没有索引的列，当前读操作时，会加全表gap锁，生产环境要注意。</p>
+<p>3.非唯一索引列，如果where条件部分命中(&gt;、&lt;、like等)或者全未命中，则会加附近Gap间隙锁。例如，某表数据如下，非唯一索引2,6,9,9,11,15。如下语句要操作非唯一索引列9的数据，gap锁将会锁定的列是(6,11]，该区间内无法插入数据。</p>
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure id="figure-非唯一索引列间隙锁">
+
+
+  <a data-fancybox="" href="/media/sql/mysql/mysql_gap_lock.png" data-caption="&lt;strong&gt;非唯一索引列&lt;/strong&gt;间隙锁">
+
+
+  <img src="/media/sql/mysql/mysql_gap_lock.png" alt=""  >
+</a>
+
+
+  
+  
+  <figcaption>
+    <strong>非唯一索引列</strong>间隙锁
+  </figcaption>
+
+
+</figure>
+
+<h3 id="快照读">快照读</h3>
+<p>简单的select操作(不包括 select &hellip; lock in share mode, select &hellip; for update)。　　　　</p>
+<p>Read Committed隔离级别：每次select都生成一个快照读。</p>
+<p>Read Repeatable隔离级别：<strong>开启事务后第一个select语句才是快照读的地方，而不是一开启事务就快照读。</strong></p>
+<p>快照读不会加锁，因此开启事务后进行快照读select，并不能阻止其他事务写入或修改当前事务里的数据，因此可能会出现幻读。</p>
+<h4 id="快照读的实现方式">快照读的实现方式</h4>
+<ul>
+<li>MVCC(undo log)</li>
 </ul>
 <h2 id="锁的粒度">锁的粒度</h2>
 <ul>
@@ -1321,9 +1387,12 @@
 <p><a href="https://cloud.tencent.com/developer/article/1454636" target="_blank" rel="noopener">InnoDB MVCC 机制，看这篇就够了</a></p>
 <p><a href="https://techlog.cn/article/list/10183403" target="_blank" rel="noopener">mysql 异常情况下的事务安全 &ndash; 详解 mysql redolog</a></p>
 <p><a href="https://techlog.cn/article/list/10183404" target="_blank" rel="noopener">一文讲透 MySQL 的 MVCC 机制</a></p>
+<p><a href="https://www.cnblogs.com/wwcom123/p/10727194.html?spm=a2c6h.12873639.0.0.1bf85681isB566" target="_blank" rel="noopener">【MySQL】当前读、快照读、MVCC</a></p>
 <p><a href="https://www.modb.pro/db/13606" target="_blank" rel="noopener">MySQL InnoDB Cluster 详解</a></p>
 <p><a href="https://jeremyxu2010.github.io/2019/05/mysql-innodb-cluster%E5%AE%9E%E6%88%98/" target="_blank" rel="noopener">MySQL InnoDB Cluster实战</a></p>
 <p><a href="https://zhuanlan.zhihu.com/p/128461028" target="_blank" rel="noopener">MySQL-8.0 Group Replication 研究与改造汇总</a></p>
+<p><a href="https://www.zhihu.com/question/53617036" target="_blank" rel="noopener">如何看待MySQL发布的Group Replication？</a></p>
+<p><a href="https://dbaplus.cn/news-141-2231-1.html" target="_blank" rel="noopener">美团点评基于MGR的CMDB高可用架构搭建之路</a></p>
 <hr>
 
           </div>
@@ -1352,7 +1421,7 @@
         </div>
 
         <div class="body-footer">
-          <p>最近更新于 Jan 1, 0001</p>
+          <p>最近更新于 Jan 4, 2021</p>
 
           
 

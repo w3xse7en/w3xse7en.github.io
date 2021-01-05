@@ -44,7 +44,12 @@
         &lt;li&gt;&lt;a href=&#34;#为什么需要mvcc&#34;&gt;为什么需要MVCC&lt;/a&gt;&lt;/li&gt;
       &lt;/ul&gt;
     &lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#隔离级别与锁的关系&#34;&gt;隔离级别与锁的关系&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#当前读快照读-与-幻读&#34;&gt;当前读，快照读 与 幻读&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#当前读&#34;&gt;当前读&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#快照读&#34;&gt;快照读&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
     &lt;li&gt;&lt;a href=&#34;#锁的粒度&#34;&gt;锁的粒度&lt;/a&gt;&lt;/li&gt;
     &lt;li&gt;&lt;a href=&#34;#锁的类别&#34;&gt;锁的类别&lt;/a&gt;&lt;/li&gt;
     &lt;li&gt;&lt;a href=&#34;#锁的算法&#34;&gt;锁的算法&lt;/a&gt;&lt;/li&gt;
@@ -527,12 +532,68 @@
 &lt;li&gt;加读写锁&lt;/li&gt;
 &lt;li&gt;一致性快照读，即 MVCC&lt;/li&gt;
 &lt;/ol&gt;
-&lt;h2 id=&#34;隔离级别与锁的关系&#34;&gt;隔离级别与锁的关系&lt;/h2&gt;
+&lt;h2 id=&#34;当前读快照读-与-幻读&#34;&gt;当前读，快照读 与 幻读&lt;/h2&gt;
+&lt;h3 id=&#34;当前读&#34;&gt;当前读&lt;/h3&gt;
+&lt;p&gt;select&amp;hellip;lock in share mode (共享读锁)
+select&amp;hellip;for update
+update , delete , insert&lt;/p&gt;
+&lt;p&gt;当前读, 读取的是最新版本, 并且对读取的记录加锁, 阻塞其他事务同时改动相同记录，避免出现安全问题。&lt;/p&gt;
+&lt;p&gt;例如，假设要update一条记录，但是另一个事务已经delete这条数据并且commit了，如果不加锁就会产生冲突。所以update的时候肯定要是当前读，得到最新的信息并且锁定相应的记录。&lt;/p&gt;
+&lt;h4 id=&#34;当前读的实现方式&#34;&gt;当前读的实现方式&lt;/h4&gt;
 &lt;ul&gt;
-&lt;li&gt;READ-UNCOMMITTED，读取数据不需要加共享锁，这样就不会跟被修改的数据上的排他锁冲突&lt;/li&gt;
-&lt;li&gt;READ-COMMITTED，读操作需要加共享锁，但是在语句执行完以后释放共享锁；&lt;/li&gt;
-&lt;li&gt;REPEATABLE-READ，读操作需要加共享锁，但是在事务提交之前并不释放共享锁，也就是必须等待事务执行完毕以后才释放共享锁。&lt;/li&gt;
-&lt;li&gt;SERIALIZABLE 是限制性最强的隔离级别，因为该级别锁定整个范围的键，并一直持有锁，直到事务完成。&lt;/li&gt;
+&lt;li&gt;next-key锁(行记录锁+Gap间隙锁)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;间隙锁：只有在Read Repeatable、Serializable隔离级别才有，就是锁定范围空间的数据，假设id有3,4,5，锁定id&amp;gt;3的数据，是指的4，5及后面的数字都会被锁定，因为此时如果不锁定没有的数据，例如当加入了新的数据id=6，就会出现幻读，间隙锁避免了幻读。&lt;/p&gt;
+&lt;p&gt;1.对主键或唯一索引，如果当前读时，where条件全部精确命中(=或者in)，这种场景本身就不会出现幻读，所以只会加行记录锁。&lt;/p&gt;
+&lt;p&gt;2.没有索引的列，当前读操作时，会加全表gap锁，生产环境要注意。&lt;/p&gt;
+&lt;p&gt;3.非唯一索引列，如果where条件部分命中(&amp;gt;、&amp;lt;、like等)或者全未命中，则会加附近Gap间隙锁。例如，某表数据如下，非唯一索引2,6,9,9,11,15。如下语句要操作非唯一索引列9的数据，gap锁将会锁定的列是(6,11]，该区间内无法插入数据。&lt;/p&gt;
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id=&#34;figure-非唯一索引列间隙锁&#34;&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://w3xse7en.github.io/media/sql/mysql/mysql_gap_lock.png&#34; data-caption=&#34;&amp;lt;strong&amp;gt;非唯一索引列&amp;lt;/strong&amp;gt;间隙锁&#34;&gt;
+
+
+  &lt;img src=&#34;https://w3xse7en.github.io/media/sql/mysql/mysql_gap_lock.png&#34; alt=&#34;&#34;  &gt;
+&lt;/a&gt;
+
+
+  
+  
+  &lt;figcaption&gt;
+    &lt;strong&gt;非唯一索引列&lt;/strong&gt;间隙锁
+  &lt;/figcaption&gt;
+
+
+&lt;/figure&gt;
+
+&lt;h3 id=&#34;快照读&#34;&gt;快照读&lt;/h3&gt;
+&lt;p&gt;简单的select操作(不包括 select &amp;hellip; lock in share mode, select &amp;hellip; for update)。　　　　&lt;/p&gt;
+&lt;p&gt;Read Committed隔离级别：每次select都生成一个快照读。&lt;/p&gt;
+&lt;p&gt;Read Repeatable隔离级别：&lt;strong&gt;开启事务后第一个select语句才是快照读的地方，而不是一开启事务就快照读。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;快照读不会加锁，因此开启事务后进行快照读select，并不能阻止其他事务写入或修改当前事务里的数据，因此可能会出现幻读。&lt;/p&gt;
+&lt;h4 id=&#34;快照读的实现方式&#34;&gt;快照读的实现方式&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;MVCC(undo log)&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;锁的粒度&#34;&gt;锁的粒度&lt;/h2&gt;
 &lt;ul&gt;
@@ -583,9 +644,12 @@
 &lt;p&gt;&lt;a href=&#34;https://cloud.tencent.com/developer/article/1454636&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;InnoDB MVCC 机制，看这篇就够了&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href=&#34;https://techlog.cn/article/list/10183403&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;mysql 异常情况下的事务安全 &amp;ndash; 详解 mysql redolog&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href=&#34;https://techlog.cn/article/list/10183404&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;一文讲透 MySQL 的 MVCC 机制&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.cnblogs.com/wwcom123/p/10727194.html?spm=a2c6h.12873639.0.0.1bf85681isB566&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;【MySQL】当前读、快照读、MVCC&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href=&#34;https://www.modb.pro/db/13606&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;MySQL InnoDB Cluster 详解&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href=&#34;https://jeremyxu2010.github.io/2019/05/mysql-innodb-cluster%E5%AE%9E%E6%88%98/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;MySQL InnoDB Cluster实战&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href=&#34;https://zhuanlan.zhihu.com/p/128461028&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;MySQL-8.0 Group Replication 研究与改造汇总&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.zhihu.com/question/53617036&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;如何看待MySQL发布的Group Replication？&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://dbaplus.cn/news-141-2231-1.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;美团点评基于MGR的CMDB高可用架构搭建之路&lt;/a&gt;&lt;/p&gt;
 &lt;hr&gt;
 </description>
     </item>
